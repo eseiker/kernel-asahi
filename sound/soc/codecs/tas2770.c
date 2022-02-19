@@ -479,7 +479,7 @@ static struct snd_soc_dai_driver tas2770_dai_driver[] = {
 		.playback = {
 			.stream_name    = "ASI1 Playback",
 			.channels_min   = 1,
-			.channels_max   = 2,
+			.channels_max   = 1,
 			.rates      = TAS2770_RATES,
 			.formats    = TAS2770_FORMATS,
 		},
