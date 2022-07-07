@@ -1393,4 +1393,6 @@ source "drivers/hid/intel-thc-hid/Kconfig"
 
 source "drivers/hid/spi-hid/Kconfig"
 
+source "drivers/hid/dockchannel-hid/Kconfig"
+
 endif # HID_SUPPORT
