@@ -1,3 +1,7 @@
+* Sat Sep 17 2022 Neal Gompa <neal@gompa.dev> [5.19.9-401.asahi]
+- redhat/configs: Switch AArch64 to 16K pages (Neal Gompa)
+Resolves: 
+
 * Fri Sep 16 2022 Neal Gompa <neal@gompa.dev> [5.19.9-400.asahi]
 - redhat/configs: aarch64: asahi: Turn on downstream Apple Silicon configs (Eric Curtin)
 - fixup! hid: Add Apple DockChannel HID transport driver (Hector Martin)
