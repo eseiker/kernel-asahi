@@ -1,3 +1,7 @@
+* Sun Dec 11 2022 Neal Gompa <neal@gompa.dev> [6.1.0-0.rc8.103.asahi]
+- redhat: Tweak spec to do a verbose build (Neal Gompa)
+Resolves: 
+
 * Sun Dec 11 2022 Neal Gompa <neal@gompa.dev> [6.1.0-0.rc8.102.asahi]
 - redhat/configs: Enable DRM_SCHED and DRM_GEM_SHMEM_HELPER (Neal Gompa)
 Resolves: 
