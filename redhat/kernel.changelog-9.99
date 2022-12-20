@@ -1,3 +1,11 @@
+* Tue Dec 20 2022 Neal Gompa <neal@gompa.dev> [6.1.0-0.rc8.105.asahi]
+- redhat: Change to clang toolchain completely (Eric Curtin)
+- redhat/configs: Various config changes required for Apple Silicon GPU (Eric Curtin)
+- scripts: new terminology in modern bindgen (Eric Curtin)
+- Revert "redhat/configs: Disable CONFIG_DEBUG_INFO_BTF to enable Rust support" (Neal Gompa)
+- scripts: Exclude Rust CUs with pahole (Martin Rodriguez Reboredo)
+Resolves: 
+
 * Mon Dec 12 2022 Neal Gompa <neal@gompa.dev> [6.1.0-0.rc8.104.asahi]
 - redhat/configs: Disable CONFIG_DEBUG_INFO_BTF to enable Rust support (Neal Gompa)
 - init/Kconfig: Only block on RANDSTRUCT for RUST (Neal Gompa)
