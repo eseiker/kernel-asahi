@@ -1,3 +1,7 @@
+* Thu Dec 22 2022 Neal Gompa <neal@gompa.dev> [6.1.0-0.rc8.106.asahi]
+- redhat: Enable kernel-headers build (Neal Gompa)
+Resolves: 
+
 * Tue Dec 20 2022 Neal Gompa <neal@gompa.dev> [6.1.0-0.rc8.105.asahi]
 - redhat: Change to clang toolchain completely (Eric Curtin)
 - redhat/configs: Various config changes required for Apple Silicon GPU (Eric Curtin)
