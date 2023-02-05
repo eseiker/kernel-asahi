@@ -10,6 +10,7 @@
 #include <drm/drm_drv.h>
 #include <drm/drm_file.h>
 #include <drm/drm_gem.h>
+#include <drm/drm_gem_shmem_helper.h>
 #include <drm/drm_ioctl.h>
 #include <kunit/test.h>
 #include <linux/blk-mq.h>
@@ -28,6 +29,7 @@
 #include <linux/iio/iio.h>
 #include <linux/iio/types.h>
 #include <linux/io-pgtable.h>
+#include <linux/iosys-map.h>
 #include <linux/jiffies.h>
 #include <linux/ktime.h>
 #include <linux/lockdep.h>
