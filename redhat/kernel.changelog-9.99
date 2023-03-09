@@ -1,3 +1,7 @@
+* Thu Mar 09 2023 Neal Gompa <neal@gompa.dev> [6.1.1-450.2.asahi]
+- Rust 1.67.1 support (Eric Curtin)
+Resolves: 
+
 * Mon Dec 26 2022 Neal Gompa <neal@gompa.dev> [6.1.1-450.1.asahi]
 - rust: alloc: add missing comment on `try_resize` (Miguel Ojeda)
 - rust: kernel: clean Rust 1.66.0 `rustdoc::broken_intra_doc_links` warnings (Miguel Ojeda)
