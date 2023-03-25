@@ -1,3 +1,15 @@
+* Sat Mar 25 2023 Neal Gompa <neal@gompa.dev> [6.2.8-450.asahi]
+- redhat: Change to clang toolchain completely (Eric Curtin)
+- redhat: Tweak spec to do a verbose build (Neal Gompa)
+- redhat/configs: aarch64: Change CONFIG_APPLE_MBOX to =y (Neal Gompa)
+- redhat/configs: aarch64: Change CONFIG_APPLE_RTKIT from =m to =y (Eric Curtin)
+- redhat/configs: aarch64: Enable Asahi DRM driver (Neal Gompa)
+- scripts: new terminology in modern bindgen (Eric Curtin)
+- redhat/configs: Enable DRM_GEM_SHMEM_HELPER (Neal Gompa)
+- redhat/configs: Various config changes required for Apple Silicon GPU (Eric Curtin)
+- redhat: Turn on support for Rust code (Neal Gompa)
+Resolves: 
+
 * Sat Mar 25 2023 Neal Gompa <neal@gompa.dev> [6.2.8-400.asahi]
 - redhat: Enable kernel-headers build (Neal Gompa)
 - redhat/configs: Switch AArch64 to 16K pages (Neal Gompa)
