@@ -1,3 +1,7 @@
+* Sat Jul 22 2023 Neal Gompa <neal@gompa.dev> [6.4.4-401.asahi]
+- redhat: Use rust-kernel package (Neal Gompa)
+Resolves: 
+
 * Sat Jul 22 2023 Neal Gompa <neal@gompa.dev> [6.4.4-400.asahi]
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
 - redhat/configs: aarch64: Change CONFIG_APPLE_MBOX to =y (Neal Gompa)
