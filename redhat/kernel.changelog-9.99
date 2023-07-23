@@ -1,3 +1,7 @@
+* Sun Jul 23 2023 Neal Gompa <neal@gompa.dev> [6.4.4-402.asahi]
+- Change pathfix.py to %%py3_shebang_fix (Justin M. Forbes)
+Resolves: 
+
 * Sat Jul 22 2023 Neal Gompa <neal@gompa.dev> [6.4.4-401.asahi]
 - redhat: Use rust-kernel package (Neal Gompa)
 Resolves: 
