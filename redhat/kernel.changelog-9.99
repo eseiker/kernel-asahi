@@ -1,3 +1,7 @@
+* Wed Sep 20 2023 Neal Gompa <neal@gompa.dev> [6.5.4-401.asahi]
+- redhat: spec: Fix typo for kernel_variant_preun for 16k-debug flavor (Neal Gompa)
+Resolves: 
+
 * Wed Sep 20 2023 Neal Gompa <neal@gompa.dev> [6.5.4-400.asahi]
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
