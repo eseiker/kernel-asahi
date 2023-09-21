@@ -1,3 +1,7 @@
+* Thu Sep 21 2023 Neal Gompa <neal@gompa.dev> [6.4.11-402.asahi]
+- redhat: Use rust-kernel package (Neal Gompa)
+Resolves: 
+
 * Mon Aug 21 2023 Neal Gompa <neal@gompa.dev> [6.4.11-401.asahi]
 - redhat/configs: Temporarily switch baseline flavor for AArch64 to 16K pages (Neal Gompa)
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
