@@ -1,3 +1,7 @@
+* Thu Sep 21 2023 Neal Gompa <neal@gompa.dev> [6.5.4-402.asahi]
+- locking/atomic: scripts: fix fallback ifdeffery (tip-bot2 for Mark Rutland)
+Resolves: 
+
 * Wed Sep 20 2023 Neal Gompa <neal@gompa.dev> [6.5.4-401.asahi]
 - redhat: spec: Fix typo for kernel_variant_preun for 16k-debug flavor (Neal Gompa)
 Resolves: 
