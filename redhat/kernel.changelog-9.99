@@ -1,3 +1,7 @@
+* Mon Oct 09 2023 Neal Gompa <neal@gompa.dev> [6.5.6-401.asahi]
+- redhat: Use rust-kernel package (Neal Gompa)
+Resolves: 
+
 * Mon Oct 09 2023 Neal Gompa <neal@gompa.dev> [6.5.6-400.asahi]
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
