@@ -1,3 +1,8 @@
+* Wed Oct 11 2023 Neal Gompa <neal@gompa.dev> [6.5.6-403.asahi]
+- media: apple: isp: implement ENUM_FRAMEINTERVALS trivially (Hector Martin)
+- fixup! media: apple: isp: Parse firmware version from device tree (Hector Martin)
+Resolves: 
+
 * Tue Oct 10 2023 Neal Gompa <neal@gompa.dev> [6.5.6-402.asahi]
 - EScan was not including band in chanspec conversion during prep, causing it to only scan 2g channels by default. (Daniel Berlin)
 - Fix invalid frequency issues and issues with HE supporting/only AP's (Daniel Berlin)
