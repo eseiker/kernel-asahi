@@ -1,3 +1,7 @@
+* Fri Nov 10 2023 Hector Martin <marcan@marcan.st> [6.5.11-403.asahi]
+- fixup! rust: types: Add Opaque::zeroed() (Hector Martin)
+Resolves: 
+
 * Thu Nov 09 2023 Neal Gompa <neal@gompa.dev> [6.5.11-402.asahi]
 - fixup! rust: types: Add Opaque::zeroed() (Neal Gompa)
 Resolves: 
