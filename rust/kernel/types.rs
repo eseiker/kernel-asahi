@@ -230,7 +230,7 @@ impl<T> Opaque<T> {
 
     /// Creates a zeroed value.
     pub fn zeroed() -> Self {
-        Self(MaybeUninit::zeroed())
+        Self(UnsafeCell::new(MaybeUninit::zeroed()))
     }
 
     /// Creates a pin-initializer from the given initializer closure.
