@@ -1,3 +1,7 @@
+* Thu Nov 09 2023 Neal Gompa <neal@gompa.dev> [6.5.11-401.asahi]
+- Partially revert "gpu/drm: Eliminate DRM_SCHED_PRIORITY_UNSET" (Neal Gompa)
+Resolves: 
+
 * Thu Nov 09 2023 Neal Gompa <neal@gompa.dev> [6.5.11-400.asahi]
 - redhat: Use rust-kernel package (Neal Gompa)
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
