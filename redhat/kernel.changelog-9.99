@@ -1,3 +1,9 @@
+* Fri Nov 10 2023 Neal Gompa <neal@gompa.dev> [6.5.11-404.asahi]
+- drm/asahi: render: Fix layered rendering on G14X (Asahi Lina)
+- drm/asahi: Fix Clippy complaints (Asahi Lina)
+- drm/asahi: Identify and allocate clustered layering metadata buf (Asahi Lina)
+Resolves: 
+
 * Fri Nov 10 2023 Hector Martin <marcan@marcan.st> [6.5.11-403.asahi]
 - fixup! rust: types: Add Opaque::zeroed() (Hector Martin)
 Resolves: 
