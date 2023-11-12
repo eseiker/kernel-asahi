@@ -1,3 +1,7 @@
+* Sun Nov 12 2023 Neal Gompa <neal@gompa.dev> [6.5.11-405.asahi]
+- rust: Fix x86 build (Hector Martin)
+Resolves: 
+
 * Fri Nov 10 2023 Neal Gompa <neal@gompa.dev> [6.5.11-404.asahi]
 - drm/asahi: render: Fix layered rendering on G14X (Asahi Lina)
 - drm/asahi: Fix Clippy complaints (Asahi Lina)
