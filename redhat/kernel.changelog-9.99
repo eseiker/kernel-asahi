@@ -1,3 +1,7 @@
+* Sun Nov 12 2023 Neal Gompa <neal@gompa.dev> [6.5.11-406.asahi]
+- rust: Fix x86 build more (Hector Martin)
+Resolves: 
+
 * Sun Nov 12 2023 Neal Gompa <neal@gompa.dev> [6.5.11-405.asahi]
 - rust: Fix x86 build (Hector Martin)
 Resolves: 
