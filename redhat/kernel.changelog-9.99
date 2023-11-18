@@ -1,3 +1,7 @@
+* Sat Nov 18 2023 Neal Gompa <neal@gompa.dev> [6.5.11-408.asahi]
+- x86/insn_decoder_test: allow longer symbol-names (David Rheinsberg)
+Resolves: 
+
 * Fri Nov 17 2023 Neal Gompa <neal@gompa.dev> [6.5.11-407.asahi]
 - drm/asahi: render, buffer: Fix layered rendering on G13X (again) (Asahi Lina)
 - fixup! ASoC: tas2770: Add SDZ regulator (Hector Martin)
