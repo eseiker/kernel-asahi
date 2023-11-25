@@ -1,3 +1,7 @@
+* Sat Nov 25 2023 Neal Gompa <neal@gompa.dev> [6.6.2-403.asahi]
+- redhat/fedora_files/filter-aarch64.sh.fedora: Add apple and asahi drm drivers (Neal Gompa)
+Resolves: 
+
 * Sat Nov 25 2023 Neal Gompa <neal@gompa.dev> [6.6.2-402.asahi]
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
