@@ -1,3 +1,7 @@
+* Tue Nov 28 2023 Neal Gompa <neal@gompa.dev> [6.6.2-405.asahi]
+- fixup! [brcmfmac] Support chan_info_list (Hector Martin)
+Resolves: 
+
 * Mon Nov 27 2023 Neal Gompa <neal@gompa.dev> [6.6.2-404.asahi]
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
