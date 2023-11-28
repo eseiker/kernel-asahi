@@ -1,3 +1,9 @@
+* Tue Nov 28 2023 Neal Gompa <neal@gompa.dev> [6.6.2-406.asahi]
+- fixup! ASoC: tas2764: Enable some Apple quirks by default (Hector Martin)
+- drm: apple: dcp: Fix resume with DPTX based display outputs (Janne Grunau)
+- fixup! ASoC: tas2764: Set the SDOUT polarity correctly (Hector Martin)
+Resolves: 
+
 * Tue Nov 28 2023 Neal Gompa <neal@gompa.dev> [6.6.2-405.asahi]
 - fixup! [brcmfmac] Support chan_info_list (Hector Martin)
 Resolves: 
