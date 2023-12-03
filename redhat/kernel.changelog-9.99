@@ -1,3 +1,11 @@
+* Sun Dec 03 2023 Neal Gompa <neal@gompa.dev> [6.6.3-401.asahi]
+- fixup! [brcmfmac] Structurize scan parameter handling (Hector Martin)
+- HID: magicmouse: Query device dimensions via HID report (Hector Martin)
+- HID: transport: spi: Implement GET FEATURE (Hector Martin)
+- fixup! hid: Add Apple DockChannel HID transport driver (Hector Martin)
+- redhat/configs: Enable UCLAMP_TASK for PipeWire and WirePlumber (Neal Gompa)
+Resolves: 
+
 * Thu Nov 30 2023 Neal Gompa <neal@gompa.dev> [6.6.3-400.asahi]
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
