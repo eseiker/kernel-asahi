@@ -1,3 +1,7 @@
+* Fri Dec 08 2023 Neal Gompa <neal@gompa.dev> [6.6.3-403.asahi]
+- macaudio: Change device ID form Jxxx to AppleJxxx (Hector Martin)
+Resolves: 
+
 * Sun Dec 03 2023 Neal Gompa <neal@gompa.dev> [6.6.3-402.asahi]
 - redhat/configs: Enable UCLAMP_TASK for PipeWire and WirePlumber (Neal Gompa)
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
