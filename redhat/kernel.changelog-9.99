@@ -1,3 +1,9 @@
+* Tue Dec 12 2023 Neal Gompa <neal@gompa.dev> [6.6.3-405.asahi]
+- macaudio: Fix CHECK return condition checking (Hector Martin)
+- fixup! ASoC: macaudio: Start speaker sense capture support (Hector Martin)
+- fixup! ASoC: apple: Add macaudio machine driver (Hector Martin)
+Resolves: 
+
 * Mon Dec 11 2023 Neal Gompa <neal@gompa.dev> [6.6.3-404.asahi]
 - macaudio: Sync all gains with macOS (Hector Martin)
 - macaudio: Turn please_blow_up_my_speakers into an int (Hector Martin)
