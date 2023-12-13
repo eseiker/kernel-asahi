@@ -1,3 +1,15 @@
+* Wed Dec 13 2023 Neal Gompa <neal@gompa.dev> [6.6.3-406.asahi]
+- fixup! mux: apple DP xbar: Add Apple silicon DisplayPort crossbar (Janne Grunau)
+- drm: apple: epic: systemep: Parse "mNits" log events (Janne Grunau)
+- drm: apple: epic: Pass full notfiy/report payload to handler (Janne Grunau)
+- drm: apple: parser: constify parser data (Janne Grunau)
+- drm: apple: iomfb: Always parse DisplayAttributes (Janne Grunau)
+- drm: apple: Prefer RGB SDR modes (Janne Grunau)
+- drm: apple: dptx: Wait for link config on connect (Janne Grunau)
+- drm: apple: Be less noisy about teardown notifies without service (Janne Grunau)
+- macaudio: Avoid matches against cs42l84's constrols (Janne Grunau)
+Resolves: 
+
 * Tue Dec 12 2023 Neal Gompa <neal@gompa.dev> [6.6.3-405.asahi]
 - macaudio: Fix CHECK return condition checking (Hector Martin)
 - fixup! ASoC: macaudio: Start speaker sense capture support (Hector Martin)
