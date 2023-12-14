@@ -1,3 +1,7 @@
+* Thu Dec 14 2023 Neal Gompa <neal@gompa.dev> [6.6.3-407.asahi]
+- ASoC: apple: mca: Add delay after configuring clock (Hector Martin)
+Resolves: 
+
 * Wed Dec 13 2023 Neal Gompa <neal@gompa.dev> [6.6.3-406.asahi]
 - fixup! mux: apple DP xbar: Add Apple silicon DisplayPort crossbar (Janne Grunau)
 - drm: apple: epic: systemep: Parse "mNits" log events (Janne Grunau)
