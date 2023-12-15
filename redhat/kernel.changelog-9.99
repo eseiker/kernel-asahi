@@ -1,3 +1,8 @@
+* Fri Dec 15 2023 Neal Gompa <neal@gompa.dev> [6.6.3-408.asahi]
+- READ COMMIT MESSAGE! macaudio: Enable first round of models (Hector Martin)
+- macaudio: Disable j313 and j274 (Hector Martin)
+Resolves: 
+
 * Thu Dec 14 2023 Neal Gompa <neal@gompa.dev> [6.6.3-407.asahi]
 - ASoC: apple: mca: Add delay after configuring clock (Hector Martin)
 Resolves: 
