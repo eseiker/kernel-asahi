@@ -1,3 +1,7 @@
+* Sun Dec 17 2023 Hector Martin <marcan@marcan.st> [6.6.3-410.asahi]
+- ASoC: apple: mca: Add more delay after configuring clock (Hector Martin)
+Resolves: 
+
 * Fri Dec 15 2023 Neal Gompa <neal@gompa.dev> [6.6.3-409.asahi]
 - READ COMMIT MESSAGE! macaudio: Enable second round of models (Hector Martin)
 Resolves: 
