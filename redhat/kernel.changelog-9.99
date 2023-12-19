@@ -1,3 +1,7 @@
+* Tue Dec 19 2023 Hector Martin <marcan@marcan.st> [6.6.3-411.asahi]
+- ASoC: apple: mca: More delay (Hector Martin)
+Resolves: 
+
 * Sun Dec 17 2023 Hector Martin <marcan@marcan.st> [6.6.3-410.asahi]
 - ASoC: apple: mca: Add more delay after configuring clock (Hector Martin)
 Resolves: 
