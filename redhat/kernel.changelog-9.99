@@ -1,3 +1,12 @@
+* Fri Jan 19 2024 Neal Gompa <neal@gompa.dev> [6.6.3-412.asahi]
+- drm/asahi: Check command structure sizes (Asahi Lina)
+- fixup! drm/asahi: render: Implement unknown value UAPI extension (Asahi Lina)
+- drm/asahi: Identify and implement helper config register (Asahi Lina)
+- fixup! DO NOT MERGE: drm/asahi: Add an experimental UAPI extension (Asahi Lina)
+- fixup! drm/asahi: Add the Asahi driver UAPI (Asahi Lina)
+- drm/asahi: compute: Allow no preemption flag (Asahi Lina)
+Resolves: 
+
 * Tue Dec 19 2023 Hector Martin <marcan@marcan.st> [6.6.3-411.asahi]
 - ASoC: apple: mca: More delay (Hector Martin)
 Resolves: 
