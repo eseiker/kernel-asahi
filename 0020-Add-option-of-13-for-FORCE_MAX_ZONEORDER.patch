@@ -1,0 +1,32 @@
+From fd8350151ba75e531aade1b5307520e46a5bebda Mon Sep 17 00:00:00 2001
+From: Peter Robinson <pbrobinson@gmail.com>
+Date: Wed, 26 Feb 2020 13:38:40 -0500
+Subject: [PATCH] Add option of 13 for FORCE_MAX_ZONEORDER
+
+This is a hack, but it's what the other distros currently use
+for aarch64 with 4K pages so we'll do the same while upstream
+decides what the best outcome is (which isn't this).
+
+Upstream Status: RHEL only
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+[Add a dependency on RHEL_DIFFERENCES]
+Signed-off-by: Jeremy Cline <jcline@redhat.com>
+---
+ arch/arm64/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 83f27ea89ffc8eea1b24219535f2aed2f18d5ca4..b80fa53488953e8162fd7542c61cb762ced53970 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1451,6 +1451,7 @@ config XEN
+ config ARCH_FORCE_MAX_ORDER
+ 	int
+ 	default "14" if ARM64_64K_PAGES
++	default "13" if (ARCH_THUNDER && !ARM64_64K_PAGES && !RHEL_DIFFERENCES)
+ 	default "12" if ARM64_16K_PAGES
+ 	default "11"
+ 	help
+-- 
+2.43.0
+

@@ -1,0 +1,33 @@
+From f403abf08cfe9614d34c7c3bfc0768beb26f5f7b Mon Sep 17 00:00:00 2001
+From: "Justin M. Forbes" <jforbes@fedoraproject.org>
+Date: Thu, 6 Oct 2022 15:34:27 -0500
+Subject: [PATCH] Change acpi_bus_get_acpi_device to acpi_get_acpi_dev
+
+Upstream commit 45e9aa1fdbb2e renamed acpi_bus_get_acpi_device to
+acpi_get_acpi_dev. As we are carrying an out of tree patch [1] which calls
+acpi_bus_get_acpi_device, we need to make the corresponding change
+ourselves for things to continue to work.
+
+[1]: c92805df87ae9 ACPI / irq: Workaround firmware issue on X-Gene based m400
+
+Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
+---
+ drivers/acpi/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
+index bb7136890d76ec0130cb867865015b87c65dbceb..016d488cabc3103886d75aac73c21055a0e62a6d 100644
+--- a/drivers/acpi/irq.c
++++ b/drivers/acpi/irq.c
+@@ -256,7 +256,7 @@ static int acpi_irq_parse_one(acpi_handle handle, unsigned int index,
+ 	 * Don't do the producer/consumer check for that device.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_ARM64)) {
+-		struct acpi_device *adev = acpi_bus_get_acpi_device(handle);
++		struct acpi_device *adev = acpi_get_acpi_dev(handle);
+ 
+ 		if (adev && !strcmp(acpi_device_hid(adev), "APMC0D08"))
+ 			ctx.skip_producer_check = true;
+-- 
+2.43.0
+

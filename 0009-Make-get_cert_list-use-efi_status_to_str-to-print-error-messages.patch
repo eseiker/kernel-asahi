@@ -1,0 +1,40 @@
+From 8774e8c8aeff1f3c7e67c10e9edb41e3b7a530a2 Mon Sep 17 00:00:00 2001
+From: Peter Jones <pjones@redhat.com>
+Date: Mon, 2 Oct 2017 18:18:30 -0400
+Subject: [PATCH] Make get_cert_list() use efi_status_to_str() to print error
+ messages.
+
+Upstream Status: RHEL only
+Signed-off-by: Peter Jones <pjones@redhat.com>
+Signed-off-by: Jeremy Cline <jcline@redhat.com>
+---
+ security/integrity/platform_certs/load_uefi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+index b78753d27d8ea60cda66279c80304b04c88fc2e6..f0b37800431a542ee5f38834b9b99d8491098dc8 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -73,7 +73,8 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+ 		return NULL;
+ 
+ 	if (*status != EFI_BUFFER_TOO_SMALL) {
+-		pr_err("Couldn't get size: 0x%lx\n", *status);
++		pr_err("Couldn't get size: %s (0x%lx)\n",
++		       efi_status_to_str(*status), *status);
+ 		return NULL;
+ 	}
+ 
+@@ -84,7 +85,8 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,
+ 	*status = efi.get_variable(name, guid, NULL, &lsize, db);
+ 	if (*status != EFI_SUCCESS) {
+ 		kfree(db);
+-		pr_err("Error reading db var: 0x%lx\n", *status);
++		pr_err("Error reading db var: %s (0x%lx)\n",
++		       efi_status_to_str(*status), *status);
+ 		return NULL;
+ 	}
+ 
+-- 
+2.43.0
+

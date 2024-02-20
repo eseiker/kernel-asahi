@@ -1,0 +1,35 @@
+From 618298555ce8f2e0b6230ac04a1d43cbf6bd0744 Mon Sep 17 00:00:00 2001
+From: Mark Salter <msalter@redhat.com>
+Date: Thu, 26 Aug 2021 10:59:23 -0400
+Subject: [PATCH] arm64: use common CONFIG_MAX_ZONEORDER for arm kernel
+
+Now that RHEL9 is using 4K pagesize, MAX_ZONEORDER is defaulting
+to 11. Fedora uses an out of tree patch to default to 13 when
+building for server class machines. RHEL9 should also be using 13,
+so make the MAX_ZONEORDER config and the out of tree patch common
+between RHEL9 and Fedora.
+
+Signed-off-by: Mark Salter <msalter@redhat.com>
+---
+ arch/arm64/Kconfig                                           | 2 +-
+ .../common/generic/arm/aarch64/CONFIG_FORCE_MAX_ZONEORDER    | 3 +++
+ .../fedora/generic/arm/aarch64/CONFIG_FORCE_MAX_ZONEORDER    | 5 -----
+ 3 files changed, 4 insertions(+), 6 deletions(-)
+ create mode 100644 redhat/configs/common/generic/arm/aarch64/CONFIG_FORCE_MAX_ZONEORDER
+ delete mode 100644 redhat/configs/fedora/generic/arm/aarch64/CONFIG_FORCE_MAX_ZONEORDER
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index b80fa53488953e8162fd7542c61cb762ced53970..575f77325e605c601c789d197b7bf820ef1efca7 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1451,7 +1451,7 @@ config XEN
+ config ARCH_FORCE_MAX_ORDER
+ 	int
+ 	default "14" if ARM64_64K_PAGES
+-	default "13" if (ARCH_THUNDER && !ARM64_64K_PAGES && !RHEL_DIFFERENCES)
++	default "13" if (ARCH_THUNDER && !ARM64_64K_PAGES)
+ 	default "12" if ARM64_16K_PAGES
+ 	default "11"
+ 	help
+2.43.0
+
