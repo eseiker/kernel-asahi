@@ -1,0 +1,957 @@
+# Disable building debuginfo
+%global debug_package %{nil}
+
+# Disable creation of build_id symbolic links.
+%global _build_id_links none
+
+# Disable frame pointers
+%undefine _include_frame_pointers
+
+# Disable LTO in userspace packages.
+%global _lto_cflags %{nil}
+
+# xz compress .ko
+%global __spec_install_post \
+  %{?__debug_package:%{__debug_install_post}} \
+  %{__arch_install_post} \
+  %{__os_install_post} \
+  %{__mod_compress_install_post}
+
+%global __mod_compress_install_post find %{buildroot}/lib/modules -type f -name \*.ko -print0 | xargs -0 -n 16 -r -P ${RPM_BUILD_NCPUS} xz --compress
+
+
+Name: kernel
+Version: 6.6.17
+Release: 1%{?dist}
+
+Summary: The Linux kernel
+URL: https://www.kernel.org
+
+License: ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-2-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR CDDL-1.0) AND ((GPL-2.0-only WITH Linux-syscall-note) OR Linux-OpenIB) AND ((GPL-2.0-only WITH Linux-syscall-note) OR MIT) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR MIT) AND BSD-2-Clause AND BSD-3-Clause AND BSD-3-Clause-Clear AND GFDL-1.1-no-invariants-or-later AND GPL-1.0-or-later AND (GPL-1.0-or-later OR BSD-3-Clause) AND (GPL-1.0-or-later WITH Linux-syscall-note) AND GPL-2.0-only AND (GPL-2.0-only OR Apache-2.0) AND (GPL-2.0-only OR BSD-2-Clause) AND (GPL-2.0-only OR BSD-3-Clause) AND (GPL-2.0-only OR CDDL-1.0) AND (GPL-2.0-only OR GFDL-1.1-no-invariants-or-later) AND (GPL-2.0-only OR GFDL-1.2-no-invariants-only) AND (GPL-2.0-only WITH Linux-syscall-note) AND GPL-2.0-or-later AND (GPL-2.0-or-later OR BSD-2-Clause) AND (GPL-2.0-or-later OR BSD-3-Clause) AND (GPL-2.0-or-later OR CC-BY-4.0) AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (GPL-2.0-or-later WITH Linux-syscall-note) AND ISC AND LGPL-2.0-or-later AND (LGPL-2.0-or-later OR BSD-2-Clause) AND (LGPL-2.0-or-later WITH Linux-syscall-note) AND LGPL-2.1-only AND (LGPL-2.1-only OR BSD-2-Clause) AND (LGPL-2.1-only WITH Linux-syscall-note) AND LGPL-2.1-or-later AND (LGPL-2.1-or-later WITH Linux-syscall-note) AND (Linux-OpenIB OR GPL-2.0-only) AND (Linux-OpenIB OR GPL-2.0-only OR BSD-2-Clause) AND Linux-man-pages-copyleft AND MIT AND (MIT OR Apache-2.0) AND (MIT OR GPL-2.0-only) AND (MIT OR GPL-2.0-or-later) AND (MIT OR LGPL-2.1-only) AND (MPL-1.1 OR GPL-2.0-only) AND (X11 OR GPL-2.0-only) AND (X11 OR GPL-2.0-or-later) AND Zlib AND (copyleft-next-0.3.1 OR GPL-2.0-or-later)
+
+ExclusiveArch: x86_64 aarch64 ppc64le
+
+BuildRequires: asciidoc
+BuildRequires: audit-libs-devel
+BuildRequires: bash
+BuildRequires: bc
+BuildRequires: binutils
+BuildRequires: binutils-devel
+BuildRequires: bison
+BuildRequires: bzip2
+BuildRequires: coreutils
+BuildRequires: diffutils
+BuildRequires: dwarves
+BuildRequires: elfutils-devel
+BuildRequires: findutils
+BuildRequires: flex
+BuildRequires: gawk
+BuildRequires: gcc
+BuildRequires: gcc-c++
+BuildRequires: gettext
+BuildRequires: git-core
+BuildRequires: glibc-static
+BuildRequires: hmaccalc
+BuildRequires: hostname
+BuildRequires: java-devel
+BuildRequires: kernel-rpm-macros
+BuildRequires: kmod
+BuildRequires: libbabeltrace-devel
+BuildRequires: libbpf-devel
+BuildRequires: libcap-devel
+BuildRequires: libcap-ng-devel
+BuildRequires: libnl3-devel
+BuildRequires: libtraceevent-devel
+BuildRequires: libtracefs-devel
+BuildRequires: llvm-devel
+BuildRequires: m4
+BuildRequires: make
+BuildRequires: ncurses-devel
+BuildRequires: net-tools
+BuildRequires: newt-devel
+BuildRequires: numactl-devel
+BuildRequires: openssl
+BuildRequires: openssl-devel
+BuildRequires: pciutils-devel
+BuildRequires: perl(ExtUtils::Embed)
+BuildRequires: perl-Carp
+BuildRequires: perl-devel
+BuildRequires: perl-generators
+BuildRequires: perl-interpreter
+BuildRequires: python3-devel
+BuildRequires: python3-docutils
+BuildRequires: python3-setuptools
+BuildRequires: which
+BuildRequires: xmlto
+BuildRequires: xz-devel
+BuildRequires: zlib-devel
+
+%ifarch aarch64
+BuildRequires: opencsd-devel
+%endif
+
+Provides: installonlypkg(kernel)
+
+Requires: %{name}-core-uname-r = %{version}-%{release}.%{_arch}
+Requires: %{name}-modules-core-uname-r = %{version}-%{release}.%{_arch}
+Requires: %{name}-modules-uname-r = %{version}-%{release}.%{_arch}
+
+Source: linux-%(echo %{version} | awk -F. '{print $1"."$2}').tar.xz
+
+%if 0%(echo %{version} | awk -F. '{print $3}')
+Patch: patch-%{version}.xz
+%endif
+
+
+Source1: kernel-x86_64.config
+Source2: kernel-aarch64.config
+Source3: kernel-ppc64le.config
+
+
+Patch: 0001-ACPI-APEI-arm64-Ignore-broken-HPE-moonshot-APEI-support.patch
+Patch: 0002-ACPI-irq-Workaround-firmware-issue-on-X-Gene-based-m400.patch
+Patch: 0003-aarch64-acpi-scan-Fix-regression-related-to-X-Gene-UARTs.patch
+Patch: 0004-Vulcan-AHCI-PCI-bar-fix-for-Broadcom-Vulcan-early-silicon.patch
+Patch: 0005-ahci-thunderx2-Fix-for-errata-that-affects-stop-engine.patch
+Patch: 0006-ipmi-do-not-configure-ipmi-for-HPE-m400.patch
+Patch: 0007-iommu-arm-smmu-workaround-DMA-mode-issues.patch
+Patch: 0008-Add-efi_status_to_str-and-rework-efi_status_to_err.patch
+Patch: 0009-Make-get_cert_list-use-efi_status_to_str-to-print-error-messages.patch
+Patch: 0010-security-lockdown-expose-a-hook-to-lock-the-kernel-down.patch
+Patch: 0011-efi-Add-an-EFI_SECURE_BOOT-flag-to-indicate-secure-boot-mode.patch
+Patch: 0012-efi-Lock-down-the-kernel-if-booted-in-secure-boot-mode.patch
+Patch: 0013-ARM-tegra-usb-no-reset.patch
+Patch: 0014-Input-rmi4-remove-the-need-for-artificial-IRQ-in-case-of-HID.patch
+Patch: 0015-KEYS-Make-use-of-platform-keyring-for-module-signature-verify.patch
+Patch: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
+Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
+Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
+Patch: 0019-drivers-firmware-skip-simpledrm-if-nvidia-drm.modeset-1-is-set.patch
+
+
+%description
+The kernel meta package.
+
+
+%package core
+Summary: The linux kernel
+AutoReq: no
+AutoProv: yes
+
+Provides: installonlypkg(kernel)
+Provides: %{name} = %{version}-%{release}
+Provides: %{name}-core-uname-r = %{version}-%{release}.%{_arch}
+Provides: %{name}-uname-r = %{version}-%{release}.%{_arch}
+
+Requires: %{name}-modules-core-uname-r = %{version}-%{release}.%{_arch}
+
+Requires(preun): %{_bindir}/kernel-install
+Requires(post): coreutils
+Requires(posttrans): %{_bindir}/kernel-install
+
+Recommends: linux-firmware
+
+%description core
+The %{name} package contains the Linux kernel (vmlinuz), the core of any
+Linux operating system. The kernel handles the basic functions
+of the operating system: memory allocation, process allocation, device
+input and output, etc.
+
+
+%package modules
+Summary: kernel modules to match the %{name}
+AutoReq: no
+AutoProv: yes
+
+Provides: installonlypkg(kernel-module)
+Provides: %{name}-modules-uname-r = %{version}-%{release}.%{_arch}
+Provides: %{name}-modules-core = %{version}-%{release}
+Provides: %{name}-modules-core-uname-r = %{version}-%{release}.%{_arch}
+Provides: %{name}-modules-extra = %{version}-%{release}
+Provides: %{name}-modules-extra-uname-r = %{version}-%{release}.%{_arch}
+
+Requires: %{name}-uname-r = %{version}-%{release}.%{_arch}
+
+Requires(post): coreutils
+Requires(postun): %{_bindir}/depmod
+Requires(posttrans): %{_bindir}/depmod
+Requires(posttrans): dracut
+
+%description modules
+This package provides kernel modules for the %{name} package.
+
+
+%package devel
+Summary: Development package for building kernel modules to match the %{name}
+AutoReq: no
+AutoProv: no
+
+Provides: installonlypkg(kernel)
+Provides: %{name}-devel-uname-r = %{version}-%{release}.%{_arch}
+
+Requires: bison
+Requires: elfutils-libelf-devel
+Requires: findutils
+Requires: flex
+Requires: gcc
+Requires: make
+Requires: openssl-devel
+Requires: perl-interpreter
+
+%description devel
+This package provides kernel headers and makefiles sufficient to build modules
+against the %{name} package.
+
+
+%package devel-matched
+Summary: Meta package to install matching core and devel packages for a given %{name}
+Requires: %{name}-devel = %{version}-%{release}
+Requires: %{name}-core = %{version}-%{release}
+
+%description devel-matched
+This meta package is used to install matching core and devel packages for a given %{name}.
+
+
+%package -n perf
+Summary: Performance monitoring for the Linux kernel
+Requires: bzip2
+
+%description -n perf
+This package contains the perf tool, which enables performance monitoring
+of the Linux kernel.
+
+
+%package -n python3-perf
+Summary: Python bindings for apps which will manipulate perf events
+
+%description -n python3-perf
+The python3-perf package contains a module that permits applications
+written in the Python programming language to use the interface
+to manipulate perf events.
+
+
+%package -n libperf
+Summary: The perf library from kernel source
+
+%description -n libperf
+This package contains the kernel source perf library.
+
+
+%package -n libperf-devel
+Summary: Developement files for the perf library from kernel source
+
+%description -n libperf-devel
+This package includes libraries and header files needed for development
+of applications which use perf library from kernel source.
+
+
+%package tools
+Summary: Assortment of tools for the Linux kernel
+Provides: cpupowerutils = 1:009-0.6.p1
+Provides: cpufreq-utils = 1:009-0.6.p1
+Provides: cpufrequtils = 1:009-0.6.p1
+Obsoletes: cpupowerutils < 1:009-0.6.p1
+Obsoletes: cpufreq-utils < 1:009-0.6.p1
+Obsoletes: cpufrequtils < 1:009-0.6.p1
+Obsoletes: cpuspeed < 1:1.5-16
+Requires: %{name}-tools-libs = %{version}-%{release}
+
+%define __requires_exclude ^%{_bindir}/python
+
+%description tools
+This package contains the tools/ directory from the kernel source
+and the supporting documentation.
+
+
+%package tools-libs
+Summary: Libraries for the kernels-tools
+
+%description tools-libs
+This package contains the libraries built from the tools/ directory
+from the kernel source.
+
+
+%package tools-libs-devel
+Summary: Assortment of tools for the Linux kernel
+
+Provides: %{name}-tools-devel
+Provides: cpupowerutils-devel = 1:009-0.6.p1
+Obsoletes: cpupowerutils-devel < 1:009-0.6.p1
+Requires: %{name}-tools = %{version}-%{release}
+Requires: %{name}-tools-libs = %{version}-%{release}
+
+%description tools-libs-devel
+This package contains the development files for the tools/ directory from
+the kernel source.
+
+
+%package -n rtla
+Summary: Real-Time Linux Analysis tools
+
+%description -n rtla
+The rtla meta-tool includes a set of commands that aims to analyze
+the real-time properties of Linux. Instead of testing Linux as a black box,
+rtla leverages kernel tracing capabilities to provide precise information
+about the properties and root causes of unexpected results.
+
+
+%package -n rv
+Summary: RV: Runtime Verification
+
+%description -n rv
+Runtime Verification (RV) is a lightweight (yet rigorous) method that
+complements classical exhaustive verification techniques (such as model
+checking and theorem proving) with a more practical approach for
+complex systems.
+The rv tool is the interface for a collection of monitors that aim
+analysing the logical and timing behavior of Linux.
+
+
+%package -n bpftool
+Summary: Inspection and simple manipulation of eBPF programs and maps
+
+%description -n bpftool
+This package contains the bpftool, which allows inspection and simple
+manipulation of eBPF programs and maps.
+
+
+%ifarch x86_64
+%define asmarch x86
+%define hdrarch x86_64
+%endif
+
+%ifarch aarch64
+%define asmarch arm64
+%define hdrarch arm64
+%endif
+
+%ifarch ppc64le
+%define asmarch powerpc
+%define hdrarch powerpc
+%endif
+
+%global make %{__make} %{_make_output_sync} %{?_smp_mflags}
+%global make_kernel %{make} ARCH=%{hdrarch} HOSTCFLAGS="%{?build_cflags}" HOSTLDFLAGS="%{?build_ldflags}"
+
+%global make_tools CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" %{make_kernel}
+
+%global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBBPF_DYNAMIC=1 LIBTRACEEVENT_DYNAMIC=1 prefix=%{_prefix} PYTHON=%{__python3}
+
+%global make_libperf %{make} EXTRA_CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" -C tools/lib/perf
+
+%global make_bpftool %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_LDFLAGS="%{?build_ldflags}" DESTDIR=%{buildroot} VMLINUX_H="%{_builddir}/linux-%(echo %{version} | awk -F. '{print $1"."$2}')/vmlinux.h"
+
+
+%prep
+%autosetup -p1 -n linux-%(echo %{version} | awk -F. '{print $1"."$2}')
+
+echo "Fixing Python shebangs..."
+%py3_shebang_fix \
+	tools/kvm/kvm_stat/kvm_stat \
+	scripts/show_delta \
+	scripts/diffconfig \
+	scripts/bloat-o-meter \
+	scripts/jobserver-exec \
+	tools \
+	Documentation \
+	scripts/clang-tools
+
+# Delete .gitingore files from sources
+find . -name .gitignore -delete
+
+sed -i "s@^EXTRAVERSION.*@EXTRAVERSION = -%{release}.%{_arch}@" Makefile
+
+mv COPYING COPYING-%{version}-%{release}
+
+%ifarch x86_64
+cp -a %{SOURCE1} .config
+%endif
+
+%ifarch aarch64
+cp -a %{SOURCE2} .config
+%endif
+
+%ifarch ppc64le
+cp -a %{SOURCE3} .config
+%endif
+
+echo "New config options..."
+%{make_kernel} listnewconfig
+%{make_kernel} olddefconfig
+
+
+%build
+%ifarch x86_64
+%{make_kernel} bzImage
+%endif
+
+%ifarch aarch64
+%{make_kernel} vmlinuz.efi
+%endif
+
+%ifarch ppc64le
+%{make_kernel} vmlinux
+%endif
+
+%{make_kernel} modules || exit 1
+
+%ifarch aarch64
+%{make_kernel} dtbs
+%endif
+
+%{__chmod} +x tools/perf/check-headers.sh
+%{make_perf} DESTDIR=%{buildroot} all
+%{make_libperf} DESTDIR=%{buildroot}
+
+%{__chmod} +x tools/power/cpupower/utils/version-gen.sh
+%{make_tools} -C tools/power/cpupower CPUFREQ_BENCH=false DEBUG=false
+
+%ifarch x86_64
+pushd tools/power/cpupower/debug/x86_64
+%{make_tools} centrino-decode powernow-k8-decode
+popd
+pushd tools/power/x86/x86_energy_perf_policy/
+%{make_tools}
+popd
+pushd tools/power/x86/turbostat
+%{make_tools}
+popd
+pushd tools/power/x86/intel-speed-select
+%{make_tools}
+popd
+pushd tools/arch/x86/intel_sdsi
+%{make_tools} CFLAGS="%{?build_cflags}"
+popd
+%endif
+
+pushd tools/thermal/tmon/
+%{make_tools}
+popd
+pushd tools/iio/
+%{make_tools}
+popd
+pushd tools/gpio/
+%{make_tools}
+popd
+pushd tools/mm/
+%{make_tools} slabinfo page_owner_sort
+popd
+pushd tools/verification/rv/
+%{make_tools}
+popd
+pushd tools/tracing/rtla
+%{make_tools}
+popd
+
+# Build the bootstrap bpftool to generate vmlinux.h
+export BPFBOOTSTRAP_CFLAGS=$(echo "%{__global_compiler_flags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
+export BPFBOOTSTRAP_LDFLAGS=$(echo "%{build_ldflags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
+CFLAGS="" LDFLAGS="" %{make} EXTRA_CFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_LDFLAGS="${BPFBOOTSTRAP_LDFLAGS}" -C tools/bpf/bpftool bootstrap
+tools/bpf/bpftool/bootstrap/bpftool btf dump file vmlinux format c > vmlinux.h
+
+pushd tools/bpf/bpftool
+%{make_bpftool}
+popd
+
+
+%install
+%{__install} -d %{buildroot}/boot
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/systemtap
+
+%{__install} -m 644 .config %{buildroot}/boot/config-%{version}-%{release}.%{_arch}
+%{__install} -m 644 .config %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/config
+%{__install} -m 644 System.map %{buildroot}/boot/System.map-%{version}-%{release}.%{_arch}
+%{__install} -m 644 System.map %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/System.map
+
+%ifarch x86_64
+%{__install} -m 755 arch/%{asmarch}/boot/bzImage %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch}
+%endif
+
+%ifarch aarch64
+%{__install} -m 755 arch/%{asmarch}/boot/vmlinuz.efi %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch}
+%endif
+
+%ifarch ppc64le
+%{__install} -m 755 vmlinux %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch}
+%endif
+
+cp %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch} %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/vmlinuz
+
+(cd %{buildroot}/boot && sha512hmac vmlinuz-%{version}-%{release}.%{_arch}) > %{buildroot}/boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
+cp %{buildroot}/boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/.vmlinuz.hmac
+
+%{make_kernel} INSTALL_MOD_PATH=%{buildroot} modules_install KERNELRELEASE=%{version}-%{release}.%{_arch} mod-fw=
+
+%ifnarch ppc64le
+%{make_kernel} INSTALL_MOD_PATH=%{buildroot} vdso_install KERNELRELEASE=%{version}-%{release}.%{_arch}
+rm -rf %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/vdso/.build-id
+%endif
+
+%ifarch aarch64
+%{make_kernel} dtbs_install INSTALL_DTBS_PATH=%{buildroot}/boot/dtb-%{version}-%{release}.%{_arch}
+cp -r %{buildroot}/boot/dtb-%{version}-%{release}.%{_arch} %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/dtb
+find arch/%{asmarch}/boot/dts -name '*.dtb' -type f -delete
+%endif
+
+rm -f %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/{build,source}
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/extra
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/updates
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/weak-updates
+ln -s build %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/source
+
+# First copy everything
+cp --parents `find  -type f -name "Makefile*" -o -name "Kconfig*"` %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+%{__install} -m 644 -D -t %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build Module.symvers
+%{__install} -m 644 -D -t %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build System.map
+%{__install} -m 644 -D -t %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build vmlinux.h
+
+xz --stdout --compress < Module.symvers > %{buildroot}/boot/symvers-%{version}-%{release}.%{_arch}.xz
+cp %{buildroot}/boot/symvers-%{version}-%{release}.%{_arch}.xz %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/symvers.xz
+
+# then delete all files but the needed Makefiles and config files.
+rm -rf %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/{include,scripts}
+%{__install} -m 644 -D -t %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build .config
+cp -a scripts %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+rm -rf %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/scripts/tracing
+rm -f %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/scripts/spdxcheck.py
+
+# Files for 'make scripts' to succeed with kernel-devel.
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/security/selinux/include
+cp -a --parents security/selinux/include/classmap.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents security/selinux/include/initial_sid_to_string.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+%{__install} -d  %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/tools/include/tools
+cp -a --parents tools/include/tools/be_byteshift.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/tools/le_byteshift.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+# Files for 'make prepare' to succeed with kernel-devel.
+cp -a --parents tools/include/linux/compiler* %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/linux/types.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/build/Build.include %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/build/Build %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/build/fixdep.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/objtool/sync-check.sh %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/bpf/resolve_btfids/main.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/bpf/resolve_btfids/Build %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+cp --parents security/selinux/include/policycap_names.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents security/selinux/include/policycap.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+cp -a --parents tools/include/asm-generic %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/linux %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/uapi/asm %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/uapi/asm-generic %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/uapi/linux %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/include/vdso %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/scripts/utilities.mak %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/lib/subcmd %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/lib/*.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/objtool/*.[ch] %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/objtool/Build %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/objtool/include/objtool/*.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/lib/bpf %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp --parents tools/lib/bpf/Build %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+%ifarch x86_64
+cp -a --parents tools/objtool/objtool %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/objtool/fixdep %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+%endif
+
+cp -a --parents include %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/%{asmarch}/include %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+%ifarch ppc64le
+cp -a --parents arch/%{asmarch}/lib/crtsavres.[So] %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+%endif
+
+%ifarch aarch64
+cp -a --parents arch/arm/include/asm/xen %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/arm/include/asm/opcodes.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+%endif
+
+%ifarch x86_64
+# files for 'make prepare' to succeed with kernel-devel
+cp -a --parents arch/x86/entry/syscalls/syscall_32.tbl %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/entry/syscalls/syscall_64.tbl %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/tools/relocs_32.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/tools/relocs_64.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/tools/relocs.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/tools/relocs_common.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/tools/relocs.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/purgatory/purgatory.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/purgatory/stack.S %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/purgatory/setup-x86_64.S %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/purgatory/entry64.S %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/boot/string.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/boot/string.c %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents arch/x86/boot/ctype.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+cp -a --parents scripts/syscalltbl.sh %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents scripts/syscallhdr.sh %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+cp -a --parents tools/arch/x86/include/asm %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/arch/x86/include/uapi/asm %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/objtool/arch/x86/lib %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/arch/x86/lib/ %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/arch/x86/tools/gen-insn-attr-x86.awk %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents tools/objtool/arch/x86/ %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+%endif
+
+# Clean up intermediate files
+find %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/scripts \( -iname "*.o" -o -iname "*.cmd" \) -delete
+find %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/tools \( -iname "*.o" -o -iname "*.cmd" \) -delete
+
+# Make sure the Makefile, version.h, and auto.conf have a matching timestamp so that external modules can be built
+touch -r %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/Makefile \
+    %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/include/generated/uapi/linux/version.h \
+    %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/include/config/auto.conf
+
+# Remove files to be auto generated by depmod
+pushd %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}
+rm -f modules.{alias,alias.bin,builtin.alias.bin,builtin.bin,dep,dep.bin,devname,softdep,symbols,symbols.bin}
+popd
+
+%{__install} -d %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/kernel
+touch %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/modules.order
+touch %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/modules.builtin
+
+# Move the devel headers out of the root file system
+%{__install} -d %{buildroot}/%{_usrsrc}/kernels
+mv %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build %{buildroot}/%{_usrsrc}/kernels/%{version}-%{release}.%{_arch}
+ln -sf %{_usrsrc}/kernels/%{version}-%{release}.%{_arch} %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+
+# Prune unwanted files
+find %{buildroot}/%{_usrsrc}/kernels \( -iname "*.mod.c" -o -iname "*.cmd" \) -delete
+
+# Remove debuginfo
+rm -rf %{buildroot}/%{_prefix}/lib/debug
+
+# Estimate the size of the initramfs (See BZ #530778)
+dd if=/dev/zero of=%{buildroot}/boot/initramfs-%{version}-%{release}.%{_arch}.img bs=1M count=20
+
+# Make .ko objects temporarily executable for automatic stripping
+find %{buildroot}/lib/modules -type f -name \*.ko -exec %{__chmod} u+x \{\} \+
+
+# Blacklist selected modules
+%{__install} -d %{buildroot}/%{_sysconfdir}/modprobe.d
+for mod in floppy
+do
+    echo "blacklist $mod" > %{buildroot}/%{_sysconfdir}/modprobe.d/$mod.conf
+done
+
+# perf
+%{make_perf} DESTDIR=%{buildroot} lib=%{_lib} install-bin
+%{__install} -m 644 -D -t %{buildroot}/%{_docdir}/perf tools/perf/Documentation/examples.txt
+
+# Remove unwanted files
+rm -f %{buildroot}%{_bindir}/trace
+rm -rf %{buildroot}/%{_prefix}/lib/perf/examples
+rm -rf %{buildroot}/%{_prefix}/lib/perf/include
+
+# python-perf extension
+%{make_perf} DESTDIR=%{buildroot} install-python_ext
+
+# perf man pages
+%{__install} -d %{buildroot}/%{_mandir}/man1
+%{make_perf} DESTDIR=%{buildroot} install-man
+
+# Remove unwanted files
+rm -rf %{buildroot}%{_libdir}/traceevent
+
+# libperf
+%{make_libperf} -j 1 DESTDIR=%{buildroot} prefix=%{_prefix} libdir=%{_libdir} install install_headers
+
+# tools
+%{make_tools} -C tools/power/cpupower DESTDIR=%{buildroot} libdir=%{_libdir} mandir=%{_mandir} CPUFREQ_BENCH=false install
+%find_lang cpupower
+%ifarch x86_64
+pushd tools/power/cpupower/debug/x86_64
+%{__install} -m 755 centrino-decode %{buildroot}%{_bindir}/centrino-decode
+%{__install} -m 755 powernow-k8-decode %{buildroot}%{_bindir}/powernow-k8-decode
+popd
+%endif
+%{__chmod} 0755 %{buildroot}%{_libdir}/libcpupower.so*
+
+%ifarch x86_64
+%{__install} -d %{buildroot}%{_mandir}/man8
+pushd tools/power/x86/x86_energy_perf_policy
+%{make_tools} DESTDIR=%{buildroot} install
+popd
+pushd tools/power/x86/turbostat
+%{make_tools} DESTDIR=%{buildroot} install
+popd
+pushd tools/power/x86/intel-speed-select
+%{make_tools} DESTDIR=%{buildroot} install
+popd
+pushd tools/arch/x86/intel_sdsi
+%{make_tools} CFLAGS="%{?build_cflags}" DESTDIR=%{buildroot} install
+popd
+%endif
+
+pushd tools/thermal/tmon
+%{make_tools} INSTALL_ROOT=%{buildroot} install
+popd
+pushd tools/iio
+%{make_tools} DESTDIR=%{buildroot} install
+popd
+pushd tools/gpio
+%{make_tools} DESTDIR=%{buildroot} install
+popd
+
+pushd tools/kvm/kvm_stat
+%{make} INSTALL_ROOT=%{buildroot} install-tools
+%{make} INSTALL_ROOT=%{buildroot} install-man
+%{__install} -m 644 -D -t %{buildroot}%{_unitdir} kvm_stat.service
+%{__install} -d %{buildroot}%{_sysconfdir}/logrotate.d
+cat > %{buildroot}%{_sysconfdir}/logrotate.d/kvm_stat << EOF
+/var/log/kvm_stat.csv {
+	size 10M
+	missingok
+	compress
+	maxage 30
+	rotate 5
+	nodateext
+	postrotate
+		/usr/bin/systemctl try-restart kvm_stat.service
+	endscript
+}
+EOF
+popd
+
+pushd tools/mm/
+%{__install} -m 755 -D -t %{buildroot}%{_bindir} slabinfo
+%{__install} -m 755 -D -t %{buildroot}%{_bindir} page_owner_sort
+popd
+pushd tools/verification/rv/
+%{make_tools} DESTDIR=%{buildroot} install
+popd
+pushd tools/tracing/rtla/
+%{make_tools} DESTDIR=%{buildroot} install
+rm -f %{buildroot}%{_bindir}/hwnoise
+rm -f %{buildroot}%{_bindir}/osnoise
+rm -f %{buildroot}%{_bindir}/timerlat
+ln -sf rtla %{buildroot}/%{_bindir}/hwnoise
+ln -sf rtla %{buildroot}/%{_bindir}/osnoise
+ln -sf rtla %{buildroot}/%{_bindir}/timerlat
+popd
+
+pushd tools/bpf/bpftool
+%{make_bpftool} prefix=%{_prefix} bash_compdir=%{_sysconfdir}/bash_completion.d/ mandir=%{_mandir} install doc-install
+popd
+
+# Remove static libraries
+rm -rf %{buildroot}%{_libdir}/*.{a,la}
+
+
+%post core
+mkdir -p %{_localstatedir}/lib/rpm-state/%{name}
+touch %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch}
+rm -f %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch}
+
+%preun core
+kernel-install remove %{version}-%{release}.%{_arch} || exit $?
+if [ -x %{_sbindir}/weak-modules ]
+then
+    %{_sbindir}/weak-modules --remove-kernel %{version}-%{release}.%{_arch} || exit $?
+fi
+if [ -L /boot/symvers-%{version}-%{release}.%{_arch}.xz ]
+then
+    rm -f /boot/symvers-%{version}-%{release}.%{_arch}.xz
+fi
+
+%posttrans core
+if [ -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch} ]
+then
+    rm -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch}
+    kernel-install add %{version}-%{release}.%{_arch} /lib/modules/%{version}-%{release}.%{_arch}/vmlinuz || exit $?
+    if [ -x %{_sbindir}/weak-modules ]
+    then
+        %{_sbindir}/weak-modules --add-kernel %{version}-%{release}.%{_arch} || exit $?
+    fi
+    if [ ! -e /boot/symvers-%{version}-%{release}.%{_arch}.xz ]
+    then
+        ln -s /lib/modules/%{version}-%{release}.%{_arch}/symvers.xz /boot/symvers-%{version}-%{release}.%{_arch}.xz
+        if command -v restorecon &>/dev/null
+        then
+            restorecon /boot/symvers-%{version}-%{release}.%{_arch}.xz
+        fi
+    fi
+fi
+
+
+%post modules
+if [ ! -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch} ]
+then
+    mkdir -p %{_localstatedir}/lib/rpm-state/%{name}
+    touch %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch}
+fi
+
+%postun modules
+if [ -d /lib/modules/%{version}-%{release}.%{_arch} ]
+then
+    %{_sbindir}/depmod -a %{version}-%{release}.%{_arch}
+fi
+
+%posttrans modules
+if [ -f %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch} ]
+then
+    rm -f %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch}
+    %{_sbindir}/depmod -a %{version}-%{release}.%{_arch}
+    dracut -f --kver %{version}-%{release}.%{_arch} || exit $?
+fi
+
+
+%files
+
+
+%files core
+%license COPYING-%{version}-%{release}
+%ghost %attr(0644, root, root) /boot/config-%{version}-%{release}.%{_arch}
+%ghost %attr(0600, root, root) /boot/initramfs-%{version}-%{release}.%{_arch}.img
+%ghost %attr(0600, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.xz
+%ghost %attr(0600, root, root) /boot/System.map-%{version}-%{release}.%{_arch}
+%ghost /boot/vmlinuz-%{version}-%{release}.%{_arch}
+%ghost /boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
+%dir /lib/modules
+%dir /lib/modules/%{version}-%{release}.%{_arch}
+/lib/modules/%{version}-%{release}.%{_arch}/config
+/lib/modules/%{version}-%{release}.%{_arch}/modules.builtin*
+/lib/modules/%{version}-%{release}.%{_arch}/symvers.xz
+/lib/modules/%{version}-%{release}.%{_arch}/System.map
+/lib/modules/%{version}-%{release}.%{_arch}/vmlinuz
+/lib/modules/%{version}-%{release}.%{_arch}/.vmlinuz.hmac
+
+%ifarch aarch64
+%ghost /boot/dtb-%{version}-%{release}.%{_arch}
+/lib/modules/%{version}-%{release}.%{_arch}/dtb
+%endif
+
+
+%files modules
+%config(noreplace) /etc/modprobe.d/*.conf
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.alias
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.alias.bin
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.builtin.alias.bin
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.builtin.bin
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.dep
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.dep.bin
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.devname
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.softdep
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.symbols
+%ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.symbols.bin
+/lib/modules/%{version}-%{release}.%{_arch}/build
+/lib/modules/%{version}-%{release}.%{_arch}/source
+/lib/modules/%{version}-%{release}.%{_arch}/systemtap
+/lib/modules/%{version}-%{release}.%{_arch}/extra
+/lib/modules/%{version}-%{release}.%{_arch}/updates
+/lib/modules/%{version}-%{release}.%{_arch}/weak-updates
+/lib/modules/%{version}-%{release}.%{_arch}/modules.order
+%ifnarch ppc64le
+/lib/modules/%{version}-%{release}.%{_arch}/vdso
+%endif
+%defattr(644,root,root,755)
+/lib/modules/%{version}-%{release}.%{_arch}/kernel
+
+
+%files devel
+%defverify(not mtime)
+%{_usrsrc}/kernels/%{version}-%{release}.%{_arch}
+
+
+%files devel-matched
+
+
+%files -n perf
+%{_bindir}/perf
+%{_datadir}/perf-core
+%{_docdir}/perf*
+%{_libdir}/libperf-jvmti.so
+%{_libexecdir}/perf-core
+%{_mandir}/man*/perf*
+%{_sysconfdir}/bash_completion.d/perf
+
+
+%files -n python3-perf
+%{python3_sitearch}/*
+
+
+%files -n libperf
+%{_libdir}/libperf.so.0
+%{_libdir}/libperf.so.0.0.1
+
+
+%files -n libperf-devel
+%{_docdir}/libperf
+%{_includedir}/internal/*.h
+%{_includedir}/perf/*.h
+%{_libdir}/libperf.so
+%{_libdir}/pkgconfig/libperf.pc
+%{_mandir}/man*/libperf*
+
+
+%files tools -f cpupower.lang
+%config(noreplace) %{_sysconfdir}/logrotate.d/kvm_stat
+%{_bindir}/cpupower
+%{_bindir}/gpio-event-mon
+%{_bindir}/gpio-hammer
+%{_bindir}/gpio-watch
+%{_bindir}/iio_event_monitor
+%{_bindir}/iio_generic_buffer
+%{_bindir}/kvm_stat
+%{_bindir}/lsgpio
+%{_bindir}/lsiio
+%{_bindir}/page_owner_sort
+%{_bindir}/slabinfo
+%{_bindir}/tmon
+%{_datadir}/bash-completion/completions/cpupower
+%{_mandir}/man*/cpupower*
+%{_mandir}/man*/kvm_stat*
+%{_unitdir}/kvm_stat.service
+
+%ifarch x86_64
+%{_bindir}/centrino-decode
+%{_bindir}/intel-speed-select
+%{_bindir}/powernow-k8-decode
+%{_bindir}/turbostat
+%{_bindir}/x86_energy_perf_policy
+%{_mandir}/man*/turbostat*
+%{_mandir}/man*/x86_energy_perf_policy*
+%{_sbindir}/intel_sdsi
+%endif
+
+
+%files tools-libs
+%{_libdir}/libcpupower.so.1
+%{_libdir}/libcpupower.so.0.0.1
+
+
+%files tools-libs-devel
+%{_includedir}/cpufreq.h
+%{_includedir}/cpuidle.h
+%{_includedir}/powercap.h
+%{_libdir}/libcpupower.so
+
+
+%files -n rtla
+%{_bindir}/hwnoise
+%{_bindir}/osnoise
+%{_bindir}/rtla
+%{_bindir}/timerlat
+%{_mandir}/man*/rtla*
+
+%files -n rv
+%{_bindir}/rv
+%{_mandir}/man*/rv*
+
+
+%files -n bpftool
+%{_sbindir}/bpftool
+%{_sysconfdir}/bash_completion.d/bpftool
+%{_mandir}/man*/bpftool*
+
+
+%changelog
+* Mon Feb 19 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.6.17-1
+- Initial version

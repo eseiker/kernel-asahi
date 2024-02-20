@@ -1,0 +1,73 @@
+From e86246f6bff2cae6ed0728cb9855dc321aa22442 Mon Sep 17 00:00:00 2001
+From: Jeremy Linton <jeremy.linton@arm.com>
+Date: Thu, 11 Mar 2021 22:15:13 -0600
+Subject: [PATCH] REDHAT: coresight: etm4x: Disable coresight on HPE Apollo 70
+
+bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1918888
+
+The coresight tables on the latest Apollo 70, appear to be
+damaged sufficiently to throw a few hundred lines of back-traces
+during boot, lets disable it until we can get a firmware fix.
+
+Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+cc: Peter Robinson <pbrobinson@redhat.com>
+cc: Justin M. Forbes <jforbes@fedoraproject.org>
+cc: Al Stone <ahs3@redhat.com>
+---
+ .../coresight/coresight-etm4x-core.c          | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 77b0271ce6eb98adc74de3e4abbf65f398ace0a5..96f60c139c4a84ee08d71bd061c77cd95827d614 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -10,6 +10,7 @@
+ #include <linux/init.h>
+ #include <linux/types.h>
+ #include <linux/device.h>
++#include <linux/dmi.h>
+ #include <linux/io.h>
+ #include <linux/err.h>
+ #include <linux/fs.h>
+@@ -2303,6 +2304,16 @@ static const struct amba_id etm4_ids[] = {
+ 	{},
+ };
+ 
++static const struct dmi_system_id broken_coresight[] = {
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HPE"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Apollo 70"),
++		},
++	},
++	{ }	/* terminating entry */
++};
++
+ MODULE_DEVICE_TABLE(amba, etm4_ids);
+ 
+ static struct amba_driver etm4x_amba_driver = {
+@@ -2372,6 +2383,11 @@ static int __init etm4x_init(void)
+ {
+ 	int ret;
+ 
++	if (dmi_check_system(broken_coresight)) {
++		pr_info("ETM4 disabled due to firmware bug\n");
++		return 0;
++	}
++
+ 	ret = etm4_pm_setup();
+ 
+ 	/* etm4_pm_setup() does its own cleanup - exit on error */
+@@ -2398,6 +2414,9 @@ static int __init etm4x_init(void)
+ 
+ static void __exit etm4x_exit(void)
+ {
++	if (dmi_check_system(broken_coresight))
++		return;
++
+ 	amba_driver_unregister(&etm4x_amba_driver);
+ 	platform_driver_unregister(&etm4_platform_driver);
+ 	etm4_pm_clear();
+-- 
+2.43.0
+
