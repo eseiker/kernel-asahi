@@ -10,7 +10,7 @@ default:
 variables:
   GIT_STRATEGY: none
   EL: 9
-  REPO: kernel-6.6
+  REPO: kernel-latest
   MOCK: almalinux-9
 
 stages:

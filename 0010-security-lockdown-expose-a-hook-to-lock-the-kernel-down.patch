@@ -1,4 +1,4 @@
-From e81d15d326fecd1c90d82b2acb9bdb259b4033ac Mon Sep 17 00:00:00 2001
+From b459dd558e0197eb8dd6ca0ebd7f06945f480e78 Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -16,7 +16,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  4 files changed, 20 insertions(+)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index ac962c4cb44b102d27292bfaa63e3a900f6f91ea..d0cedef6859c40fdbaa7e0c652ac72946686940f 100644
+index ff217a5ce552143e39717acc4a25ed9c8109fe7b..90c924a7fa88ff4e14cd59c93414e301fd80a14c 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
 @@ -405,6 +405,8 @@ LSM_HOOK(void, LSM_RET_VOID, bpf_prog_free_security, struct bpf_prog_aux *aux)
@@ -29,7 +29,7 @@ index ac962c4cb44b102d27292bfaa63e3a900f6f91ea..d0cedef6859c40fdbaa7e0c652ac7294
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, struct perf_event_attr *attr, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 5f16eecde00bc753ebc3066e1bb9afba0bf00905..974be25cfa709b99630c60a6a06d9010b73d3cd3 100644
+index 1d1df326c881c7e1a97d748066d046590c4aea72..c1c06654d44849f32e537b3facb03145a2df4c25 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
 @@ -484,6 +484,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
@@ -64,7 +64,7 @@ index 68d19632aeb7251d0ae40859b169c68693963a74..ef348935b6ff05275ce72daf26a973f9
  
  static int __init lockdown_lsm_init(void)
 diff --git a/security/security.c b/security/security.c
-index 23b129d482a7c8f478d4fe8a709c7f4a7ed47ab8..55d0fe0d121bb1d8c8e950417b924ee8c6743354 100644
+index dcb3e7014f9bdd4b6115f0407c5b1d7d3a588e9c..8037be366b20338947c97afd6b63da907d3a86b8 100644
 --- a/security/security.c
 +++ b/security/security.c
 @@ -5230,6 +5230,18 @@ int security_locked_down(enum lockdown_reason what)

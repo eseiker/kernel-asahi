@@ -1,4 +1,4 @@
-From 0a826069d941f0249fa44005fbc6511875553497 Mon Sep 17 00:00:00 2001
+From eb7070ab5324076a14c90f71f6ed80c6d186aa90 Mon Sep 17 00:00:00 2001
 From: Robert Richter <rrichter@redhat.com>
 Date: Thu, 7 Jun 2018 22:59:33 -0400
 Subject: [PATCH] ahci: thunderx2: Fix for errata that affects stop engine
@@ -56,7 +56,7 @@ Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
  1 file changed, 18 insertions(+)
 
 diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index f1263364fa97fa5f37f878f5a16c376290fb9e18..24ac410f43664f673113ab96784250a52c9c7313 100644
+index 1a63200ea437b0e44731679674f75784dc8a3ec1..a911e976a596ee32bc9ec96e8d12eb77c671655a 100644
 --- a/drivers/ata/libahci.c
 +++ b/drivers/ata/libahci.c
 @@ -729,6 +729,24 @@ int ahci_stop_engine(struct ata_port *ap)

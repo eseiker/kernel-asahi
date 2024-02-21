@@ -1,4 +1,4 @@
-From fabdc6fc464674d789063463c8a9abe954ed9f0e Mon Sep 17 00:00:00 2001
+From dc74674e8fced0408caaad1c59abc890ecb8d6f2 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Thu, 10 May 2018 17:38:44 -0400
 Subject: [PATCH] aarch64: acpi scan: Fix regression related to X-Gene UARTs
@@ -28,10 +28,10 @@ Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
  1 file changed, 9 insertions(+)
 
 diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 691d4b7686ee7eb40d03ba6b81263a2dc51c8838..433ff7d8a8448f99866500b3da1ff9eae9c3d5b6 100644
+index 02bb2cce423f47d6bc1a1c4e6563a6de6369514d..4a6287d7a22d360dbca417709090dd25178e424e 100644
 --- a/drivers/acpi/scan.c
 +++ b/drivers/acpi/scan.c
-@@ -1752,6 +1752,15 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
+@@ -1757,6 +1757,15 @@ static bool acpi_device_enumeration_by_parent(struct acpi_device *device)
  	if (!acpi_match_device_ids(device, ignore_serial_bus_ids))
  		return false;
  

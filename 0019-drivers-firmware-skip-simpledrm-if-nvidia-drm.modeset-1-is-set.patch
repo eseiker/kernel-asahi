@@ -1,4 +1,4 @@
-From 84c68fe1f91beef8b25ca2202d3581260447b334 Mon Sep 17 00:00:00 2001
+From e04ed37ee7a38d7b21d8811666ec556c83f55931 Mon Sep 17 00:00:00 2001
 From: Javier Martinez Canillas <javierm@redhat.com>
 Date: Thu, 19 May 2022 14:40:07 +0200
 Subject: [PATCH] drivers/firmware: skip simpledrm if nvidia-drm.modeset=1 is

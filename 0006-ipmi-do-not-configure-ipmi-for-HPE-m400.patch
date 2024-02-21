@@ -1,4 +1,4 @@
-From 3c9be29ba9986f465b7c8fc6e391978833ffac22 Mon Sep 17 00:00:00 2001
+From faf72983b9f33a9ffd8b230496d2314e9b9a826f Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Sun, 10 Feb 2019 01:27:54 +0000
 Subject: [PATCH] ipmi: do not configure ipmi for HPE m400
@@ -84,7 +84,7 @@ index bbf7029e224bed5510c24c68d20ec26f490d267f..cf7faa970dd651c37641566d5fcf74a5
  		dmi_decode_ipmi((const struct dmi_header *) dev->device_data);
  
 diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 186f1fee753403f7b0e0feac76cc7bfd4f20f373..93e3a76596ffb26f459a4fe5183cd43d1ac19dcb 100644
+index d6f14279684de18b2e894bc26de77407e4a05095..9bc53b1970ab10a6b4b1b2091dff4f688e92615f 100644
 --- a/drivers/char/ipmi/ipmi_msghandler.c
 +++ b/drivers/char/ipmi/ipmi_msghandler.c
 @@ -35,6 +35,7 @@
@@ -95,7 +95,7 @@ index 186f1fee753403f7b0e0feac76cc7bfd4f20f373..93e3a76596ffb26f459a4fe5183cd43d
  #include <linux/delay.h>
  
  #define IPMI_DRIVER_VERSION "39.2"
-@@ -5516,8 +5517,21 @@ static int __init ipmi_init_msghandler_mod(void)
+@@ -5511,8 +5512,21 @@ static int __init ipmi_init_msghandler_mod(void)
  {
  	int rv;
  

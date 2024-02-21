@@ -1,4 +1,4 @@
-From 2b290761ed33270b9f8fea815c9f29476ead5d5d Mon Sep 17 00:00:00 2001
+From 485d3acca52183cb0cd8dc62413d83b8ca6d1be9 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:22:13 -0400
 Subject: [PATCH] Add efi_status_to_str() and rework efi_status_to_err().
@@ -15,7 +15,7 @@ Signed-off-by: Peter Jones <pjones@redhat.com>
  2 files changed, 96 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 1974f0ad32badbea55d1f4c1a43f4f95c065c3b5..6ba6391494ec69233ed3bb5ee4f26f58cf03f86e 100644
+index 9d3910d1abe19eb63d26e88ea86e3c669924cf1b..f73b3ba6ef0b9ec5fc4f7a13331d32de561c63de 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
 @@ -32,6 +32,7 @@
@@ -26,9 +26,9 @@ index 1974f0ad32badbea55d1f4c1a43f4f95c065c3b5..6ba6391494ec69233ed3bb5ee4f26f58
  
  #include <asm/early_ioremap.h>
  
-@@ -983,40 +984,101 @@ int efi_mem_type(unsigned long phys_addr)
+@@ -972,40 +973,101 @@ int efi_mem_type(unsigned long phys_addr)
+ 	return -EINVAL;
  }
- #endif
  
 +struct efi_error_code {
 +	efi_status_t status;
@@ -160,7 +160,7 @@ index 1974f0ad32badbea55d1f4c1a43f4f95c065c3b5..6ba6391494ec69233ed3bb5ee4f26f58
  EXPORT_SYMBOL_GPL(efi_status_to_err);
  
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 80b21d1c6eafafd825686b8454e66808a83ce470..5f93523fe8c6ad0ee9d133234d921f3a5906e7d5 100644
+index 9cc5bf32f6f28097641953c88e6b208bcc0dfb5a..1fadf254305cc8678f27998d806a40e408a3758f 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
 @@ -44,6 +44,8 @@ struct screen_info;
@@ -172,7 +172,7 @@ index 80b21d1c6eafafd825686b8454e66808a83ce470..5f93523fe8c6ad0ee9d133234d921f3a
  typedef unsigned long efi_status_t;
  typedef u8 efi_bool_t;
  typedef u16 efi_char16_t;		/* UNICODE character */
-@@ -917,6 +919,7 @@ static inline void efi_find_mirror(void) {}
+@@ -910,6 +912,7 @@ static inline void efi_find_mirror(void) {}
  #endif
  
  extern int efi_status_to_err(efi_status_t status);

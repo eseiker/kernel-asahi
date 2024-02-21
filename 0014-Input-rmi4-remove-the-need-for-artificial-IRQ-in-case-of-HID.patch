@@ -1,4 +1,4 @@
-From e16c46de5e538011a405f267e0591a03fe4434f1 Mon Sep 17 00:00:00 2001
+From d818fe69a863c9c9b32bf0afc0fc9ea1a13d1e03 Mon Sep 17 00:00:00 2001
 From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Date: Mon, 3 Apr 2017 18:18:21 +0200
 Subject: [PATCH] Input: rmi4 - remove the need for artificial IRQ in case of
@@ -22,7 +22,7 @@ Signed-off-by: Lyude <lyude@redhat.com>
  3 files changed, 75 insertions(+), 116 deletions(-)
 
 diff --git a/drivers/hid/hid-rmi.c b/drivers/hid/hid-rmi.c
-index 84e7ba5314d3f8d6c6c5578597bc4a42c72e8379..efc96776f761ae0a914059f5fcc2d9ca466ad5a8 100644
+index d4af17fdba4670ae9f26db1fb8609a180472dc20..154f0403cbf4c27d77142b2456bb3b5afdac6684 100644
 --- a/drivers/hid/hid-rmi.c
 +++ b/drivers/hid/hid-rmi.c
 @@ -321,21 +321,12 @@ static int rmi_input_event(struct hid_device *hdev, u8 *data, int size)
@@ -47,7 +47,7 @@ index 84e7ba5314d3f8d6c6c5578597bc4a42c72e8379..efc96776f761ae0a914059f5fcc2d9ca
  	return 1;
  }
  
-@@ -591,56 +582,6 @@ static const struct rmi_transport_ops hid_rmi_ops = {
+@@ -589,56 +580,6 @@ static const struct rmi_transport_ops hid_rmi_ops = {
  	.reset		= rmi_hid_reset,
  };
  
@@ -104,7 +104,7 @@ index 84e7ba5314d3f8d6c6c5578597bc4a42c72e8379..efc96776f761ae0a914059f5fcc2d9ca
  static int rmi_probe(struct hid_device *hdev, const struct hid_device_id *id)
  {
  	struct rmi_data *data = NULL;
-@@ -713,18 +654,11 @@ static int rmi_probe(struct hid_device *hdev, const struct hid_device_id *id)
+@@ -711,18 +652,11 @@ static int rmi_probe(struct hid_device *hdev, const struct hid_device_id *id)
  
  	mutex_init(&data->page_mutex);
  

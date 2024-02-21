@@ -1,4 +1,4 @@
-From f23df5d91bbc852ed9a289c88b478b5890ff3aff Mon Sep 17 00:00:00 2001
+From 0a47e98dff708b27a6f92034258fe7b4f53a0707 Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Mon, 30 Sep 2019 21:28:16 +0000
 Subject: [PATCH] efi: Lock down the kernel if booted in secure boot mode
@@ -18,7 +18,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  2 files changed, 21 insertions(+)
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 9b39849450f64e9d70508f73d9e02be93a43d3a5..a159419e60df6566775bc92a944191a1ffb8e81d 100644
+index 5282c50ed4d2e8e53804ed4cffad1e4df2b32606..c482cbf0ccaf695745406d3725fb1afe4e28f6c1 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
 @@ -21,6 +21,7 @@
@@ -29,7 +29,7 @@ index 9b39849450f64e9d70508f73d9e02be93a43d3a5..a159419e60df6566775bc92a944191a1
  #include <linux/usb/xhci-dbgp.h>
  #include <linux/static_call.h>
  #include <linux/swiotlb.h>
-@@ -1028,6 +1029,13 @@ void __init setup_arch(char **cmdline_p)
+@@ -903,6 +904,13 @@ void __init setup_arch(char **cmdline_p)
  	if (efi_enabled(EFI_BOOT))
  		efi_init();
  
