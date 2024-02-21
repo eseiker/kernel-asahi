@@ -14,6 +14,7 @@ variables:
   MOCK: almalinux-9
 
 stages:
+  - sync
   - build
 
 mock:
@@ -111,3 +112,31 @@ cbs:
       do
         cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build $TAG $NVR
       done
+
+upstream:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
+  stage: sync
+  script:
+    - git clone --quiet --branch $CI_COMMIT_REF_NAME --single-branch $(echo $CI_PROJECT_URL | sed "s/https:\/\//&kmods:$GITLAB@/") .
+    - VERSION=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{version}\n' kernel.spec)
+    - NEXT=$(awk -vFS=. -vOFS=. '{$NF++;print}' <<< $VERSION)
+    - URL="https://cdn.kernel.org/pub/linux/kernel/v${VERSION%%.*}.x"
+    - FILE="patch-$NEXT.xz"
+    - |
+      if curl -L -f -s -I -o /dev/null $URL/$FILE
+      then
+        sed -i "/patch-$VERSION.xz/d" sources
+        curl -L -f -s -N $URL/$FILE -o $FILE
+        curl -L -f -s -N $URL/sha256sums.asc | grep $FILE | sha256sum --check --status
+        HASH=$(sha512sum --tag $FILE | tee -a sources | awk -F ' = ' '{print $2}')
+        if ! curl -f -s -L -H Pragma: -I -o /dev/null -R --retry 5 "https://git.centos.org/sources/$CI_PROJECT_NAME/$FILE/sha512/$HASH/$FILE"
+        then
+          curl -f -s -S -L --cert $CBS --form "name=$CI_PROJECT_NAME" --form "hash=sha512" --form "sha512sum=$HASH" --form "file=@$FILE" "https://git.centos.org/sources/upload_sig.cgi"
+        fi
+        rpmdev-bumpspec -n $NEXT -c "Update to $NEXT" kernel.spec
+        git add sources kernel.spec
+
+        git commit -m "Update to $NEXT"
+        git push origin
+      fi
