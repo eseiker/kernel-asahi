@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.7.6
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -173,8 +173,8 @@ Provides: %{name}-modules-extra-uname-r = %{version}-%{release}.%{_arch}
 Requires: %{name}-uname-r = %{version}-%{release}.%{_arch}
 
 Requires(post): coreutils
-Requires(postun): %{_bindir}/depmod
-Requires(posttrans): %{_bindir}/depmod
+Requires(postun): %{_sbindir}/depmod
+Requires(posttrans): %{_sbindir}/depmod
 Requires(posttrans): dracut
 
 %description modules
@@ -953,6 +953,9 @@ fi
 
 
 %changelog
+* Tue Feb 27 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.6-2
+- Fix Requires on depmod
+
 * Sat Feb 24 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.6-1
 - Update to 6.7.6
 
