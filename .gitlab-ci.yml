@@ -16,6 +16,7 @@ variables:
 stages:
   - sync
   - build
+  - release
 
 mock:
   rules:
@@ -108,7 +109,25 @@ cbs:
       fi
     - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
     - |
-      for TAG in kmods$EL-$REPO-{candidate,release}
+      for TAG in kmods$EL-$REPO-candidate
+      do
+        cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build $TAG $NVR
+      done
+
+release:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
+  stage: release
+  script:
+    - cbs version
+    - git clone --quiet --depth 1 --branch $CI_COMMIT_REF_NAME --single-branch $CI_REPOSITORY_URL .
+    - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
+    - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
+    - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
+    - |
+      for TAG in kmods$EL-$REPO-release
       do
         cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build $TAG $NVR
       done
