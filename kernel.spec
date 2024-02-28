@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.7.6
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -508,8 +508,8 @@ cp --parents `find  -type f -name "Makefile*" -o -name "Kconfig*"` %{buildroot}/
 %{__install} -m 644 -D -t %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build System.map
 %{__install} -m 644 -D -t %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build vmlinux.h
 
-xz --stdout --compress < Module.symvers > %{buildroot}/boot/symvers-%{version}-%{release}.%{_arch}.xz
-cp %{buildroot}/boot/symvers-%{version}-%{release}.%{_arch}.xz %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/symvers.xz
+gzip -c9 < Module.symvers > %{buildroot}/boot/symvers-%{version}-%{release}.%{_arch}.gz
+cp %{buildroot}/boot/symvers-%{version}-%{release}.%{_arch}.gz %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/symvers.gz
 
 # then delete all files but the needed Makefiles and config files.
 rm -rf %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/{include,scripts}
@@ -756,9 +756,9 @@ if [ -x %{_sbindir}/weak-modules ]
 then
     %{_sbindir}/weak-modules --remove-kernel %{version}-%{release}.%{_arch} || exit $?
 fi
-if [ -L /boot/symvers-%{version}-%{release}.%{_arch}.xz ]
+if [ -L /boot/symvers-%{version}-%{release}.%{_arch}.gz ]
 then
-    rm -f /boot/symvers-%{version}-%{release}.%{_arch}.xz
+    rm -f /boot/symvers-%{version}-%{release}.%{_arch}.gz
 fi
 
 %posttrans core
@@ -770,12 +770,12 @@ then
     then
         %{_sbindir}/weak-modules --add-kernel %{version}-%{release}.%{_arch} || exit $?
     fi
-    if [ ! -e /boot/symvers-%{version}-%{release}.%{_arch}.xz ]
+    if [ ! -e /boot/symvers-%{version}-%{release}.%{_arch}.gz ]
     then
-        ln -s /lib/modules/%{version}-%{release}.%{_arch}/symvers.xz /boot/symvers-%{version}-%{release}.%{_arch}.xz
+        ln -s /lib/modules/%{version}-%{release}.%{_arch}/symvers.gz /boot/symvers-%{version}-%{release}.%{_arch}.gz
         if command -v restorecon &>/dev/null
         then
-            restorecon /boot/symvers-%{version}-%{release}.%{_arch}.xz
+            restorecon /boot/symvers-%{version}-%{release}.%{_arch}.gz
         fi
     fi
 fi
@@ -810,7 +810,7 @@ fi
 %license COPYING-%{version}-%{release}
 %ghost %attr(0644, root, root) /boot/config-%{version}-%{release}.%{_arch}
 %ghost %attr(0600, root, root) /boot/initramfs-%{version}-%{release}.%{_arch}.img
-%ghost %attr(0600, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.xz
+%ghost %attr(0600, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.gz
 %ghost %attr(0600, root, root) /boot/System.map-%{version}-%{release}.%{_arch}
 %ghost /boot/vmlinuz-%{version}-%{release}.%{_arch}
 %ghost /boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
@@ -818,7 +818,7 @@ fi
 %dir /lib/modules/%{version}-%{release}.%{_arch}
 /lib/modules/%{version}-%{release}.%{_arch}/config
 /lib/modules/%{version}-%{release}.%{_arch}/modules.builtin*
-/lib/modules/%{version}-%{release}.%{_arch}/symvers.xz
+/lib/modules/%{version}-%{release}.%{_arch}/symvers.gz
 /lib/modules/%{version}-%{release}.%{_arch}/System.map
 /lib/modules/%{version}-%{release}.%{_arch}/vmlinuz
 /lib/modules/%{version}-%{release}.%{_arch}/.vmlinuz.hmac
@@ -953,6 +953,9 @@ fi
 
 
 %changelog
+* Thu Feb 29 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.6-3
+- Use gzip instead of xz to compress symvers
+
 * Tue Feb 27 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.6-2
 - Fix Requires on depmod
 
