@@ -129,7 +129,65 @@ test:
     - git clone --quiet --depth 1 --branch $CI_COMMIT_REF_NAME --single-branch $CI_REPOSITORY_URL .
     - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
     - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
+    - VR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{version}-%{release}\n' *.spec)
     - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
+    - pip install duffy[client]
+    - DUFFYOPTIONS+=(--url https://duffy.ci.centos.org/api/v1)
+    - DUFFYOPTIONS+=(--auth-name kmods)
+    - eval $(ssh-agent -s) && chmod 0400 $CICO && ssh-add $CICO
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - declare -A POOL
+    - POOL[x86_64]=virt-ec2-t2-centos-${EL}s-x86_64
+    - POOL[aarch64]=virt-ec2-c6g-centos-${EL}s-aarch64
+    - POOL[ppc64le]=virt-one-medium-centos-${EL}s-ppc64le
+    - |
+      if [[ $ARCH == x86_64 ]] || [[ $ARCH == aarch64 ]]
+      then
+        read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
+        echo $ID >> duffy.id
+      elif [[ $ARCH == ppc64le ]]
+      then
+        read -r ID JUMP < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[x86_64]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
+        echo $ID >> duffy.id
+        read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].hostname' | xargs)
+        echo $ID >> duffy.id
+        echo "Host $HOST" >> ~/.ssh/config
+        echo "ProxyJump $JUMP" >> ~/.ssh/config
+      else
+        exit 1
+      fi
+    - echo "Host *" >> ~/.ssh/config
+    - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+    - echo "UserKnownHostsFile /dev/null" >> ~/.ssh/config
+    - ssh $HOST 'dnf -y install epel-release'
+    - ssh $HOST 'dnf -y install centos-packager'
+    - TMPDIR=$(ssh $HOST 'mktemp -d')
+    - ssh $HOST "cd $TMPDIR && cbs download-build -a $ARCH $NVR"
+    - ssh $HOST "cd $TMPDIR && createrepo ."
+    - ssh $HOST "dnf -y --nogpgcheck --repofrompath cbs,$TMPDIR install kernel-core-$VR.$ARCH kernel-modules-$VR.$ARCH"
+    - |
+      ssh $HOST 'reboot' || :
+    - |
+      while ! ssh $HOST 'exit 0' 2>/dev/null
+      do
+        :
+      done
+    - KERNEL=$(ssh $HOST 'uname -r')
+    - |
+      if [[ $VR.$ARCH != $KERNEL ]]
+      then
+        echo "$VR.$ARCH != $KERNEL"
+        exit 1
+      fi
+  after_script:
+    - |
+      if [[ -f duffy.id ]]
+      then
+        while read -r ID
+        do
+          duffy client --url https://duffy.ci.centos.org/api/v1 --auth-name kmods --auth-key $CICO_API_KEY retire-session $ID | jq -r '.session.retired_at' || :
+        done < duffy.id
+      fi
 
 release:
   rules:
