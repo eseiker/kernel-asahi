@@ -21,8 +21,8 @@
 
 
 Name: kernel
-Version: 6.7.6
-Release: 3%{?dist}
+Version: 6.7.7
+Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -953,6 +953,9 @@ fi
 
 
 %changelog
+* Sat Mar 02 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.7-1
+- Update to 6.7.7
+
 * Thu Feb 29 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.6-3
 - Use gzip instead of xz to compress symvers
 
