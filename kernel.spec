@@ -51,6 +51,7 @@ BuildRequires: gcc-c++
 BuildRequires: gettext
 BuildRequires: git-core
 BuildRequires: glibc-static
+BuildRequires: gzip
 BuildRequires: hmaccalc
 BuildRequires: hostname
 BuildRequires: java-devel
