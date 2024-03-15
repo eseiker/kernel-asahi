@@ -797,8 +797,6 @@ fi
 %ghost %attr(0600, root, root) /boot/System.map-%{version}-%{release}.%{_arch}
 %ghost /boot/vmlinuz-%{version}-%{release}.%{_arch}
 %ghost /boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
-%dir /lib/modules
-%dir /lib/modules/%{version}-%{release}.%{_arch}
 /lib/modules/%{version}-%{release}.%{_arch}/config
 /lib/modules/%{version}-%{release}.%{_arch}/modules.builtin*
 /lib/modules/%{version}-%{release}.%{_arch}/symvers.gz
@@ -814,6 +812,8 @@ fi
 
 %files modules
 %config(noreplace) /etc/modprobe.d/*.conf
+%dir /lib/modules
+%dir /lib/modules/%{version}-%{release}.%{_arch}
 %ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.alias
 %ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.alias.bin
 %ghost %attr(0644, root, root) /lib/modules/%{version}-%{release}.%{_arch}/modules.builtin.alias.bin
