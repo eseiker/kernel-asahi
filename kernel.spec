@@ -175,9 +175,6 @@ Provides: %{name}-modules-extra-uname-r = %{version}-%{release}.%{_arch}
 Requires: %{name}-uname-r = %{version}-%{release}.%{_arch}
 
 Requires(post): coreutils
-Requires(postun): %{_sbindir}/depmod
-Requires(posttrans): %{_sbindir}/depmod
-Requires(posttrans): dracut
 
 %description modules
 This package provides kernel modules for the %{name} package.
@@ -761,28 +758,6 @@ then
             restorecon /boot/symvers-%{version}-%{release}.%{_arch}.gz
         fi
     fi
-fi
-
-
-%post modules
-if [ ! -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch} ]
-then
-    mkdir -p %{_localstatedir}/lib/rpm-state/%{name}
-    touch %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch}
-fi
-
-%postun modules
-if [ -d /lib/modules/%{version}-%{release}.%{_arch} ]
-then
-    %{_sbindir}/depmod -a %{version}-%{release}.%{_arch}
-fi
-
-%posttrans modules
-if [ -f %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch} ]
-then
-    rm -f %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch}
-    %{_sbindir}/depmod -a %{version}-%{release}.%{_arch}
-    dracut -f --kver %{version}-%{release}.%{_arch} || exit $?
 fi
 
 
