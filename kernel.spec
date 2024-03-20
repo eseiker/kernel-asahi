@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.7.10
+Version: 6.8.1
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -123,7 +123,6 @@ Patch: 0015-KEYS-Make-use-of-platform-keyring-for-module-signature-verify.patch
 Patch: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
 Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
 Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
-Patch: 0019-drivers-firmware-skip-simpledrm-if-nvidia-drm.modeset-1-is-set.patch
 
 
 %description
@@ -925,6 +924,9 @@ fi
 
 
 %changelog
+* Wed Mar 20 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.8.1-1
+- Update to 6.8.1
+
 * Fri Mar 15 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.7.10-1
 - Update to 6.7.10
 

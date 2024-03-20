@@ -1,4 +1,4 @@
-From eb7070ab5324076a14c90f71f6ed80c6d186aa90 Mon Sep 17 00:00:00 2001
+From 6061cfe2ed054bd0cde8d694c8099f2747820e69 Mon Sep 17 00:00:00 2001
 From: Robert Richter <rrichter@redhat.com>
 Date: Thu, 7 Jun 2018 22:59:33 -0400
 Subject: [PATCH] ahci: thunderx2: Fix for errata that affects stop engine

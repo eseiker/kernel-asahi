@@ -1,4 +1,4 @@
-From 82f10d50c891e830513a6203c8dfedc9c5fc605d Mon Sep 17 00:00:00 2001
+From 14831277fd82f7f62df986976a4edadef9e43b87 Mon Sep 17 00:00:00 2001
 From: "Justin M. Forbes" <jforbes@fedoraproject.org>
 Date: Thu, 6 Oct 2022 15:34:27 -0500
 Subject: [PATCH] Change acpi_bus_get_acpi_device to acpi_get_acpi_dev

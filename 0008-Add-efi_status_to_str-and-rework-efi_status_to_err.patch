@@ -1,4 +1,4 @@
-From 485d3acca52183cb0cd8dc62413d83b8ca6d1be9 Mon Sep 17 00:00:00 2001
+From 45587f041c409279acf4277c952a7e254e2c86c4 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:22:13 -0400
 Subject: [PATCH] Add efi_status_to_str() and rework efi_status_to_err().
@@ -15,18 +15,18 @@ Signed-off-by: Peter Jones <pjones@redhat.com>
  2 files changed, 96 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 9d3910d1abe19eb63d26e88ea86e3c669924cf1b..f73b3ba6ef0b9ec5fc4f7a13331d32de561c63de 100644
+index 4fcda50acfa4a8f81d6b80861436c0466f8eb592..bbbcff15f5871ff64cdc72721db70ac8d069050a 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
-@@ -32,6 +32,7 @@
- #include <linux/ucs2_string.h>
+@@ -33,6 +33,7 @@
  #include <linux/memblock.h>
  #include <linux/security.h>
+ #include <linux/notifier.h>
 +#include <linux/bsearch.h>
  
  #include <asm/early_ioremap.h>
  
-@@ -972,40 +973,101 @@ int efi_mem_type(unsigned long phys_addr)
+@@ -990,40 +991,101 @@ int efi_mem_type(unsigned long phys_addr)
  	return -EINVAL;
  }
  
@@ -160,10 +160,10 @@ index 9d3910d1abe19eb63d26e88ea86e3c669924cf1b..f73b3ba6ef0b9ec5fc4f7a13331d32de
  EXPORT_SYMBOL_GPL(efi_status_to_err);
  
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 9cc5bf32f6f28097641953c88e6b208bcc0dfb5a..1fadf254305cc8678f27998d806a40e408a3758f 100644
+index c74f47711f0bdf5b7bb0fddfccac4e6abac79c8c..89c444c29469336fc3c1a6e0b99bc63415a6ecb9 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -44,6 +44,8 @@ struct screen_info;
+@@ -45,6 +45,8 @@ struct screen_info;
  #define EFI_ABORTED		(21 | (1UL << (BITS_PER_LONG-1)))
  #define EFI_SECURITY_VIOLATION	(26 | (1UL << (BITS_PER_LONG-1)))
  
@@ -172,7 +172,7 @@ index 9cc5bf32f6f28097641953c88e6b208bcc0dfb5a..1fadf254305cc8678f27998d806a40e4
  typedef unsigned long efi_status_t;
  typedef u8 efi_bool_t;
  typedef u16 efi_char16_t;		/* UNICODE character */
-@@ -910,6 +912,7 @@ static inline void efi_find_mirror(void) {}
+@@ -911,6 +913,7 @@ static inline void efi_find_mirror(void) {}
  #endif
  
  extern int efi_status_to_err(efi_status_t status);

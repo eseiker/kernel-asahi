@@ -1,4 +1,4 @@
-From b459dd558e0197eb8dd6ca0ebd7f06945f480e78 Mon Sep 17 00:00:00 2001
+From 011d5de9e72565b4907691ca680f7acff3883301 Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -16,10 +16,10 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  4 files changed, 20 insertions(+)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index ff217a5ce552143e39717acc4a25ed9c8109fe7b..90c924a7fa88ff4e14cd59c93414e301fd80a14c 100644
+index 76458b6d53da7667b31fc3a80007bb1a609ec1d8..b80d5835be724cadc63a372c478bdadd71c25ffc 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
-@@ -405,6 +405,8 @@ LSM_HOOK(void, LSM_RET_VOID, bpf_prog_free_security, struct bpf_prog_aux *aux)
+@@ -411,6 +411,8 @@ LSM_HOOK(void, LSM_RET_VOID, bpf_prog_free_security, struct bpf_prog_aux *aux)
  #endif /* CONFIG_BPF_SYSCALL */
  
  LSM_HOOK(int, 0, locked_down, enum lockdown_reason what)
@@ -29,18 +29,18 @@ index ff217a5ce552143e39717acc4a25ed9c8109fe7b..90c924a7fa88ff4e14cd59c93414e301
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, struct perf_event_attr *attr, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 1d1df326c881c7e1a97d748066d046590c4aea72..c1c06654d44849f32e537b3facb03145a2df4c25 100644
+index d0eb20f90b264a3fdf96bfc60b28e2091638edd8..a99c045730e9766e2778b69f08a36b377fd7397e 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -484,6 +484,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -494,6 +494,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
  int security_locked_down(enum lockdown_reason what);
 +int security_lock_kernel_down(const char *where, enum lockdown_reason level);
+ int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, size_t *uctx_len,
+ 		      void *val, size_t val_len, u64 id, u64 flags);
  #else /* CONFIG_SECURITY */
- 
- static inline int call_blocking_lsm_notifier(enum lsm_event event, void *data)
-@@ -1395,6 +1396,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+@@ -1433,6 +1434,10 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -48,26 +48,26 @@ index 1d1df326c881c7e1a97d748066d046590c4aea72..c1c06654d44849f32e537b3facb03145
 +{
 +	return 0;
 +}
- #endif	/* CONFIG_SECURITY */
- 
- #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
+ static inline int lsm_fill_user_ctx(struct lsm_ctx __user *uctx,
+ 				    size_t *uctx_len, void *val, size_t val_len,
+ 				    u64 id, u64 flags)
 diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index 68d19632aeb7251d0ae40859b169c68693963a74..ef348935b6ff05275ce72daf26a973f91c723a48 100644
+index cd84d8ea1dfbfa09eba96072f5ee4433fcab5df4..e4c70a0312bc827443bae460c85686cc8490ac44 100644
 --- a/security/lockdown/lockdown.c
 +++ b/security/lockdown/lockdown.c
-@@ -73,6 +73,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
+@@ -74,6 +74,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
  
  static struct security_hook_list lockdown_hooks[] __ro_after_init = {
  	LSM_HOOK_INIT(locked_down, lockdown_is_locked_down),
 +	LSM_HOOK_INIT(lock_kernel_down, lock_kernel_down),
  };
  
- static int __init lockdown_lsm_init(void)
+ const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index dcb3e7014f9bdd4b6115f0407c5b1d7d3a588e9c..8037be366b20338947c97afd6b63da907d3a86b8 100644
+index 7035ee35a393020303304741092e6b016e02669c..e1d54a896ef9fcb8ca57632e13f9e3bc94689e80 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5230,6 +5230,18 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5511,6 +5511,18 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  
