@@ -1,3 +1,8 @@
+* Sun Mar 24 2024 Neal Gompa <neal@gompa.dev> [6.6.3-414.asahi]
+- fixup! arm64: dts: apple: t8112: Add dptx-phy node (Janne Grunau)
+- fixup! arm64: dts: apple: t602x: Add lpdptx-phy node (Janne Grunau)
+Resolves: 
+
 * Fri Jan 19 2024 Neal Gompa <neal@gompa.dev> [6.6.3-413.asahi]
 - redhat: Use rust-kernel package (Neal Gompa)
 Resolves: 
