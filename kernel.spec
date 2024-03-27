@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.8.2
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -123,6 +123,7 @@ Patch: 0015-KEYS-Make-use-of-platform-keyring-for-module-signature-verify.patch
 Patch: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
 Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
 Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
+Patch: 0019-drivers-firmware-skip-simpledrm-if-nvidia-drm.modeset-1-is-set.patch
 
 
 %description
@@ -232,6 +233,7 @@ This package contains the kernel source perf library.
 
 %package -n libperf-devel
 Summary: Developement files for the perf library from kernel source
+Requires: libperf = %{version}-%{release}
 
 %description -n libperf-devel
 This package includes libraries and header files needed for development
@@ -782,7 +784,7 @@ fi
 %ghost %attr(0644, root, root) /boot/config-%{version}-%{release}.%{_arch}
 %ghost %attr(0600, root, root) /boot/initramfs-%{version}-%{release}.%{_arch}.img
 %ghost %attr(0600, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.gz
-%ghost %attr(0600, root, root) /boot/System.map-%{version}-%{release}.%{_arch}
+%ghost /boot/System.map-%{version}-%{release}.%{_arch}
 %ghost /boot/vmlinuz-%{version}-%{release}.%{_arch}
 %ghost /boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
 /lib/modules/%{version}-%{release}.%{_arch}/config
@@ -924,6 +926,9 @@ fi
 
 
 %changelog
+* Wed Mar 27 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.8.2-2
+- Sync with Fedora
+
 * Wed Mar 27 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.8.2-1
 - Update to 6.8.2
 
