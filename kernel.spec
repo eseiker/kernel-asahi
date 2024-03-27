@@ -82,6 +82,7 @@ BuildRequires: perl-interpreter
 BuildRequires: python3-devel
 BuildRequires: python3-docutils
 BuildRequires: python3-setuptools
+BuildRequires: rsync
 BuildRequires: which
 BuildRequires: xmlto
 BuildRequires: xz-devel
@@ -204,6 +205,30 @@ Requires: %{name}-core = %{version}-%{release}
 
 %description devel-matched
 This meta package is used to install matching core and devel packages for a given %{name}.
+
+
+%package headers
+Summary: Header files for the Linux kernel for use by glibc
+Obsoletes: glibc-kernheaders < 3.0-46
+Provides: glibc-kernheaders = 3.0-46
+
+%description headers
+Kernel-headers includes the C header files that specify the interface
+between the Linux kernel and userspace libraries and programs.  The
+header files define structures and constants that are needed for
+building most standard programs and are also needed for rebuilding the
+glibc package.
+
+
+%package cross-headers
+Summary: Header files for the Linux kernel for use by cross-glibc
+
+%description cross-headers
+Kernel-cross-headers includes the C header files that specify the interface
+between the Linux kernel and userspace libraries and programs.  The
+header files define structures and constants that are needed for
+building most standard programs and are also needed for rebuilding the
+cross-glibc package.
 
 
 %package -n perf
@@ -636,6 +661,20 @@ do
     echo "blacklist $mod" > %{buildroot}/%{_sysconfdir}/modprobe.d/$mod.conf
 done
 
+# kernel-headers
+%{make} ARCH=%{hdrarch} INSTALL_HDR_PATH=%{buildroot}/%{_prefix} headers_install
+find %{buildroot}/%{_includedir} \( -name .install -o -name .check -o -name ..install.cmd -o -name ..check.cmd \) -delete
+
+# kernel-cross-headers
+ASMARCHS=(arm64 powerpc x86)
+HDRARCHS=(arm64 powerpc x86_64)
+
+for p in "${!ASMARCHS[@]}"
+do
+    %{make} ARCH=${HDRARCHS[p]} INSTALL_HDR_PATH=%{buildroot}/%{_prefix}/${ASMARCHS[p]}-linux-gnu headers_install
+    find %{buildroot}/%{_prefix}/${ASMARCHS[p]}-linux-gnu \( -name .install -o -name .check -o -name ..install.cmd -o -name ..check.cmd \) -delete
+done
+
 # perf
 %{make_perf} DESTDIR=%{buildroot} lib=%{_lib} install-bin
 %{__install} -m 644 -D -t %{buildroot}/%{_docdir}/perf tools/perf/Documentation/examples.txt
@@ -834,6 +873,15 @@ fi
 
 
 %files devel-matched
+
+
+%files headers
+%{_includedir}/*
+%exclude %{_includedir}/cpufreq.h
+
+
+%files cross-headers
+%{_prefix}/*-linux-gnu/include/*
 
 
 %files -n perf
