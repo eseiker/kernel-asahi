@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.8.1
+Version: 6.8.2
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -924,6 +924,9 @@ fi
 
 
 %changelog
+* Wed Mar 27 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.8.2-1
+- Update to 6.8.2
+
 * Wed Mar 20 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.8.1-1
 - Update to 6.8.1
 
