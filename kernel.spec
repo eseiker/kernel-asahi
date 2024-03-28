@@ -113,25 +113,25 @@ Source092: kernel-el9-aarch64.config
 Source093: kernel-el9-ppc64le.config
 
 
-Patch: 0001-ACPI-APEI-arm64-Ignore-broken-HPE-moonshot-APEI-support.patch
-Patch: 0002-ACPI-irq-Workaround-firmware-issue-on-X-Gene-based-m400.patch
-Patch: 0003-aarch64-acpi-scan-Fix-regression-related-to-X-Gene-UARTs.patch
-Patch: 0004-Vulcan-AHCI-PCI-bar-fix-for-Broadcom-Vulcan-early-silicon.patch
-Patch: 0005-ahci-thunderx2-Fix-for-errata-that-affects-stop-engine.patch
-Patch: 0006-ipmi-do-not-configure-ipmi-for-HPE-m400.patch
-Patch: 0007-iommu-arm-smmu-workaround-DMA-mode-issues.patch
-Patch: 0008-Add-efi_status_to_str-and-rework-efi_status_to_err.patch
-Patch: 0009-Make-get_cert_list-use-efi_status_to_str-to-print-error-messages.patch
-Patch: 0010-security-lockdown-expose-a-hook-to-lock-the-kernel-down.patch
-Patch: 0011-efi-Add-an-EFI_SECURE_BOOT-flag-to-indicate-secure-boot-mode.patch
-Patch: 0012-efi-Lock-down-the-kernel-if-booted-in-secure-boot-mode.patch
-Patch: 0013-ARM-tegra-usb-no-reset.patch
-Patch: 0014-Input-rmi4-remove-the-need-for-artificial-IRQ-in-case-of-HID.patch
-Patch: 0015-KEYS-Make-use-of-platform-keyring-for-module-signature-verify.patch
-Patch: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
-Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
-Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
-Patch: 0019-drivers-firmware-skip-simpledrm-if-nvidia-drm.modeset-1-is-set.patch
+Patch0001: 0001-ACPI-APEI-arm64-Ignore-broken-HPE-moonshot-APEI-support.patch
+Patch0002: 0002-ACPI-irq-Workaround-firmware-issue-on-X-Gene-based-m400.patch
+Patch0003: 0003-aarch64-acpi-scan-Fix-regression-related-to-X-Gene-UARTs.patch
+Patch0004: 0004-Vulcan-AHCI-PCI-bar-fix-for-Broadcom-Vulcan-early-silicon.patch
+Patch0005: 0005-ahci-thunderx2-Fix-for-errata-that-affects-stop-engine.patch
+Patch0006: 0006-ipmi-do-not-configure-ipmi-for-HPE-m400.patch
+Patch0007: 0007-iommu-arm-smmu-workaround-DMA-mode-issues.patch
+Patch0008: 0008-Add-efi_status_to_str-and-rework-efi_status_to_err.patch
+Patch0009: 0009-Make-get_cert_list-use-efi_status_to_str-to-print-error-messages.patch
+Patch0010: 0010-security-lockdown-expose-a-hook-to-lock-the-kernel-down.patch
+Patch0011: 0011-efi-Add-an-EFI_SECURE_BOOT-flag-to-indicate-secure-boot-mode.patch
+Patch0012: 0012-efi-Lock-down-the-kernel-if-booted-in-secure-boot-mode.patch
+Patch0013: 0013-ARM-tegra-usb-no-reset.patch
+Patch0014: 0014-Input-rmi4-remove-the-need-for-artificial-IRQ-in-case-of-HID.patch
+Patch0015: 0015-KEYS-Make-use-of-platform-keyring-for-module-signature-verify.patch
+Patch0016: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
+Patch0017: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
+Patch0018: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
+Patch0019: 0019-drivers-firmware-skip-simpledrm-if-nvidia-drm.modeset-1-is-set.patch
 
 
 %description
