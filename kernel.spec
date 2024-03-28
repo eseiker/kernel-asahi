@@ -373,17 +373,7 @@ sed -i "s@^EXTRAVERSION.*@EXTRAVERSION = -%{release}.%{_arch}@" Makefile
 
 mv COPYING COPYING-%{version}-%{release}
 
-%ifarch x86_64
-cp -a %{SOURCE1} .config
-%endif
-
-%ifarch aarch64
-cp -a %{SOURCE2} .config
-%endif
-
-%ifarch ppc64le
-cp -a %{SOURCE3} .config
-%endif
+cp %{_sourcedir}/kernel-%{_arch}.config .config
 
 echo "New config options..."
 %{make_kernel} listnewconfig
