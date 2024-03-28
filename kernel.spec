@@ -353,7 +353,10 @@ analysing the logical and timing behavior of Linux.
 
 %global make_tools CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" %{make_kernel}
 
-%global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBBPF_DYNAMIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
+%if 0%{?rhel} >= 9
+%global make_perf_extra_opts LIBBPF_DYNAMIC=1
+%endif
+%global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
 
 %global make_libperf %{make} EXTRA_CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" -C tools/lib/perf
 
@@ -376,6 +379,9 @@ echo "Fixing Python shebangs..."
 find . -name .gitignore -delete
 
 sed -i "s@^EXTRAVERSION.*@EXTRAVERSION = -%{release}.%{_arch}@" Makefile
+%if 0%{?rhel} < 9
+sed -i 's@^LIB_MIN=			1$@LIB_MIN=			0@'  tools/power/cpupower/Makefile
+%endif
 
 mv COPYING COPYING-%{version}-%{release}
 
@@ -392,7 +398,11 @@ echo "New config options..."
 %endif
 
 %ifarch aarch64
+%if 0%{?rhel} < 9
+%{make_kernel} Image.gz
+%else
 %{make_kernel} vmlinuz.efi
+%endif
 %endif
 
 %ifarch ppc64le
@@ -446,7 +456,12 @@ pushd tools/verification/rv/
 %{make_tools}
 popd
 pushd tools/tracing/rtla
+%if 0%{?rhel} < 9
+sed -i '/#define _GNU_SOURCE/a #include <sys/syscall.h>\n#define gettid() syscall(SYS_gettid)' src/timerlat_u.c
+EXTRA_LDFLAGS="-pthread" %{make_tools}
+%else
 %{make_tools}
+%endif
 popd
 
 # Generate vmlinux.h
@@ -468,7 +483,11 @@ bpftool btf dump file vmlinux format c > vmlinux.h
 %endif
 
 %ifarch aarch64
+%if 0%{?rhel} < 9
+%{__install} -m 755 arch/%{asmarch}/boot/Image.gz %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch}
+%else
 %{__install} -m 755 arch/%{asmarch}/boot/vmlinuz.efi %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch}
+%endif
 %endif
 
 %ifarch ppc64le
@@ -477,8 +496,10 @@ bpftool btf dump file vmlinux format c > vmlinux.h
 
 cp %{buildroot}/boot/vmlinuz-%{version}-%{release}.%{_arch} %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/vmlinuz
 
+%if 0%{?rhel} >= 9
 (cd %{buildroot}/boot && sha512hmac vmlinuz-%{version}-%{release}.%{_arch}) > %{buildroot}/boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
 cp %{buildroot}/boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/.vmlinuz.hmac
+%endif
 
 %{make_kernel} INSTALL_MOD_PATH=%{buildroot} modules_install KERNELRELEASE=%{version}-%{release}.%{_arch} mod-fw=
 
@@ -800,13 +821,17 @@ fi
 %ghost %attr(0600, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.gz
 %ghost %attr(0600, root, root) /boot/System.map-%{version}-%{release}.%{_arch}
 %ghost /boot/vmlinuz-%{version}-%{release}.%{_arch}
+%if 0%{?rhel} >= 9
 %ghost /boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
+%endif
 /lib/modules/%{version}-%{release}.%{_arch}/config
 /lib/modules/%{version}-%{release}.%{_arch}/modules.builtin*
 /lib/modules/%{version}-%{release}.%{_arch}/symvers.gz
 /lib/modules/%{version}-%{release}.%{_arch}/System.map
 /lib/modules/%{version}-%{release}.%{_arch}/vmlinuz
+%if 0%{?rhel} >= 9
 /lib/modules/%{version}-%{release}.%{_arch}/.vmlinuz.hmac
+%endif
 
 %ifarch aarch64
 %ghost /boot/dtb-%{version}-%{release}.%{_arch}
@@ -919,7 +944,11 @@ fi
 
 
 %files tools-libs
+%if 0%{?rhel} < 9
+%{_libdir}/libcpupower.so.0
+%else
 %{_libdir}/libcpupower.so.1
+%endif
 %{_libdir}/libcpupower.so.0.0.1
 
 
