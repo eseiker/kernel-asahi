@@ -9,9 +9,7 @@ default:
 
 variables:
   GIT_STRATEGY: none
-  EL: 9
   REPO: kernel-6.1
-  MOCK: almalinux-9
 
 stages:
   - sync
@@ -28,9 +26,11 @@ mock:
     - when: always
   parallel:
     matrix:
-      - ARCH: [x86_64]
+      - EL: [9]
+        ARCH: [x86_64]
   stage: build
   script:
+    - MOCK=almalinux-$EL
     - git clone --quiet --depth 1 --branch $CI_COMMIT_REF_NAME --single-branch $CI_REPOSITORY_URL .
     - |
       if [ -e sources ]
@@ -81,6 +81,9 @@ cbs:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
+  parallel:
+    matrix:
+      - EL: [9]
   stage: build
   script:
     - cbs version
@@ -122,7 +125,8 @@ test:
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
   parallel:
     matrix:
-      - ARCH: [x86_64, aarch64, ppc64le]
+      - EL: [9]
+        ARCH: [x86_64, aarch64, ppc64le]
   stage: test
   script:
     - cbs version
@@ -194,6 +198,9 @@ release:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
+  parallel:
+    matrix:
+      - EL: [9]
   stage: release
   script:
     - cbs version
@@ -213,7 +220,7 @@ upstream:
   stage: sync
   script:
     - git clone --quiet --branch $CI_COMMIT_REF_NAME --single-branch $(echo $CI_PROJECT_URL | sed "s/https:\/\//&kmods:$GITLAB@/") .
-    - VERSION=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{version}\n' kernel.spec)
+    - VERSION=$(rpmspec -q --srpm --define "dist .el" --queryformat='%{version}\n' kernel.spec)
     - NEXT=$(awk -vFS=. -vOFS=. '{$NF++;print}' <<< $VERSION)
     - URL="https://cdn.kernel.org/pub/linux/kernel/v${VERSION%%.*}.x"
     - FILE="patch-$NEXT.xz"
