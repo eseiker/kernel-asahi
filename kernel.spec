@@ -102,6 +102,10 @@ Patch: patch-%{version}.xz
 %endif
 
 
+Source081: kernel-el8-x86_64.config
+Source082: kernel-el8-aarch64.config
+Source083: kernel-el8-ppc64le.config
+
 Source091: kernel-el9-x86_64.config
 Source092: kernel-el9-aarch64.config
 Source093: kernel-el9-ppc64le.config
