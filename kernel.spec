@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.8.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -938,6 +938,11 @@ fi
 
 
 %changelog
+* Thu Mar 28 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.8.2-3
+- Add subpackage kernel-headers
+- Add subpackage kernel-cross-headers
+- Drop subpackage bpftool
+
 * Wed Mar 27 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.8.2-2
 - Sync with Fedora
 
