@@ -102,9 +102,9 @@ Patch: patch-%{version}.xz
 %endif
 
 
-Source1: kernel-x86_64.config
-Source2: kernel-aarch64.config
-Source3: kernel-ppc64le.config
+Source091: kernel-el9-x86_64.config
+Source092: kernel-el9-aarch64.config
+Source093: kernel-el9-ppc64le.config
 
 
 Patch: 0001-ACPI-APEI-arm64-Ignore-broken-HPE-moonshot-APEI-support.patch
@@ -374,7 +374,7 @@ sed -i "s@^EXTRAVERSION.*@EXTRAVERSION = -%{release}.%{_arch}@" Makefile
 
 mv COPYING COPYING-%{version}-%{release}
 
-cp %{_sourcedir}/kernel-%{_arch}.config .config
+cp %{_sourcedir}/kernel-el%{rhel}-%{_arch}.config .config
 
 echo "New config options..."
 %{make_kernel} listnewconfig
