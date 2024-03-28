@@ -75,7 +75,9 @@ BuildRequires: numactl-devel
 BuildRequires: openssl
 BuildRequires: openssl-devel
 BuildRequires: pciutils-devel
+%if 0%{?rhel} >= 9
 BuildRequires: perl(ExtUtils::Embed)
+%endif
 BuildRequires: perl-Carp
 BuildRequires: perl-devel
 BuildRequires: perl-generators
