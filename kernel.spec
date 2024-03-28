@@ -38,6 +38,7 @@ BuildRequires: bc
 BuildRequires: binutils
 BuildRequires: binutils-devel
 BuildRequires: bison
+BuildRequires: bpftool
 BuildRequires: bzip2
 BuildRequires: coreutils
 BuildRequires: diffutils
@@ -315,14 +316,6 @@ rtla leverages kernel tracing capabilities to provide precise information
 about the properties and root causes of unexpected results.
 
 
-%package -n bpftool
-Summary: Inspection and simple manipulation of eBPF programs and maps
-
-%description -n bpftool
-This package contains the bpftool, which allows inspection and simple
-manipulation of eBPF programs and maps.
-
-
 %ifarch x86_64
 %define asmarch x86
 %define hdrarch x86_64
@@ -346,8 +339,6 @@ manipulation of eBPF programs and maps.
 %global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBBPF_DYNAMIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
 
 %global make_libperf %{make} EXTRA_CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" -C tools/lib/perf
-
-%global make_bpftool %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_LDFLAGS="%{?build_ldflags}" DESTDIR=%{buildroot} VMLINUX_H="%{_builddir}/linux-%(echo %{version} | awk -F. '{print $1"."$2}')/vmlinux.h"
 
 
 %prep
@@ -449,15 +440,8 @@ pushd tools/tracing/rtla
 %{make_tools}
 popd
 
-# Build the bootstrap bpftool to generate vmlinux.h
-export BPFBOOTSTRAP_CFLAGS=$(echo "%{__global_compiler_flags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
-export BPFBOOTSTRAP_LDFLAGS=$(echo "%{build_ldflags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
-CFLAGS="" LDFLAGS="" %{make} EXTRA_CFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_LDFLAGS="${BPFBOOTSTRAP_LDFLAGS}" -C tools/bpf/bpftool bootstrap
-tools/bpf/bpftool/bootstrap/bpftool btf dump file vmlinux format c > vmlinux.h
-
-pushd tools/bpf/bpftool
-%{make_bpftool}
-popd
+# Generate vmlinux.h
+bpftool btf dump file vmlinux format c > vmlinux.h
 
 
 %install
@@ -752,10 +736,6 @@ ln -sf rtla %{buildroot}/%{_bindir}/osnoise
 ln -sf rtla %{buildroot}/%{_bindir}/timerlat
 popd
 
-pushd tools/bpf/bpftool
-%{make_bpftool} prefix=%{_prefix} bash_compdir=%{_sysconfdir}/bash_completion.d/ mandir=%{_mandir} install doc-install
-popd
-
 # Remove static libraries
 rm -rf %{buildroot}%{_libdir}/*.{a,la}
 
@@ -939,12 +919,6 @@ fi
 %{_bindir}/rtla
 %{_bindir}/timerlat
 %{_mandir}/man*/rtla*
-
-
-%files -n bpftool
-%{_sbindir}/bpftool
-%{_sysconfdir}/bash_completion.d/bpftool
-%{_mandir}/man*/bpftool*
 
 
 %changelog
