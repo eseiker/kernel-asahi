@@ -147,13 +147,28 @@ test:
     - |
       if [[ $ARCH == x86_64 ]] || [[ $ARCH == aarch64 ]]
       then
-        read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
+        while
+          read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
+          [[ $ID == null ]]
+        do
+          sleep 5
+        done
         echo $ID >> duffy.id
       elif [[ $ARCH == ppc64le ]]
       then
-        read -r ID JUMP < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[x86_64]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
+        while
+          read -r ID JUMP < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[x86_64]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
+          [[ $ID == null ]]
+        do
+          sleep 5
+        done
         echo $ID >> duffy.id
-        read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].hostname' | xargs)
+        while
+          read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].hostname' | xargs)
+          [[ $ID == null ]]
+        do
+          sleep 5
+        done
         echo $ID >> duffy.id
         echo "Host $HOST" >> ~/.ssh/config
         echo "ProxyJump $JUMP" >> ~/.ssh/config
