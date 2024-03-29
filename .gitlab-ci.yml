@@ -208,10 +208,17 @@ release:
     - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
     - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
     - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
+    - TAGS+=(kmods$EL-$REPO-release)
     - |
-      for TAG in kmods$EL-$REPO-release
+      for TAG in ${TAGS[@]}
       do
         cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build $TAG $NVR
+      done
+    - |
+      for TAG in ${TAGS[@]}
+      do
+        PKGS=($(cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | sort -V | head -n -5))
+        [[ ${#PKGS[@]} == 0 ]] || cbs --cert=$CBS untag-build $TAG ${PKGS[@]}
       done
 
 upstream:
