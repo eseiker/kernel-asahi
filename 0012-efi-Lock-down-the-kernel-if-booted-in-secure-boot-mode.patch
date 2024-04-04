@@ -29,7 +29,7 @@ index 9b39849450f64e9d70508f73d9e02be93a43d3a5..a159419e60df6566775bc92a944191a1
  #include <linux/usb/xhci-dbgp.h>
  #include <linux/static_call.h>
  #include <linux/swiotlb.h>
-@@ -1028,6 +1029,13 @@ void __init setup_arch(char **cmdline_p)
+@@ -1027,6 +1028,13 @@ void __init setup_arch(char **cmdline_p)
  	if (efi_enabled(EFI_BOOT))
  		efi_init();
  
@@ -41,7 +41,7 @@ index 9b39849450f64e9d70508f73d9e02be93a43d3a5..a159419e60df6566775bc92a944191a1
 +#endif
 +
  	reserve_ibft_region();
- 	dmi_setup();
+ 	x86_init.resources.dmi_setup();
  
 diff --git a/security/lockdown/Kconfig b/security/lockdown/Kconfig
 index e84ddf48401010bcc0829a32db58e6f12bfdedcb..d0501353a4b95f15748bb2e8f06282756f476da3 100644
