@@ -37,7 +37,7 @@ index d0eb20f90b264a3fdf96bfc60b28e2091638edd8..a99c045730e9766e2778b69f08a36b37
  int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
  int security_locked_down(enum lockdown_reason what);
 +int security_lock_kernel_down(const char *where, enum lockdown_reason level);
- int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, size_t *uctx_len,
+ int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
  #else /* CONFIG_SECURITY */
 @@ -1433,6 +1434,10 @@ static inline int security_locked_down(enum lockdown_reason what)
@@ -49,7 +49,7 @@ index d0eb20f90b264a3fdf96bfc60b28e2091638edd8..a99c045730e9766e2778b69f08a36b37
 +	return 0;
 +}
  static inline int lsm_fill_user_ctx(struct lsm_ctx __user *uctx,
- 				    size_t *uctx_len, void *val, size_t val_len,
+ 				    u32 *uctx_len, void *val, size_t val_len,
  				    u64 id, u64 flags)
 diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
 index cd84d8ea1dfbfa09eba96072f5ee4433fcab5df4..e4c70a0312bc827443bae460c85686cc8490ac44 100644
