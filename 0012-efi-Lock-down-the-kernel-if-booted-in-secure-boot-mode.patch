@@ -29,7 +29,7 @@ index 3b9d0205cb73c01472d75de7117d09d821b70d83..55e817aa000df9f87dd167c450bbd6e6
  #include <linux/usb/xhci-dbgp.h>
  #include <linux/static_call.h>
  #include <linux/swiotlb.h>
-@@ -1036,6 +1037,13 @@ void __init setup_arch(char **cmdline_p)
+@@ -1031,6 +1032,13 @@ void __init setup_arch(char **cmdline_p)
  	if (efi_enabled(EFI_BOOT))
  		efi_init();
  
@@ -40,7 +40,7 @@ index 3b9d0205cb73c01472d75de7117d09d821b70d83..55e817aa000df9f87dd167c450bbd6e6
 +		security_lock_kernel_down("EFI Secure Boot mode", LOCKDOWN_INTEGRITY_MAX);
 +#endif
 +
- 	dmi_setup();
+ 	x86_init.resources.dmi_setup();
  
  	/*
 diff --git a/security/lockdown/Kconfig b/security/lockdown/Kconfig
