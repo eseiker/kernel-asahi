@@ -134,7 +134,7 @@ test:
     - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
     - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
     - VR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{version}-%{release}\n' *.spec)
-    - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
+    - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE"'
     - pip install duffy[client]
     - DUFFYOPTIONS+=(--url https://duffy.ci.centos.org/api/v1)
     - DUFFYOPTIONS+=(--auth-name kmods)
@@ -222,7 +222,7 @@ release:
     - git clone --quiet --depth 1 --branch $CI_COMMIT_REF_NAME --single-branch $CI_REPOSITORY_URL .
     - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
     - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
-    - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
+    - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE"'
     - TAGS+=(kmods$EL-$REPO-release)
     - |
       for TAG in ${TAGS[@]}
