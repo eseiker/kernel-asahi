@@ -227,7 +227,7 @@ release:
     - |
       for TAG in ${TAGS[@]}
       do
-        cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build $TAG $NVR
+        cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build --wait $TAG $NVR
       done
     - |
       for TAG in ${TAGS[@]}
