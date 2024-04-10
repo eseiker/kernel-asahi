@@ -149,7 +149,7 @@ test:
       then
         while
           read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
-          [[ $ID == null ]]
+          ! [[ $ID =~ ^[0-9]+$ ]]
         do
           sleep 5
         done
@@ -158,14 +158,14 @@ test:
       then
         while
           read -r ID JUMP < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[x86_64]},quantity=1 | jq -r '.session | .id, .nodes[0].data.provision.public_hostname' | xargs)
-          [[ $ID == null ]]
+          ! [[ $ID =~ ^[0-9]+$ ]]
         do
           sleep 5
         done
         echo $ID >> duffy.id
         while
           read -r ID HOST < <(duffy client ${DUFFYOPTIONS[@]} --auth-key $CICO_API_KEY request-session pool=${POOL[$ARCH]},quantity=1 | jq -r '.session | .id, .nodes[0].hostname' | xargs)
-          [[ $ID == null ]]
+          ! [[ $ID =~ ^[0-9]+$ ]]
         do
           sleep 5
         done
