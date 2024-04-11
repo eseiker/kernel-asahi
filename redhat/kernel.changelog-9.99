@@ -1,3 +1,7 @@
+* Wed Apr 10 2024 Neal Gompa <neal@gompa.dev> [6.8.4-401.asahi]
+- fixup! HACK: arm64: apple: t8103: Prevent SIO firmware SError panics (Janne Grunau)
+Resolves: 
+
 * Tue Apr 09 2024 Neal Gompa <neal@gompa.dev> [6.8.4-400.asahi]
 - redhat: Enable kernel-16k flavor for Fedora (Neal Gompa)
 - redhat: Tweak spec to do a verbose build (Neal Gompa)
