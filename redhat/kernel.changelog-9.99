@@ -1,3 +1,7 @@
+* Tue Apr 23 2024 Neal Gompa <neal@gompa.dev> [6.8.7-402.asahi]
+- HACK: rust: x86: Set data-layout based on rustc's LLVM version (Janne Grunau)
+Resolves: 
+
 * Mon Apr 22 2024 Neal Gompa <neal@gompa.dev> [6.8.7-401.asahi]
 - drm: apple: audio: Avoid probe errors (Janne Grunau)
 - fixup! drm: apple: audio: Make the DP/HDMI audio driver a full driver (Janne Grunau)
