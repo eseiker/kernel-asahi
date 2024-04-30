@@ -122,11 +122,6 @@ cbs:
     - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
     - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
     - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
-    - |
-      for TAG in kmods$EL-$REPO-candidate
-      do
-        cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build $TAG $NVR
-      done
 
 test:
   rules:
@@ -235,10 +230,12 @@ release:
     - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE"'
     - TAGS+=(kmods$EL-$REPO-release)
     - |
-      for TAG in ${TAGS[@]}
-      do
-        cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build --wait $TAG $NVR
-      done
+      if cbs list-tagged --quiet kmods${EL}-$REPO-candidate $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$"
+      then
+        for TAG in ${TAGS[@]}
+        do
+          cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | grep >/dev/null "^$NVR\$" || cbs --cert=$CBS tag-build --wait $TAG $NVR
+        done
     - |
       for TAG in ${TAGS[@]}
       do
