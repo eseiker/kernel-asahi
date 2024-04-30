@@ -13,6 +13,7 @@ variables:
 
 stages:
   - sync
+  - prep
   - build
   - test
   - release
@@ -76,20 +77,14 @@ mock:
     untracked: true
     when: always
 
-cbs:
+lookaside:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
-  parallel:
-    matrix:
-      - EL: [8, 9]
-  stage: build
+  stage: prep
   script:
-    - cbs version
     - git clone --quiet --depth 1 --branch $CI_COMMIT_REF_NAME --single-branch $CI_REPOSITORY_URL .
-    - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
-    - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
     - |
       if [ -e sources ]
       then
@@ -111,6 +106,21 @@ cbs:
           fi
         done < sources
       fi
+
+cbs:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: never
+    - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
+  parallel:
+    matrix:
+      - EL: [8, 9]
+  stage: build
+  script:
+    - cbs version
+    - git clone --quiet --depth 1 --branch $CI_COMMIT_REF_NAME --single-branch $CI_REPOSITORY_URL .
+    - NAME=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}\n' *.spec)
+    - NVR=$(rpmspec -q --srpm --define "dist .el$EL" --queryformat='%{name}-%{version}-%{release}\n' *.spec)
     - 'cbs buildinfo $NVR 2>/dev/null | grep >/dev/null "State: COMPLETE" || cbs --cert=$CBS build --wait kmods$EL-$REPO-el$EL git+$CI_PROJECT_URL\#$CI_COMMIT_SHA'
     - |
       for TAG in kmods$EL-$REPO-candidate
