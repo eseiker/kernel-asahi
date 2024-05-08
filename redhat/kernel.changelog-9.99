@@ -1,3 +1,7 @@
+* Wed May 08 2024 Neal Gompa <neal@gompa.dev> [6.8.9-402.asahi]
+- rust: alloc: Add global_alloc_ty lang_item (Janne Grunau)
+Resolves: 
+
 * Wed May 08 2024 Neal Gompa <neal@gompa.dev> [6.8.9-401.asahi]
 - fixup! rust: sync: Implement dynamic lockdep class creation (Janne Grunau)
 Resolves: 
