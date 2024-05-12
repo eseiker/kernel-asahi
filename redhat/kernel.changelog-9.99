@@ -1,3 +1,9 @@
+* Sun May 12 2024 Neal Gompa <neal@gompa.dev> [6.8.9-403.asahi]
+- fixup! Bluetooth: hci_bcm4377: Add BCM4388 support (Janne Grunau)
+- Bluetooth: Add quirk to ignore reserved PHY bits in LE Extended Adv Report (Sven Peter)
+- drm: apple: Override drm_vblank's page flip event handling [HACK] (Janne Grunau)
+Resolves: 
+
 * Wed May 08 2024 Neal Gompa <neal@gompa.dev> [6.8.9-402.asahi]
 - rust: alloc: Add global_alloc_ty lang_item (Janne Grunau)
 Resolves: 
