@@ -1,3 +1,7 @@
+* Fri May 17 2024 Neal Gompa <neal@gompa.dev> [6.8.9-404.asahi]
+- Revert "arm64: fpsimd: Implement lazy restore for kernel mode FPSIMD" (Will Deacon)
+Resolves: 
+
 * Sun May 12 2024 Neal Gompa <neal@gompa.dev> [6.8.9-403.asahi]
 - fixup! Bluetooth: hci_bcm4377: Add BCM4388 support (Janne Grunau)
 - Bluetooth: Add quirk to ignore reserved PHY bits in LE Extended Adv Report (Sven Peter)
