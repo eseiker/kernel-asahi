@@ -1,3 +1,8 @@
+* Wed May 22 2024 Neal Gompa <neal@gompa.dev> [6.8.9-405.asahi]
+- arm64/fpsimd: Avoid erroneous elide of user state reload (Ard Biesheuvel)
+- Reapply "arm64: fpsimd: Implement lazy restore for kernel mode FPSIMD" (Janne Grunau)
+Resolves: 
+
 * Fri May 17 2024 Neal Gompa <neal@gompa.dev> [6.8.9-404.asahi]
 - Revert "arm64: fpsimd: Implement lazy restore for kernel mode FPSIMD" (Will Deacon)
 Resolves: 
