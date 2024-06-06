@@ -240,7 +240,7 @@ release:
     - |
       for TAG in ${TAGS[@]}
       do
-        PKGS=($(cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | sort -V | head -n -5))
+        PKGS=($(cbs list-tagged --quiet $TAG $NAME | awk '{print $1}' | rpmdev-sort | head -n -5))
         [[ ${#PKGS[@]} == 0 ]] || cbs --cert=$CBS untag-build $TAG ${PKGS[@]}
       done
 
