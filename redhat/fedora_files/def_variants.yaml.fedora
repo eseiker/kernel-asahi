@@ -67,6 +67,8 @@ rules:
   - drivers/gpio/.*: modules-core
   - drivers/gpu/drm/display/drm_.*: modules-core
   - drivers/gpu/drm/drm.*: modules-core
+  - drivers/gpu/drm/apple/.*: modules-core
+  - drivers/gpu/drm/asahi/.*: modules-core
   - drivers/gpu/drm/etnaviv/.*: modules-core
   - drivers/gpu/drm/gud/.*: modules-core
   - drivers/gpu/drm/hyperv/.*: modules-core
