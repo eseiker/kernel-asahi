@@ -130,7 +130,7 @@ test:
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
   parallel:
     matrix:
-      - EL: [8, 9]
+      - EL: [9]
         ARCH: [x86_64, aarch64, ppc64le]
   stage: test
   script:
