@@ -190,7 +190,7 @@ test:
     - ssh $HOST "cd $TMPDIR && createrepo ."
     - ssh $HOST "dnf -y --nogpgcheck --repofrompath cbs,$TMPDIR install kernel-core-$VR.$ARCH kernel-modules-$VR.$ARCH"
     - |
-      ssh $HOST 'reboot' || :
+      ssh $HOST 'reboot' || : && sleep 60
     - |
       while ! ssh $HOST 'exit 0' 2>/dev/null
       do
