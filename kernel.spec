@@ -21,13 +21,13 @@
 
 
 Name: kernel
-Version: 6.8.12
+Version: 6.9.3
 Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
 
-License: ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-2-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR CDDL-1.0) AND ((GPL-2.0-only WITH Linux-syscall-note) OR Linux-OpenIB) AND ((GPL-2.0-only WITH Linux-syscall-note) OR MIT) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR MIT) AND BSD-2-Clause AND BSD-3-Clause AND BSD-3-Clause-Clear AND GFDL-1.1-no-invariants-or-later AND GPL-1.0-or-later AND (GPL-1.0-or-later OR BSD-3-Clause) AND (GPL-1.0-or-later WITH Linux-syscall-note) AND GPL-2.0-only AND (GPL-2.0-only OR Apache-2.0) AND (GPL-2.0-only OR BSD-2-Clause) AND (GPL-2.0-only OR BSD-3-Clause) AND (GPL-2.0-only OR CDDL-1.0) AND (GPL-2.0-only OR GFDL-1.1-no-invariants-or-later) AND (GPL-2.0-only OR GFDL-1.2-no-invariants-only) AND (GPL-2.0-only WITH Linux-syscall-note) AND GPL-2.0-or-later AND (GPL-2.0-or-later OR BSD-2-Clause) AND (GPL-2.0-or-later OR BSD-3-Clause) AND (GPL-2.0-or-later OR CC-BY-4.0) AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (GPL-2.0-or-later WITH Linux-syscall-note) AND ISC AND LGPL-2.0-or-later AND (LGPL-2.0-or-later OR BSD-2-Clause) AND (LGPL-2.0-or-later WITH Linux-syscall-note) AND LGPL-2.1-only AND (LGPL-2.1-only OR BSD-2-Clause) AND (LGPL-2.1-only WITH Linux-syscall-note) AND LGPL-2.1-or-later AND (LGPL-2.1-or-later WITH Linux-syscall-note) AND (Linux-OpenIB OR GPL-2.0-only) AND (Linux-OpenIB OR GPL-2.0-only OR BSD-2-Clause) AND Linux-man-pages-copyleft AND MIT AND (MIT OR Apache-2.0) AND (MIT OR GPL-2.0-only) AND (MIT OR GPL-2.0-or-later) AND (MIT OR LGPL-2.1-only) AND (MPL-1.1 OR GPL-2.0-only) AND (X11 OR GPL-2.0-only) AND (X11 OR GPL-2.0-or-later) AND Zlib AND (copyleft-next-0.3.1 OR GPL-2.0-or-later)
+License: ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-2-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-only WITH Linux-syscall-note) OR CDDL-1.0) AND ((GPL-2.0-only WITH Linux-syscall-note) OR Linux-OpenIB) AND ((GPL-2.0-only WITH Linux-syscall-note) OR MIT) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR BSD-3-Clause) AND ((GPL-2.0-or-later WITH Linux-syscall-note) OR MIT) AND BSD-2-Clause AND (BSD-2-Clause OR Apache-2.0) AND BSD-3-Clause AND BSD-3-Clause-Clear AND GFDL-1.1-no-invariants-or-later AND GPL-1.0-or-later AND (GPL-1.0-or-later OR BSD-3-Clause) AND (GPL-1.0-or-later WITH Linux-syscall-note) AND GPL-2.0-only AND (GPL-2.0-only OR Apache-2.0) AND (GPL-2.0-only OR BSD-2-Clause) AND (GPL-2.0-only OR BSD-3-Clause) AND (GPL-2.0-only OR CDDL-1.0) AND (GPL-2.0-only OR GFDL-1.1-no-invariants-or-later) AND (GPL-2.0-only OR GFDL-1.2-no-invariants-only) AND (GPL-2.0-only WITH Linux-syscall-note) AND GPL-2.0-or-later AND (GPL-2.0-or-later OR BSD-2-Clause) AND (GPL-2.0-or-later OR BSD-3-Clause) AND (GPL-2.0-or-later OR CC-BY-4.0) AND (GPL-2.0-or-later WITH GCC-exception-2.0) AND (GPL-2.0-or-later WITH Linux-syscall-note) AND ISC AND LGPL-2.0-or-later AND (LGPL-2.0-or-later OR BSD-2-Clause) AND (LGPL-2.0-or-later WITH Linux-syscall-note) AND LGPL-2.1-only AND (LGPL-2.1-only OR BSD-2-Clause) AND (LGPL-2.1-only WITH Linux-syscall-note) AND LGPL-2.1-or-later AND (LGPL-2.1-or-later WITH Linux-syscall-note) AND (Linux-OpenIB OR GPL-2.0-only) AND (Linux-OpenIB OR GPL-2.0-only OR BSD-2-Clause) AND Linux-man-pages-copyleft AND MIT AND (MIT OR Apache-2.0) AND (MIT OR GPL-2.0-only) AND (MIT OR GPL-2.0-or-later) AND (MIT OR LGPL-2.1-only) AND (MPL-1.1 OR GPL-2.0-only) AND (X11 OR GPL-2.0-only) AND (X11 OR GPL-2.0-or-later) AND Zlib AND (copyleft-next-0.3.1 OR GPL-2.0-or-later)
 
 ExclusiveArch: x86_64 aarch64 ppc64le
 
@@ -80,8 +80,10 @@ BuildRequires: perl-Carp
 BuildRequires: perl-devel
 BuildRequires: perl-generators
 BuildRequires: perl-interpreter
+BuildRequires: python3
 BuildRequires: python3-devel
 BuildRequires: python3-docutils
+BuildRequires: python3-pyyaml
 BuildRequires: python3-setuptools
 BuildRequires: rsync
 BuildRequires: which
@@ -125,7 +127,10 @@ Patch: 0015-KEYS-Make-use-of-platform-keyring-for-module-signature-verify.patch
 Patch: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
 Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
 Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
-Patch: 0019-drivers-firmware-skip-simpledrm-if-nvidia-drm.modeset-1-is-set.patch
+Patch: 0019-random-Add-hook-to-override-device-reads-and-getrandom-2.patch
+Patch: 0020-crypto-rng-Override-drivers-char-random-in-FIPS-mode.patch
+Patch: 0021-random-replace-import_single_range-with-import_ubuf.patch
+Patch: 0022-lsm-update-security_lock_kernel_down.patch
 
 
 %description
@@ -346,7 +351,7 @@ analysing the logical and timing behavior of Linux.
 %global make %{__make} %{_make_output_sync} %{?_smp_mflags}
 %global make_kernel %{make} ARCH=%{hdrarch} HOSTCFLAGS="%{?build_cflags}" HOSTLDFLAGS="%{?build_ldflags}"
 
-%global make_tools CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" %{make_kernel}
+%global make_tools CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" EXTRA_CFLAGS="%{?build_cflags}" %{make_kernel}
 
 %global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBBPF_DYNAMIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
 
@@ -776,7 +781,7 @@ then
     fi
     if [ ! -e /boot/symvers-%{version}-%{release}.%{_arch}.gz ]
     then
-        ln -s /lib/modules/%{version}-%{release}.%{_arch}/symvers.gz /boot/symvers-%{version}-%{release}.%{_arch}.gz
+        cp /lib/modules/%{version}-%{release}.%{_arch}/symvers.gz /boot/symvers-%{version}-%{release}.%{_arch}.gz
         if command -v restorecon &>/dev/null
         then
             restorecon /boot/symvers-%{version}-%{release}.%{_arch}.gz
@@ -938,6 +943,9 @@ fi
 
 
 %changelog
+* Wed Jun 12 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.9.3-1
+- Update to 6.9.3
+
 * Fri May 31 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.8.12-1
 - Update to 6.8.12
 

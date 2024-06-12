@@ -1,0 +1,29 @@
+From a058bf42a79af81598f7404ad550ff677eb2be4d Mon Sep 17 00:00:00 2001
+From: Scott Weaver <scweaver@redhat.com>
+Date: Wed, 13 Mar 2024 13:19:02 -0400
+Subject: [PATCH] lsm: update security_lock_kernel_down
+
+Update to RHEL-only security_lock_kernel_down() due to 260017f3 ('lsm:
+use default hook return value in call_int_hook()').
+
+Signed-off-by: Scott Weaver <scweaver@redhat.com>
+---
+ security/security.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/security/security.c b/security/security.c
+index 887b1a7fc734..a5cfc42f7c33 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -5575,7 +5575,7 @@ EXPORT_SYMBOL(security_locked_down);
+  */
+ int security_lock_kernel_down(const char *where, enum lockdown_reason level)
+ {
+-	return call_int_hook(lock_kernel_down, 0, where, level);
++	return call_int_hook(lock_kernel_down, where, level);
+ }
+ EXPORT_SYMBOL(security_lock_kernel_down);
+ 
+-- 
+2.43.0
+

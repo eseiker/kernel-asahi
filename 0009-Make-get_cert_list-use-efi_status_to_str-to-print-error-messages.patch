@@ -1,4 +1,4 @@
-From 35aba3c9b506369a785ee7e921250794467c7e76 Mon Sep 17 00:00:00 2001
+From 23a6deaae098060905cd45e10bf76623e6780b0c Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:18:30 -0400
 Subject: [PATCH] Make get_cert_list() use efi_status_to_str() to print error
@@ -12,7 +12,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index d1fdd113450a63887b1a5aed9ab33c46ead9c84a..182e8090cfe85f22f79a59ea208401dabd63cad8 100644
+index d1fdd113450a..182e8090cfe8 100644
 --- a/security/integrity/platform_certs/load_uefi.c
 +++ b/security/integrity/platform_certs/load_uefi.c
 @@ -74,7 +74,8 @@ static __init void *get_cert_list(efi_char16_t *name, efi_guid_t *guid,

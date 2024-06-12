@@ -1,4 +1,4 @@
-From 42d31ca68d9fbb52bff28197a7e696ea30c3035f Mon Sep 17 00:00:00 2001
+From 972bc4c647a0fd5e77b16cb5961acf33779cd85e Mon Sep 17 00:00:00 2001
 From: Robert Holmes <robeholmes@gmail.com>
 Date: Tue, 23 Apr 2019 07:39:29 +0000
 Subject: [PATCH] KEYS: Make use of platform keyring for module signature
@@ -19,7 +19,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/module/signing.c b/kernel/module/signing.c
-index a2ff4242e623d5d4e87d2f3d139d8620fb937579..f0d2be1ee4f1cd04ea222b8325e0ab967d0c9de4 100644
+index a2ff4242e623..f0d2be1ee4f1 100644
 --- a/kernel/module/signing.c
 +++ b/kernel/module/signing.c
 @@ -61,10 +61,17 @@ int mod_verify_sig(const void *mod, struct load_info *info)

@@ -1,4 +1,4 @@
-From 2600fc4c9eae94ae27a1db2e97f48c57981ddc3a Mon Sep 17 00:00:00 2001
+From 271b9d1c79a8f8bdd0be002164fb26197d8f97c7 Mon Sep 17 00:00:00 2001
 From: Al Stone <ahs3@redhat.com>
 Date: Tue, 27 Feb 2018 00:21:23 -0500
 Subject: [PATCH] ACPI: APEI: arm64: Ignore broken HPE moonshot APEI support
@@ -48,10 +48,10 @@ Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
-index 6aef1ee5e1bdbe0540edb8a435fae813592243da..8f146b1b4972b01428d88d4e7cc08e09362d7d2a 100644
+index 20d757687e3d..90a13f20f052 100644
 --- a/drivers/acpi/apei/hest.c
 +++ b/drivers/acpi/apei/hest.c
-@@ -96,6 +96,14 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
+@@ -142,6 +142,14 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
  	if (hest_disable || !hest_tab)
  		return -EINVAL;
  

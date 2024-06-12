@@ -1,4 +1,4 @@
-From e67e74e3dffef6782558be57c8d72dfdd0ac8cbc Mon Sep 17 00:00:00 2001
+From a81bc7d379eec8d7d656a214c5d61b766da600f3 Mon Sep 17 00:00:00 2001
 From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Date: Mon, 3 Apr 2017 18:18:21 +0200
 Subject: [PATCH] Input: rmi4 - remove the need for artificial IRQ in case of
@@ -22,7 +22,7 @@ Signed-off-by: Lyude <lyude@redhat.com>
  3 files changed, 75 insertions(+), 116 deletions(-)
 
 diff --git a/drivers/hid/hid-rmi.c b/drivers/hid/hid-rmi.c
-index d4af17fdba4670ae9f26db1fb8609a180472dc20..154f0403cbf4c27d77142b2456bb3b5afdac6684 100644
+index d4af17fdba46..154f0403cbf4 100644
 --- a/drivers/hid/hid-rmi.c
 +++ b/drivers/hid/hid-rmi.c
 @@ -321,21 +321,12 @@ static int rmi_input_event(struct hid_device *hdev, u8 *data, int size)
@@ -124,7 +124,7 @@ index d4af17fdba4670ae9f26db1fb8609a180472dc20..154f0403cbf4c27d77142b2456bb3b5a
  	data->xport.ops = &hid_rmi_ops;
  
 diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 42eaebb3bf5cc82efabccff777a8ee23b016bf49..7a35119c3144ccacd6825acbbf9ecfe97c3adbb3 100644
+index ef9ea295f9e0..0103334e8f32 100644
 --- a/drivers/input/rmi4/rmi_driver.c
 +++ b/drivers/input/rmi4/rmi_driver.c
 @@ -182,34 +182,47 @@ void rmi_set_attn_data(struct rmi_device *rmi_dev, unsigned long irq_status,
@@ -296,7 +296,7 @@ index 42eaebb3bf5cc82efabccff777a8ee23b016bf49..7a35119c3144ccacd6825acbbf9ecfe9
  	rmi_f34_remove_sysfs(rmi_dev);
  	rmi_free_function_list(rmi_dev);
  
-@@ -1219,9 +1237,15 @@ static int rmi_driver_probe(struct device *dev)
+@@ -1223,9 +1241,15 @@ static int rmi_driver_probe(struct device *dev)
  		}
  	}
  
@@ -316,7 +316,7 @@ index 42eaebb3bf5cc82efabccff777a8ee23b016bf49..7a35119c3144ccacd6825acbbf9ecfe9
  	if (data->f01_container->dev.driver) {
  		/* Driver already bound, so enable ATTN now. */
 diff --git a/include/linux/rmi.h b/include/linux/rmi.h
-index ab7eea01ab4274bfc9efcefcdb0cced6ec34966f..fff7c5f737fc82ebf05d61456cdfeaec4b6834f2 100644
+index ab7eea01ab42..fff7c5f737fc 100644
 --- a/include/linux/rmi.h
 +++ b/include/linux/rmi.h
 @@ -364,6 +364,7 @@ struct rmi_driver_data {

@@ -1,4 +1,4 @@
-From e1bb15a36310bb1ee3efe393aee787b0a4e5da68 Mon Sep 17 00:00:00 2001
+From 75e64275d4826f21b0a52a0bc502fc45409dd162 Mon Sep 17 00:00:00 2001
 From: Peter Robinson <pbrobinson@gmail.com>
 Date: Thu, 3 May 2012 20:27:11 +0100
 Subject: [PATCH] ARM: tegra: usb no reset
@@ -10,10 +10,10 @@ Patch for disconnect issues with storage attached to a
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index e38a4124f6102a5ff2a47107a8286815cfc5c8e2..0a607946e5f9c05789cc54761c176258ba173679 100644
+index 008053039875..f948a5c96006 100644
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -5806,6 +5806,13 @@ static void hub_event(struct work_struct *work)
+@@ -5845,6 +5845,13 @@ static void hub_event(struct work_struct *work)
  			(u16) hub->change_bits[0],
  			(u16) hub->event_bits[0]);
  

@@ -1,4 +1,4 @@
-From e194067631100a35dff56c22c932275cd8f5117a Mon Sep 17 00:00:00 2001
+From eb4d5c8c36cda70fb6d202ffc02e1e88bd9cfbfb Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Mon, 30 Sep 2019 21:28:16 +0000
 Subject: [PATCH] efi: Lock down the kernel if booted in secure boot mode
@@ -18,10 +18,10 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  2 files changed, 21 insertions(+)
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index a3666cf4435b5727a73b048518596ed979b125a8..1e7b9e53ec3d6112a917f820d72e7798bbfc1a31 100644
+index bd402e977e09..9cfd28e580e0 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
-@@ -21,6 +21,7 @@
+@@ -20,6 +20,7 @@
  #include <linux/root_dev.h>
  #include <linux/hugetlb.h>
  #include <linux/tboot.h>
@@ -29,7 +29,7 @@ index a3666cf4435b5727a73b048518596ed979b125a8..1e7b9e53ec3d6112a917f820d72e7798
  #include <linux/usb/xhci-dbgp.h>
  #include <linux/static_call.h>
  #include <linux/swiotlb.h>
-@@ -900,6 +901,13 @@ void __init setup_arch(char **cmdline_p)
+@@ -901,6 +902,13 @@ void __init setup_arch(char **cmdline_p)
  	if (efi_enabled(EFI_BOOT))
  		efi_init();
  
@@ -44,7 +44,7 @@ index a3666cf4435b5727a73b048518596ed979b125a8..1e7b9e53ec3d6112a917f820d72e7798
  	x86_init.resources.dmi_setup();
  
 diff --git a/security/lockdown/Kconfig b/security/lockdown/Kconfig
-index e84ddf48401010bcc0829a32db58e6f12bfdedcb..d0501353a4b95f15748bb2e8f06282756f476da3 100644
+index e84ddf484010..d0501353a4b9 100644
 --- a/security/lockdown/Kconfig
 +++ b/security/lockdown/Kconfig
 @@ -16,6 +16,19 @@ config SECURITY_LOCKDOWN_LSM_EARLY

@@ -1,4 +1,4 @@
-From 20aab9c5cf6c185848dad3b2680365e592060fe3 Mon Sep 17 00:00:00 2001
+From 92c71a695476a9dceedba19c80426b04212e83e1 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Thu, 10 May 2018 17:38:43 -0400
 Subject: [PATCH] ACPI / irq: Workaround firmware issue on X-Gene based m400
@@ -28,7 +28,7 @@ Signed-off-by: Herton R. Krzesinski <herton@redhat.com>
  1 file changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index 1687483ff319e05f3d734996d4a60b36f9831778..c30fb99ffea97484818c3a7d6a84b6b787d532e9 100644
+index 1687483ff319..c30fb99ffea9 100644
 --- a/drivers/acpi/irq.c
 +++ b/drivers/acpi/irq.c
 @@ -143,6 +143,7 @@ struct acpi_irq_parse_one_ctx {

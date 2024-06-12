@@ -1,4 +1,4 @@
-From e8784fbb8ae25ee646dacdfa6d5c42ae0427b9f3 Mon Sep 17 00:00:00 2001
+From a503547abadf03a34b2e0ca68006e21500dff7d0 Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Mon, 20 May 2019 22:21:02 -0400
 Subject: [PATCH] iommu/arm-smmu: workaround DMA mode issues
@@ -57,7 +57,7 @@ Signed-off-by: Laura Abbott <labbott@redhat.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index d14413916f93a01626e850aa72ee0c919c1f72bd..ff6cbc3fa50923a30717386d39dfb093d9958e0e 100644
+index a95a483def2d..e11ceb8b6df0 100644
 --- a/drivers/iommu/iommu.c
 +++ b/drivers/iommu/iommu.c
 @@ -8,6 +8,7 @@
@@ -68,7 +68,7 @@ index d14413916f93a01626e850aa72ee0c919c1f72bd..ff6cbc3fa50923a30717386d39dfb093
  #include <linux/kernel.h>
  #include <linux/bits.h>
  #include <linux/bug.h>
-@@ -3095,6 +3096,27 @@ int iommu_dev_disable_feature(struct device *dev, enum iommu_dev_features feat)
+@@ -2913,6 +2914,27 @@ int iommu_dev_disable_feature(struct device *dev, enum iommu_dev_features feat)
  }
  EXPORT_SYMBOL_GPL(iommu_dev_disable_feature);
  
