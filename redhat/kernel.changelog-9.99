@@ -1,3 +1,9 @@
+* Fri Jul 12 2024 Neal Gompa <neal@gompa.dev> [6.9.9-402.asahi]
+- drm/asahi: queue: Split into Queue and QueueInner (Asahi Lina)
+- fixup! rust: drm: sched: Add GPU scheduler abstraction (Asahi Lina)
+- fixup! hwmon: macsmc: Avoid global writable hwmon_chip_info (Janne Grunau)
+Resolves: 
+
 * Thu Jul 11 2024 Neal Gompa <neal@gompa.dev> [6.9.9-401.asahi]
 - sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3 (Jan Stancek)
 - sign-file,extract-cert: avoid using deprecated ERR_get_error_line() (Jan Stancek)
