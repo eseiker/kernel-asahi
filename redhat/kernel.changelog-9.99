@@ -1,3 +1,8 @@
+* Sat Jul 13 2024 Neal Gompa <neal@gompa.dev> [6.9.9-403.asahi]
+- drm: apple: iomfb: Align buffer size on unmap/free as well (Janne Grunau)
+- fixup! drm/apple: Add support for the macOS 13.2 DCP firmware (Janne Grunau)
+Resolves: 
+
 * Fri Jul 12 2024 Neal Gompa <neal@gompa.dev> [6.9.9-402.asahi]
 - drm/asahi: queue: Split into Queue and QueueInner (Asahi Lina)
 - fixup! rust: drm: sched: Add GPU scheduler abstraction (Asahi Lina)
