@@ -1,4 +1,4 @@
-From 38603aa6f9160a2a2672c1eabd3824912b9138f4 Mon Sep 17 00:00:00 2001
+From 65d1b706fca339b0903f4fbfeaf8d178b8172c7e Mon Sep 17 00:00:00 2001
 From: Herbert Xu <herbert.xu@redhat.com>
 Date: Thu, 19 Oct 2023 18:43:54 +0800
 Subject: [PATCH] random: Add hook to override device reads and getrandom(2)
@@ -245,5 +245,5 @@ index b0a940af4fff..8a52424fd0d5 100644
  extern const struct file_operations random_fops, urandom_fops;
  #endif
 -- 
-2.43.0
+2.43.5
 

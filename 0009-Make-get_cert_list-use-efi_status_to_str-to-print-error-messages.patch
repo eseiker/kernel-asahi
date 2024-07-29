@@ -1,4 +1,4 @@
-From 23a6deaae098060905cd45e10bf76623e6780b0c Mon Sep 17 00:00:00 2001
+From 66c1104a75fd35975a3fd001a80e6cfe6e4e2e95 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:18:30 -0400
 Subject: [PATCH] Make get_cert_list() use efi_status_to_str() to print error
@@ -36,5 +36,5 @@ index d1fdd113450a..182e8090cfe8 100644
  	}
  
 -- 
-2.43.0
+2.43.5
 

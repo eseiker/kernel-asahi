@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.9.12
+Version: 6.10.2
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -131,6 +131,8 @@ Patch: 0019-random-Add-hook-to-override-device-reads-and-getrandom-2.patch
 Patch: 0020-crypto-rng-Override-drivers-char-random-in-FIPS-mode.patch
 Patch: 0021-random-replace-import_single_range-with-import_ubuf.patch
 Patch: 0022-lsm-update-security_lock_kernel_down.patch
+Patch: 0023-media-ipu-bridge-Sort-ipu_supported_sensors-array-by-ACPI-HID.patch
+Patch: 0024-media-ipu-bridge-Add-HIDs-from-out-of-tree-IPU6-driver-ipu-bridge-copy.patch
 
 
 %description
@@ -560,6 +562,7 @@ cp -a --parents tools/objtool/fixdep %{buildroot}/lib/modules/%{version}-%{relea
 
 cp -a --parents include %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
 cp -a --parents arch/%{asmarch}/include %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
+cp -a --parents sound/soc/sof/sof-audio.h %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build/sound/soc/sof
 
 %ifarch ppc64le
 cp -a --parents arch/%{asmarch}/lib/crtsavres.[So] %{buildroot}/lib/modules/%{version}-%{release}.%{_arch}/build
@@ -797,7 +800,7 @@ fi
 %license COPYING-%{version}-%{release}
 %ghost %attr(0644, root, root) /boot/config-%{version}-%{release}.%{_arch}
 %ghost %attr(0600, root, root) /boot/initramfs-%{version}-%{release}.%{_arch}.img
-%ghost %attr(0600, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.gz
+%ghost %attr(0644, root, root) /boot/symvers-%{version}-%{release}.%{_arch}.gz
 %ghost /boot/System.map-%{version}-%{release}.%{_arch}
 %ghost /boot/vmlinuz-%{version}-%{release}.%{_arch}
 %ghost /boot/.vmlinuz-%{version}-%{release}.%{_arch}.hmac
@@ -943,6 +946,9 @@ fi
 
 
 %changelog
+* Mon Jul 29 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.10.2-1
+- Update to 6.10.2
+
 * Sun Jul 28 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.9.12-1
 - Update to 6.9.12
 

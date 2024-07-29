@@ -1,4 +1,4 @@
-From c1cadf2e615cbb9af6b7f9edde762b1d3dea9c0c Mon Sep 17 00:00:00 2001
+From c63e36d30db93dc40db4fe4a9eec03faab3cdc70 Mon Sep 17 00:00:00 2001
 From: "Justin M. Forbes" <jforbes@fedoraproject.org>
 Date: Tue, 9 Jan 2024 09:34:44 -0600
 Subject: [PATCH] random: replace import_single_range() with import_ubuf()
@@ -29,5 +29,5 @@ index b25f35ff2b65..d860f4f6ba2c 100644
  			return ret;
  		ret = rng->extrng_read_iter(&iter, !!(flags & GRND_RANDOM));
 -- 
-2.43.0
+2.43.5
 

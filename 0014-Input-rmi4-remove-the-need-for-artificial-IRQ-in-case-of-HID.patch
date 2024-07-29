@@ -1,4 +1,4 @@
-From a81bc7d379eec8d7d656a214c5d61b766da600f3 Mon Sep 17 00:00:00 2001
+From 720413433847a69179713f8acc9ddf34b97aa0cc Mon Sep 17 00:00:00 2001
 From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Date: Mon, 3 Apr 2017 18:18:21 +0200
 Subject: [PATCH] Input: rmi4 - remove the need for artificial IRQ in case of
@@ -328,5 +328,5 @@ index ab7eea01ab42..fff7c5f737fc 100644
  
  int rmi_register_transport_device(struct rmi_transport_dev *xport);
 -- 
-2.43.0
+2.43.5
 

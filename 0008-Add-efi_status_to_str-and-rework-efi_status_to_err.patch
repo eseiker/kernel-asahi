@@ -1,4 +1,4 @@
-From d4b0376586d603bbb8645df9765307d1e41a5873 Mon Sep 17 00:00:00 2001
+From 9b009a11be7b5673b633f97dd79bbbb4a2a383d5 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:22:13 -0400
 Subject: [PATCH] Add efi_status_to_str() and rework efi_status_to_err().
@@ -160,7 +160,7 @@ index fdf07dd6f459..cfd2b58a3494 100644
  EXPORT_SYMBOL_GPL(efi_status_to_err);
  
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index d59b0947fba0..345f6cc5f29a 100644
+index 418e555459da..684b79fba39f 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
 @@ -45,6 +45,8 @@ struct screen_info;
@@ -181,5 +181,5 @@ index d59b0947fba0..345f6cc5f29a 100644
  /*
   * Variable Attributes
 -- 
-2.43.0
+2.43.5
 
