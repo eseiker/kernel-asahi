@@ -313,16 +313,6 @@ This package contains the development files for the tools/ directory from
 the kernel source.
 
 
-%package -n rtla
-Summary: Real-Time Linux Analysis tools
-
-%description -n rtla
-The rtla meta-tool includes a set of commands that aims to analyze
-the real-time properties of Linux. Instead of testing Linux as a black box,
-rtla leverages kernel tracing capabilities to provide precise information
-about the properties and root causes of unexpected results.
-
-
 %package -n rv
 Summary: RV: Runtime Verification
 
@@ -445,9 +435,6 @@ pushd tools/mm/
 %{make_tools} slabinfo page_owner_sort
 popd
 pushd tools/verification/rv/
-%{make_tools}
-popd
-pushd tools/tracing/rtla
 %{make_tools}
 popd
 
@@ -743,15 +730,6 @@ popd
 pushd tools/verification/rv/
 %{make_tools} DESTDIR=%{buildroot} install
 popd
-pushd tools/tracing/rtla/
-%{make_tools} DESTDIR=%{buildroot} install
-rm -f %{buildroot}%{_bindir}/hwnoise
-rm -f %{buildroot}%{_bindir}/osnoise
-rm -f %{buildroot}%{_bindir}/timerlat
-ln -sf rtla %{buildroot}/%{_bindir}/hwnoise
-ln -sf rtla %{buildroot}/%{_bindir}/osnoise
-ln -sf rtla %{buildroot}/%{_bindir}/timerlat
-popd
 
 # Remove static libraries
 rm -rf %{buildroot}%{_libdir}/*.{a,la}
@@ -933,13 +911,6 @@ fi
 %{_libdir}/libcpupower.so
 
 
-%files -n rtla
-%{_bindir}/hwnoise
-%{_bindir}/osnoise
-%{_bindir}/rtla
-%{_bindir}/timerlat
-%{_mandir}/man*/rtla*
-
 %files -n rv
 %{_bindir}/rv
 %{_mandir}/man*/rv*
@@ -948,6 +919,7 @@ fi
 %changelog
 * Mon Jul 29 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.10.2-1
 - Update to 6.10.2
+- Disable building tool rtla (Requires libtracefs 1.6)
 
 * Sun Jul 28 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.9.12-1
 - Update to 6.9.12
