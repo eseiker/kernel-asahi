@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.10.2
+Version: 6.10.3
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -917,6 +917,9 @@ fi
 
 
 %changelog
+* Sat Aug 03 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.10.3-1
+- Update to 6.10.3
+
 * Mon Jul 29 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.10.2-1
 - Update to 6.10.2
 - Disable building tool rtla (Requires libtracefs 1.6)
