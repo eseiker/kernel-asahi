@@ -1,3 +1,7 @@
+* Sat Aug 03 2024 Neal Gompa <neal@gompa.dev> [6.9.12-401.asahi]
+- wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion (Janne Grunau)
+Resolves: 
+
 * Sun Jul 28 2024 Neal Gompa <neal@gompa.dev> [6.9.12-400.asahi]
 - sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3 (Jan Stancek)
 - sign-file,extract-cert: avoid using deprecated ERR_get_error_line() (Jan Stancek)
