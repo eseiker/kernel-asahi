@@ -1,3 +1,9 @@
+* Sat Aug 10 2024 Neal Gompa <neal@gompa.dev> [6.10.3-402.asahi]
+- fixup! drm: apple: audio: Make the DP/HDMI audio driver a full driver (Janne Grunau)
+- fixup! gpu: drm: apple: Set up client of AV endpoint (Janne Grunau)
+- fixup! gpu: drm: apple: Add DCP audio driver (Janne Grunau)
+Resolves: 
+
 * Wed Aug 07 2024 Neal Gompa <neal@gompa.dev> [6.10.3-401.asahi]
 - fixup! gpu: drm: apple: Add DCP audio driver (Janne Grunau)
 - fixup! WIP: add header test target copied from i915 (Janne Grunau)
