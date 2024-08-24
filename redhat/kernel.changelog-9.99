@@ -1,3 +1,7 @@
+* Sat Aug 24 2024 Neal Gompa <neal@gompa.dev> [6.10.6-401.asahi]
+- Add weakdep support to the kernel spec (Justin M. Forbes)
+Resolves: 
+
 * Sat Aug 24 2024 Neal Gompa <neal@gompa.dev> [6.10.6-400.asahi]
 - sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3 (Jan Stancek)
 - sign-file,extract-cert: avoid using deprecated ERR_get_error_line() (Jan Stancek)
