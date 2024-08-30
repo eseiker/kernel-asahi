@@ -21,8 +21,8 @@
 
 
 Name: kernel
-Version: 6.10.6
-Release: 2%{?dist}
+Version: 6.10.7
+Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -917,6 +917,9 @@ fi
 
 
 %changelog
+* Fri Aug 30 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.10.7-1
+- Update to 6.10.7
+
 * Mon Aug 19 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.10.6-2
 - Enable OCP TimeCard and dependencies
 
