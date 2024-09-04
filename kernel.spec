@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.10.7
+Version: 6.10.8
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -917,6 +917,9 @@ fi
 
 
 %changelog
+* Wed Sep 04 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.10.8-1
+- Update to 6.10.8
+
 * Fri Aug 30 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.10.7-1
 - Update to 6.10.7
 
