@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.6.49
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -38,7 +38,6 @@ BuildRequires: bc
 BuildRequires: binutils
 BuildRequires: binutils-devel
 BuildRequires: bison
-BuildRequires: bpftool
 BuildRequires: bzip2
 BuildRequires: coreutils
 BuildRequires: diffutils
@@ -65,7 +64,6 @@ BuildRequires: libcap-ng-devel
 BuildRequires: libnl3-devel
 BuildRequires: libtraceevent-devel
 BuildRequires: libtracefs-devel
-BuildRequires: llvm-devel
 BuildRequires: m4
 BuildRequires: make
 BuildRequires: ncurses-devel
@@ -464,8 +462,11 @@ EXTRA_LDFLAGS="-pthread" %{make_tools}
 %endif
 popd
 
-# Generate vmlinux.h
-bpftool btf dump file vmlinux format c > vmlinux.h
+# Build the bootstrap bpftool to generate vmlinux.h
+export BPFBOOTSTRAP_CFLAGS=$(echo "%{__global_compiler_flags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
+export BPFBOOTSTRAP_LDFLAGS=$(echo "%{build_ldflags}" | sed -r "s/\-specs=[^\ ]+\/redhat-annobin-cc1//")
+CFLAGS="" LDFLAGS="" %{make} EXTRA_CFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_CXXFLAGS="${BPFBOOTSTRAP_CFLAGS}" EXTRA_LDFLAGS="${BPFBOOTSTRAP_LDFLAGS}" -C tools/bpf/bpftool bootstrap
+tools/bpf/bpftool/bootstrap/bpftool btf dump file vmlinux format c > vmlinux.h
 
 
 %install
@@ -972,6 +973,9 @@ fi
 
 
 %changelog
+* Fri Sep 06 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.6.49-2
+- Use bootstrapped bpftool to build vmlinux.h
+
 * Wed Sep 04 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.6.49-1
 - Update to 6.6.49
 
