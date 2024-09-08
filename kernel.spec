@@ -21,8 +21,8 @@
 
 
 Name: kernel
-Version: 6.6.49
-Release: 2%{?dist}
+Version: 6.6.50
+Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -973,6 +973,9 @@ fi
 
 
 %changelog
+* Sun Sep 08 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.6.50-1
+- Update to 6.6.50
+
 * Fri Sep 06 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.6.49-2
 - Use bootstrapped bpftool to build vmlinux.h
 
