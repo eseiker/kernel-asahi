@@ -1,3 +1,7 @@
+* Fri Sep 20 2024 Janne Grunau <j@jannau.net> [6.10.9-403.asahi]
+- fixup! arm64: Implement Apple IMPDEF TSO memory model control (Asahi Lina)
+Resolves: 
+
 * Tue Sep 17 2024 Janne Grunau <j@jannau.net> [6.10.9-402.asahi]
 - squash! PCI: apple: Avoid PERST# deassertion through gpiod initialization (Janne Grunau)
 Resolves: 
