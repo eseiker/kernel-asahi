@@ -1,4 +1,4 @@
-From 9b009a11be7b5673b633f97dd79bbbb4a2a383d5 Mon Sep 17 00:00:00 2001
+From 8378c41fcd8c0fadf4d4e3d046870c570855dd5f Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:22:13 -0400
 Subject: [PATCH] Add efi_status_to_str() and rework efi_status_to_err().
@@ -160,7 +160,7 @@ index fdf07dd6f459..cfd2b58a3494 100644
  EXPORT_SYMBOL_GPL(efi_status_to_err);
  
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 418e555459da..684b79fba39f 100644
+index 6bf3c4fe8511..1f5f00f837ac 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
 @@ -45,6 +45,8 @@ struct screen_info;
@@ -172,7 +172,7 @@ index 418e555459da..684b79fba39f 100644
  typedef unsigned long efi_status_t;
  typedef u8 efi_bool_t;
  typedef u16 efi_char16_t;		/* UNICODE character */
-@@ -918,6 +920,7 @@ static inline void efi_find_mirror(void) {}
+@@ -923,6 +925,7 @@ static inline void efi_find_mirror(void) {}
  #endif
  
  extern int efi_status_to_err(efi_status_t status);

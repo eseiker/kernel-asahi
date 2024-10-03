@@ -1,4 +1,4 @@
-From 51d0866487663784d1cc1665d804f5a7fe62d171 Mon Sep 17 00:00:00 2001
+From 1b14c142506526498b6839daffedb5318e9331d3 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Thu, 10 May 2018 17:38:43 -0400
 Subject: [PATCH] ACPI / irq: Workaround firmware issue on X-Gene based m400

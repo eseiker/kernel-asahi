@@ -1,4 +1,4 @@
-From 720413433847a69179713f8acc9ddf34b97aa0cc Mon Sep 17 00:00:00 2001
+From ee87b152d9cb9f421259db9bfc8e3904c8d7305f Mon Sep 17 00:00:00 2001
 From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 Date: Mon, 3 Apr 2017 18:18:21 +0200
 Subject: [PATCH] Input: rmi4 - remove the need for artificial IRQ in case of
@@ -124,7 +124,7 @@ index d4af17fdba46..154f0403cbf4 100644
  	data->xport.ops = &hid_rmi_ops;
  
 diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index ef9ea295f9e0..0103334e8f32 100644
+index 2168b6cd7167..5d7cda175a0c 100644
 --- a/drivers/input/rmi4/rmi_driver.c
 +++ b/drivers/input/rmi4/rmi_driver.c
 @@ -182,34 +182,47 @@ void rmi_set_attn_data(struct rmi_device *rmi_dev, unsigned long irq_status,
