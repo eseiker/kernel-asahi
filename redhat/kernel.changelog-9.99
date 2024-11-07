@@ -1,3 +1,8 @@
+* Thu Nov 07 2024 Neal Gompa <neal@gompa.dev> [6.11.6-401.asahi]
+- tools/rtla: fix collision with glibc sched_attr/sched_set_attr (Jan Stancek)
+- tools/rtla: drop __NR_sched_getattr (Jan Stancek)
+Resolves: 
+
 * Wed Nov 06 2024 Neal Gompa <neal@gompa.dev> [6.11.6-400.asahi]
 - redhat: Conditionally disable libbpf_dynamic on <F40 and <EL9 (Neal Gompa)
 - sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3 (Jan Stancek)
