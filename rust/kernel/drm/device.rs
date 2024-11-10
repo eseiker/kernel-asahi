@@ -102,6 +102,10 @@ impl<T: drm::drv::Driver> Device<T> {
         Ok(unsafe { ARef::<Self>::from_raw(raw_drm) })
     }
 
+    pub fn device(&self) -> &Self {
+        &self
+    }
+
     pub(crate) fn as_raw(&self) -> *mut bindings::drm_device {
         self.0.get()
     }
