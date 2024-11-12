@@ -89,6 +89,10 @@ BuildRequires: xmlto
 BuildRequires: xz-devel
 BuildRequires: zlib-devel
 
+%ifarch aarch64
+BuildRequires: opencsd-devel
+%endif
+
 Provides: installonlypkg(kernel)
 
 Requires: %{name}-core-uname-r = %{version}-%{release}.%{_arch}
@@ -338,6 +342,9 @@ analysing the logical and timing behavior of Linux.
 
 %global make_tools CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" EXTRA_CFLAGS="%{?build_cflags}" %{make_kernel}
 
+%ifarch aarch64
+%global make_perf_extra_opts CORESIGHT=1
+%endif
 %global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBBPF_DYNAMIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
 
 %global make_libperf %{make} EXTRA_CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" -C tools/lib/perf
