@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.11.7
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -63,7 +63,7 @@ BuildRequires: libcap-devel
 BuildRequires: libcap-ng-devel
 BuildRequires: libnl3-devel
 BuildRequires: libtraceevent-devel
-BuildRequires: libtracefs-devel
+BuildRequires: libtracefs-devel >= 1.6
 BuildRequires: m4
 BuildRequires: make
 BuildRequires: ncurses-devel
@@ -90,7 +90,7 @@ BuildRequires: xz-devel
 BuildRequires: zlib-devel
 
 %ifarch aarch64
-BuildRequires: opencsd-devel
+BuildRequires: opencsd-devel >= 1.2.1
 %endif
 
 Provides: installonlypkg(kernel)
@@ -952,6 +952,10 @@ fi
 
 
 %changelog
+* Wed Nov 13 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.11.7-2
+- Re-enable CORESIGHT=1 on aarch64
+- Re-enable building tool rtla
+
 * Sat Nov 09 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.11.7-1
 - Update to 6.11.7
 
