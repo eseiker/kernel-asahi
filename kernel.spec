@@ -21,8 +21,8 @@
 
 
 Name: kernel
-Version: 6.11.7
-Release: 2%{?dist}
+Version: 6.11.8
+Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -952,6 +952,9 @@ fi
 
 
 %changelog
+* Fri Nov 15 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.11.8-1
+- Update to 6.11.8
+
 * Wed Nov 13 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.11.7-2
 - Re-enable CORESIGHT=1 on aarch64
 - Re-enable building tool rtla
