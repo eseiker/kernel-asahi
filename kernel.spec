@@ -21,8 +21,8 @@
 
 
 Name: kernel
-Version: 6.11.9
-Release: 2%{?dist}
+Version: 6.11.10
+Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -955,6 +955,9 @@ fi
 
 
 %changelog
+* Fri Nov 22 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.11.10-1
+- Update to 6.11.10
+
 * Fri Nov 22 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.11.9-2
 - Turn on support for Rust
 
