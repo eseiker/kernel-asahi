@@ -22,7 +22,7 @@
 
 Name: kernel
 Version: 6.11.9
-Release: 1%{?dist}
+Release: 2%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -35,6 +35,7 @@ BuildRequires: asciidoc
 BuildRequires: audit-libs-devel
 BuildRequires: bash
 BuildRequires: bc
+BuildRequires: bindgen
 BuildRequires: binutils
 BuildRequires: binutils-devel
 BuildRequires: bison
@@ -84,6 +85,8 @@ BuildRequires: python3-docutils
 BuildRequires: python3-pyyaml
 BuildRequires: python3-setuptools
 BuildRequires: rsync
+BuildRequires: rust
+BuildRequires: rust-src
 BuildRequires: which
 BuildRequires: xmlto
 BuildRequires: xz-devel
@@ -952,6 +955,9 @@ fi
 
 
 %changelog
+* Fri Nov 22 2024 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.11.9-2
+- Turn on support for Rust
+
 * Mon Nov 18 2024 Kmods SIG <sig-kmods@centosproject.org> - 6.11.9-1
 - Update to 6.11.9
 
