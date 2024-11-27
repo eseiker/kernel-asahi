@@ -329,6 +329,8 @@ Summary: The Linux kernel
 %define with_kernel_abi_stablelists 0
 %define with_arm64_64k 0
 %define with_automotive 0
+# for debugging issues with build process
+%define with_verbose 1
 %endif
 
 %if %{with_verbose}
