@@ -1,3 +1,7 @@
+* Thu Nov 28 2024 Neal Gompa <neal@gompa.dev> [6.12.1-401.asahi]
+- fixup! drm/asahi: Add the Asahi driver UAPI (Janne Grunau)
+Resolves: 
+
 * Wed Nov 27 2024 Neal Gompa <neal@gompa.dev> [6.12.1-400.asahi]
 - redhat: Conditionally disable libbpf_dynamic on <F40 and <EL9 (Neal Gompa)
 - redhat/configs: Disable CS42L84 at common level (Neal Gompa)
