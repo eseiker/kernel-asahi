@@ -1,3 +1,8 @@
+* Mon Dec 02 2024 Janne Grunau <j@jannau.net> [6.12.1-404.asahi]
+- fixup! arm64: dts: apple: t8103: Add touchbar bindings (Janne Grunau)
+- fixup! ASoC: apple: Add macaudio machine driver (Janne Grunau)
+Resolves: 
+
 * Sun Dec 01 2024 Neal Gompa <neal@gompa.dev> [6.12.1-403.asahi]
 - redhat: Conditionally disable libbpf_dynamic on <F41 and <EL9 (Neal Gompa)
 - redhat/configs: Disable CS42L84 at common level (Neal Gompa)
