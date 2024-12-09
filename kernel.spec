@@ -755,10 +755,6 @@ if [ -x %{_sbindir}/weak-modules ]
 then
     %{_sbindir}/weak-modules --remove-kernel %{version}-%{release}.%{_arch} || exit $?
 fi
-if [ -L /boot/symvers-%{version}-%{release}.%{_arch}.gz ]
-then
-    rm -f /boot/symvers-%{version}-%{release}.%{_arch}.gz
-fi
 
 %posttrans core
 if [ -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch} ]
@@ -768,14 +764,6 @@ then
     if [ -x %{_sbindir}/weak-modules ]
     then
         %{_sbindir}/weak-modules --add-kernel %{version}-%{release}.%{_arch} || exit $?
-    fi
-    if [ ! -e /boot/symvers-%{version}-%{release}.%{_arch}.gz ]
-    then
-        ln -s /lib/modules/%{version}-%{release}.%{_arch}/symvers.gz /boot/symvers-%{version}-%{release}.%{_arch}.gz
-        if command -v restorecon &>/dev/null
-        then
-            restorecon /boot/symvers-%{version}-%{release}.%{_arch}.gz
-        fi
     fi
 fi
 
