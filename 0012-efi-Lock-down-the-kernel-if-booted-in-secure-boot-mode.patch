@@ -1,4 +1,4 @@
-From a2c6c57e2d1d60148bc3e623dbc046aef65eacdb Mon Sep 17 00:00:00 2001
+From 9a9865515f3965e78b15cd28f381a1eb04ab4102 Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Mon, 30 Sep 2019 21:28:16 +0000
 Subject: [PATCH] efi: Lock down the kernel if booted in secure boot mode
@@ -18,7 +18,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  2 files changed, 21 insertions(+)
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index c395100b6c88..feaf5fd3f37d 100644
+index 876ac9855f4f..6af50d80f54a 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
 @@ -21,6 +21,7 @@

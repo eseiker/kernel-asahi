@@ -1,4 +1,4 @@
-From 0f01dc56b6690c204e534efead7f833a151668e4 Mon Sep 17 00:00:00 2001
+From 7f963769c07cfbc406985b2b61026c0c1f29a708 Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Mon, 20 May 2019 22:21:02 -0400
 Subject: [PATCH] iommu/arm-smmu: workaround DMA mode issues
@@ -57,7 +57,7 @@ Signed-off-by: Laura Abbott <labbott@redhat.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index ed6c5cb60c5a..70cb770b78bb 100644
+index 83c8e617a2c5..27f9b4517095 100644
 --- a/drivers/iommu/iommu.c
 +++ b/drivers/iommu/iommu.c
 @@ -8,6 +8,7 @@

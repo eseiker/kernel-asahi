@@ -1,4 +1,4 @@
-From 044abfe144b8f9413327cb5f6de53fa65bee13fa Mon Sep 17 00:00:00 2001
+From c7c3efcbd5eb4483277e046defe82aa64bd82155 Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -16,7 +16,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  4 files changed, 20 insertions(+)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 855db460e08b..7a8c28cd7510 100644
+index 9eca013aa5e1..6f25ce6867a2 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
 @@ -438,6 +438,8 @@ LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
@@ -29,18 +29,18 @@ index 855db460e08b..7a8c28cd7510 100644
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, struct perf_event_attr *attr, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 1390f1efb4f0..b9a8ccb1dbdc 100644
+index 2ec8f3014757..7273b2b8b23b 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -507,6 +507,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -522,6 +522,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen);
  int security_locked_down(enum lockdown_reason what);
 +int security_lock_kernel_down(const char *where, enum lockdown_reason level);
  int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
- #else /* CONFIG_SECURITY */
-@@ -1477,6 +1478,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+ int security_bdev_alloc(struct block_device *bdev);
+@@ -1504,6 +1505,10 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -52,7 +52,7 @@ index 1390f1efb4f0..b9a8ccb1dbdc 100644
  				    u32 *uctx_len, void *val, size_t val_len,
  				    u64 id, u64 flags)
 diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index cd84d8ea1dfb..e4c70a0312bc 100644
+index f2bdbd55aa2b..ddf496f7fca5 100644
 --- a/security/lockdown/lockdown.c
 +++ b/security/lockdown/lockdown.c
 @@ -74,6 +74,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
@@ -62,12 +62,12 @@ index cd84d8ea1dfb..e4c70a0312bc 100644
 +	LSM_HOOK_INIT(lock_kernel_down, lock_kernel_down),
  };
  
- const struct lsm_id lockdown_lsmid = {
+ static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index 8cee5b6c6e6d..8cd1a24f1267 100644
+index c5981e558bc2..42143bb9a7d6 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5596,6 +5596,18 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5769,6 +5769,18 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  
@@ -83,9 +83,9 @@ index 8cee5b6c6e6d..8cd1a24f1267 100644
 +}
 +EXPORT_SYMBOL(security_lock_kernel_down);
 +
- #ifdef CONFIG_PERF_EVENTS
  /**
-  * security_perf_event_open() - Check if a perf event open is allowed
+  * security_bdev_alloc() - Allocate a block device LSM blob
+  * @bdev: block device
 -- 
 2.43.5
 
