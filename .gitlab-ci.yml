@@ -9,7 +9,7 @@ default:
 
 variables:
   GIT_STRATEGY: none
-  REPO: kernel-latest
+  REPO: kernel-6.12
 
 stages:
   - sync
