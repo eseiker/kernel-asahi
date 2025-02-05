@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.12.12
+Version: 6.13.1
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -87,6 +87,7 @@ BuildRequires: python3-setuptools
 BuildRequires: rsync
 BuildRequires: rust
 BuildRequires: rust-src
+BuildRequires: rustfmt
 BuildRequires: which
 BuildRequires: xmlto
 BuildRequires: xz-devel
@@ -316,6 +317,8 @@ the kernel source.
 %package -n rtla
 Summary: Real-Time Linux Analysis tools
 
+Requires: %{name}-tools-libs = %{version}-%{release}
+
 %description -n rtla
 The rtla meta-tool includes a set of commands that aims to analyze
 the real-time properties of Linux. Instead of testing Linux as a black box,
@@ -451,7 +454,7 @@ pushd tools/verification/rv/
 %{make_tools}
 popd
 pushd tools/tracing/rtla
-%{make_tools}
+%{make_tools} LDFLAGS="%{?build_ldflags} -L../../power/cpupower" INCLUDES="-I../../power/cpupower/lib"
 popd
 
 # Build the bootstrap bpftool to generate vmlinux.h
@@ -953,6 +956,9 @@ fi
 
 
 %changelog
+* Wed Feb 05 2025 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.13.1-1
+- Update to 6.13.1
+
 * Sun Feb 02 2025 Kmods SIG <sig-kmods@centosproject.org> - 6.12.12-1
 - Update to 6.12.12
 

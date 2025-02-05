@@ -1,4 +1,4 @@
-From f2a551845cf029dd24ab619102dc1e155e2c097b Mon Sep 17 00:00:00 2001
+From 264eebae16128cb8d4815ca112c16f8320f09c7a Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Sun, 10 Feb 2019 01:27:54 +0000
 Subject: [PATCH] ipmi: do not configure ipmi for HPE m400
@@ -119,5 +119,5 @@ index e12b531f5c2f..082707f8dff8 100644
  	rv = ipmi_register_driver();
  	mutex_unlock(&ipmi_interfaces_mutex);
 -- 
-2.43.5
+2.47.1
 

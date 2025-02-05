@@ -1,4 +1,4 @@
-From 9a9865515f3965e78b15cd28f381a1eb04ab4102 Mon Sep 17 00:00:00 2001
+From 75c14d40abfa093abf57014cf3242b9df7130734 Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Mon, 30 Sep 2019 21:28:16 +0000
 Subject: [PATCH] efi: Lock down the kernel if booted in secure boot mode
@@ -68,5 +68,5 @@ index e84ddf484010..d0501353a4b9 100644
  	prompt "Kernel default lockdown mode"
  	default LOCK_DOWN_KERNEL_FORCE_NONE
 -- 
-2.43.5
+2.47.1
 

@@ -1,4 +1,4 @@
-From 61aa597ea139f01375bf9bd2e3f14fff761d43da Mon Sep 17 00:00:00 2001
+From 39ec3d1f71e00c5cd540cd5da3a6407be1692d5f Mon Sep 17 00:00:00 2001
 From: Jeremy Linton <jeremy.linton@arm.com>
 Date: Thu, 11 Mar 2021 22:15:13 -0600
 Subject: [PATCH] REDHAT: coresight: etm4x: Disable coresight on HPE Apollo 70
@@ -18,7 +18,7 @@ cc: Al Stone <ahs3@redhat.com>
  1 file changed, 19 insertions(+)
 
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 66d44a404ad0..d4383c2d7d1a 100644
+index dd8c74f893db..f2d1fb1b7645 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
 +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
 @@ -10,6 +10,7 @@
@@ -69,5 +69,5 @@ index 66d44a404ad0..d4383c2d7d1a 100644
  	platform_driver_unregister(&etm4_platform_driver);
  	etm4_pm_clear();
 -- 
-2.43.5
+2.47.1
 

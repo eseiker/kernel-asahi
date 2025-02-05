@@ -1,4 +1,4 @@
-From 7a60169d168d6aae70aca10b7b71070666068529 Mon Sep 17 00:00:00 2001
+From c21ae27995b0743a88e9165cd9c3bdf66a0e6d77 Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:22:13 -0400
 Subject: [PATCH] Add efi_status_to_str() and rework efi_status_to_err().
@@ -15,7 +15,7 @@ Signed-off-by: Peter Jones <pjones@redhat.com>
  2 files changed, 96 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 70490bf2697b..2973cce74abd 100644
+index 60c64b81d2c3..19cb19cf67d4 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
 @@ -33,6 +33,7 @@
@@ -26,7 +26,7 @@ index 70490bf2697b..2973cce74abd 100644
  
  #include <asm/early_ioremap.h>
  
-@@ -993,40 +994,101 @@ int efi_mem_type(unsigned long phys_addr)
+@@ -1008,40 +1009,101 @@ int efi_mem_type(unsigned long phys_addr)
  	return -EINVAL;
  }
  
@@ -160,7 +160,7 @@ index 70490bf2697b..2973cce74abd 100644
  EXPORT_SYMBOL_GPL(efi_status_to_err);
  
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index e28d88066033..48dd2e7fa9d7 100644
+index e5815867aba9..a8dac317a246 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
 @@ -45,6 +45,8 @@ struct screen_info;
@@ -172,7 +172,7 @@ index e28d88066033..48dd2e7fa9d7 100644
  typedef unsigned long efi_status_t;
  typedef u8 efi_bool_t;
  typedef u16 efi_char16_t;		/* UNICODE character */
-@@ -921,6 +923,7 @@ static inline void efi_find_mirror(void) {}
+@@ -910,6 +912,7 @@ static inline void efi_find_mirror(void) {}
  #endif
  
  extern int efi_status_to_err(efi_status_t status);
@@ -181,5 +181,5 @@ index e28d88066033..48dd2e7fa9d7 100644
  /*
   * Variable Attributes
 -- 
-2.43.5
+2.47.1
 

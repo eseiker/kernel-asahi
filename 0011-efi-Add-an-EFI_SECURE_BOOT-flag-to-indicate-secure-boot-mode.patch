@@ -1,4 +1,4 @@
-From f4ae53e3666866717011787de779fc1e00854a0c Mon Sep 17 00:00:00 2001
+From 5d5f790c1937d1df657d8ab5be33d164318d3e5b Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Tue, 27 Feb 2018 10:04:55 +0000
 Subject: [PATCH] efi: Add an EFI_SECURE_BOOT flag to indicate secure boot mode
@@ -107,14 +107,14 @@ index 000000000000..de0a3714a5d4
 +	}
 +}
 diff --git a/include/linux/efi.h b/include/linux/efi.h
-index 48dd2e7fa9d7..860227e20797 100644
+index a8dac317a246..b17440aaf863 100644
 --- a/include/linux/efi.h
 +++ b/include/linux/efi.h
-@@ -877,6 +877,14 @@ static inline int efi_range_is_wc(unsigned long start, unsigned long len)
- #define EFI_MEM_ATTR		10	/* Did firmware publish an EFI_MEMORY_ATTRIBUTES table? */
- #define EFI_MEM_NO_SOFT_RESERVE	11	/* Is the kernel configured to ignore soft reservations? */
- #define EFI_PRESERVE_BS_REGIONS	12	/* Are EFI boot-services memory segments available? */
-+#define EFI_SECURE_BOOT		13	/* Are we in Secure Boot mode? */
+@@ -866,6 +866,14 @@ static inline int efi_range_is_wc(unsigned long start, unsigned long len)
+ #define EFI_MEM_ATTR		9	/* Did firmware publish an EFI_MEMORY_ATTRIBUTES table? */
+ #define EFI_MEM_NO_SOFT_RESERVE	10	/* Is the kernel configured to ignore soft reservations? */
+ #define EFI_PRESERVE_BS_REGIONS	11	/* Are EFI boot-services memory segments available? */
++#define EFI_SECURE_BOOT		12	/* Are we in Secure Boot mode? */
 +
 +enum efi_secureboot_mode {
 +	efi_secureboot_mode_unset,
@@ -125,7 +125,7 @@ index 48dd2e7fa9d7..860227e20797 100644
  
  #ifdef CONFIG_EFI
  /*
-@@ -888,6 +896,8 @@ static inline bool efi_enabled(int feature)
+@@ -877,6 +885,8 @@ static inline bool efi_enabled(int feature)
  }
  extern void efi_reboot(enum reboot_mode reboot_mode, const char *__unused);
  
@@ -134,7 +134,7 @@ index 48dd2e7fa9d7..860227e20797 100644
  bool __pure __efi_soft_reserve_enabled(void);
  
  static inline bool __pure efi_soft_reserve_enabled(void)
-@@ -909,6 +919,8 @@ static inline bool efi_enabled(int feature)
+@@ -898,6 +908,8 @@ static inline bool efi_enabled(int feature)
  static inline void
  efi_reboot(enum reboot_mode reboot_mode, const char *__unused) {}
  
@@ -143,7 +143,7 @@ index 48dd2e7fa9d7..860227e20797 100644
  static inline bool efi_soft_reserve_enabled(void)
  {
  	return false;
-@@ -1139,13 +1151,6 @@ static inline bool efi_runtime_disabled(void) { return true; }
+@@ -1128,13 +1140,6 @@ static inline bool efi_runtime_disabled(void) { return true; }
  extern void efi_call_virt_check_flags(unsigned long flags, const void *caller);
  extern unsigned long efi_call_virt_save_flags(void);
  
@@ -158,5 +158,5 @@ index 48dd2e7fa9d7..860227e20797 100644
  enum efi_secureboot_mode efi_get_secureboot_mode(efi_get_variable_t *get_var)
  {
 -- 
-2.43.5
+2.47.1
 

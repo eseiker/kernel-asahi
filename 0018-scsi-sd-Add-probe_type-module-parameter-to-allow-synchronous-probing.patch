@@ -1,4 +1,4 @@
-From bf45930e31c9e2e44f0434c37e066f4d0c5ba88f Mon Sep 17 00:00:00 2001
+From 1d90ecbe43db0c6fad09e1c8b3ada26c5df52bf2 Mon Sep 17 00:00:00 2001
 From: "Ewan D. Milne" <emilne@redhat.com>
 Date: Thu, 8 Jun 2023 16:14:34 -0400
 Subject: [PATCH] scsi: sd: Add "probe_type" module parameter to allow
@@ -17,7 +17,7 @@ Signed-off-by: Ewan D. Milne <emilne@redhat.com>
  1 file changed, 10 insertions(+)
 
 diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index ca4bc0ac76ad..8855e71076f4 100644
+index 8947dab132d7..9586e4fcd745 100644
 --- a/drivers/scsi/sd.c
 +++ b/drivers/scsi/sd.c
 @@ -121,6 +121,14 @@ static const char *sd_cache_types[] = {
@@ -45,5 +45,5 @@ index ca4bc0ac76ad..8855e71076f4 100644
  	if (err)
  		goto err_out_driver;
 -- 
-2.43.5
+2.47.1
 

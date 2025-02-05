@@ -1,4 +1,4 @@
-From c4de06a55f9ae318293c694e03156fdbdeb24eea Mon Sep 17 00:00:00 2001
+From 19df7213ceca8fe9f08d617fb713912254d83948 Mon Sep 17 00:00:00 2001
 From: Robert Holmes <robeholmes@gmail.com>
 Date: Tue, 23 Apr 2019 07:39:29 +0000
 Subject: [PATCH] KEYS: Make use of platform keyring for module signature
@@ -42,5 +42,5 @@ index a2ff4242e623..f0d2be1ee4f1 100644
  
  int module_sig_check(struct load_info *info, int flags)
 -- 
-2.43.5
+2.47.1
 
