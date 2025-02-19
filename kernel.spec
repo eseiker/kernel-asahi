@@ -134,6 +134,7 @@ Patch: 0016-REDHAT-coresight-etm4x-Disable-coresight-on-HPE-Apollo-70.patch
 Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
 Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
 Patch: 0019-lsm-update-security_lock_kernel_down.patch
+Patch: 0020-efi-lockdown-fix-kernel-lockdown-on-Secure-Boot.patch
 
 
 %description
