@@ -8,6 +8,8 @@ use kernel::{
 
 use crate::{debug, file, gem, gpu, hw, regs};
 
+use kernel::dma::dma_set_mask_and_coherent;
+use kernel::error::to_result;
 use kernel::macros::vtable;
 use kernel::types::ARef;
 
@@ -145,7 +147,10 @@ impl platform::Driver for AsahiDriver {
 
         let cfg = info.ok_or(ENODEV)?;
 
-        pdev.set_dma_masks((1 << cfg.uat_oas) - 1)?;
+        to_result(dma_set_mask_and_coherent(
+            pdev.as_ref(),
+            (1 << cfg.uat_oas) - 1,
+        ))?;
 
         let res = regs::Resources::new(pdev)?;
 
