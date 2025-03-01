@@ -5,7 +5,6 @@
 //!
 //! Copyright (C) The Asahi Linux Contributors
 
-use core::slice;
 use core::sync::atomic::{AtomicBool, Ordering};
 
 use kernel::{
@@ -39,26 +38,20 @@ const MSG_DATA_SHIFT: u32 = 32;
 
 const IOVA_SHIFT: u32 = 0xC;
 
-type ShMem = dma::CoherentAllocation<u8, dma::CoherentAllocator>;
+type ShMem = dma::CoherentAllocation<u8>;
 
 fn align_up(v: usize, a: usize) -> usize {
     (v + a - 1) & !(a - 1)
 }
 
-fn memcpy_to_iomem(
-    iomem: &ShMem,
-    dev: &ARef<device::Device>,
-    off: usize,
-    src: &[u8],
-) -> Result<()> {
-    if off + src.len() > iomem.count() {
-        dev_err!(dev, "Out of bounds iomem write");
-        return Err(EIO);
-    }
-    // SAFETY: We checked that it is in bounds above
+fn memcpy_to_iomem(iomem: &ShMem, off: usize, src: &[u8]) -> Result<()> {
+    // SAFETY:
+    // as_slice_mut() checks that off and src.len() are whithin iomem's limits.
+    // memcpy_to_iomem is only called from within probe() ansuring there are no
+    // concurrent read and write accesses to the same region while the slice is
+    // alive per as_slice_mut()'s requiremnts.
     unsafe {
-        let ptr = iomem.first_ptr_mut().offset(off as isize);
-        let target = slice::from_raw_parts_mut(ptr, src.len());
+        let target = iomem.as_slice_mut(off, src.len())?;
         target.copy_from_slice(src);
     }
     Ok(())
@@ -66,11 +59,11 @@ fn memcpy_to_iomem(
 
 fn build_shmem(dev: ARef<device::Device>) -> Result<ShMem> {
     let of = dev.of_node().ok_or(EIO)?;
-    let iomem = dma::try_alloc_coherent(dev.clone(), SHMEM_SIZE, false)?;
+    let iomem = dma::CoherentAllocation::<u8>::alloc_coherent(dev.clone(), SHMEM_SIZE, GFP_KERNEL)?;
 
     let panic_offset = 0x4000;
     let panic_size = 0x8000;
-    memcpy_to_iomem(&iomem, &dev, panic_offset, &1u32.to_le_bytes())?;
+    memcpy_to_iomem(&iomem, panic_offset, &1u32.to_le_bytes())?;
 
     let lpol_offset = panic_offset + panic_size;
     let lpol = of
@@ -78,37 +71,35 @@ fn build_shmem(dev: ARef<device::Device>) -> Result<ShMem> {
         .ok_or(EIO)?;
     memcpy_to_iomem(
         &iomem,
-        &dev,
         lpol_offset,
         &(lpol.value().len() as u32).to_le_bytes(),
     )?;
-    memcpy_to_iomem(&iomem, &dev, lpol_offset + 4, lpol.value())?;
+    memcpy_to_iomem(&iomem, lpol_offset + 4, lpol.value())?;
     let lpol_size = align_up(lpol.value().len() + 4, 0x4000);
 
     let ibot_offset = lpol_offset + lpol_size;
     let ibot = of.find_property(c_str!("iboot-manifest")).ok_or(EIO)?;
     memcpy_to_iomem(
         &iomem,
-        &dev,
         ibot_offset,
         &(ibot.value().len() as u32).to_le_bytes(),
     )?;
-    memcpy_to_iomem(&iomem, &dev, ibot_offset + 4, ibot.value())?;
+    memcpy_to_iomem(&iomem, ibot_offset + 4, ibot.value())?;
     let ibot_size = align_up(ibot.value().len() + 4, 0x4000);
 
-    memcpy_to_iomem(&iomem, &dev, 0, b"CNIP")?;
-    memcpy_to_iomem(&iomem, &dev, 4, &(panic_size as u32).to_le_bytes())?;
-    memcpy_to_iomem(&iomem, &dev, 8, &(panic_offset as u32).to_le_bytes())?;
+    memcpy_to_iomem(&iomem, 0, b"CNIP")?;
+    memcpy_to_iomem(&iomem, 4, &(panic_size as u32).to_le_bytes())?;
+    memcpy_to_iomem(&iomem, 8, &(panic_offset as u32).to_le_bytes())?;
 
-    memcpy_to_iomem(&iomem, &dev, 16, b"OPLA")?;
-    memcpy_to_iomem(&iomem, &dev, 16 + 4, &(lpol_size as u32).to_le_bytes())?;
-    memcpy_to_iomem(&iomem, &dev, 16 + 8, &(lpol_offset as u32).to_le_bytes())?;
+    memcpy_to_iomem(&iomem, 16, b"OPLA")?;
+    memcpy_to_iomem(&iomem, 16 + 4, &(lpol_size as u32).to_le_bytes())?;
+    memcpy_to_iomem(&iomem, 16 + 8, &(lpol_offset as u32).to_le_bytes())?;
 
-    memcpy_to_iomem(&iomem, &dev, 32, b"IPIS")?;
-    memcpy_to_iomem(&iomem, &dev, 32 + 4, &(ibot_size as u32).to_le_bytes())?;
-    memcpy_to_iomem(&iomem, &dev, 32 + 8, &(ibot_offset as u32).to_le_bytes())?;
+    memcpy_to_iomem(&iomem, 32, b"IPIS")?;
+    memcpy_to_iomem(&iomem, 32 + 4, &(ibot_size as u32).to_le_bytes())?;
+    memcpy_to_iomem(&iomem, 32 + 8, &(ibot_offset as u32).to_le_bytes())?;
 
-    memcpy_to_iomem(&iomem, &dev, 48, b"llun")?;
+    memcpy_to_iomem(&iomem, 48, b"llun")?;
     Ok(iomem)
 }
 
@@ -207,7 +198,7 @@ impl SepData {
             },
             false,
         )?;
-        let shm_addr = self.shmem.dma_handle >> IOVA_SHIFT;
+        let shm_addr = self.shmem.dma_handle() >> IOVA_SHIFT;
         mbox.send(
             Message {
                 msg0: EP_SHMEM | (MSG_SET_SHMEM << MSG_TYPE_SHIFT) | (shm_addr << MSG_DATA_SHIFT),
