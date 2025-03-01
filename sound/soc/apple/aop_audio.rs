@@ -383,9 +383,9 @@ impl SndSocAopData {
 #[repr(transparent)]
 struct SndSocAopDriver(*mut bindings::snd_card);
 
-fn copy_str(target: &mut [i8], source: &[u8]) {
+fn copy_str(target: &mut [u8], source: &[u8]) {
     for i in 0..source.len() {
-        target[i] = source[i] as _;
+        target[i] = source[i];
     }
 }
 
