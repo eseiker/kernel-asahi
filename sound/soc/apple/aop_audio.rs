@@ -646,7 +646,7 @@ kernel::of_device_table!(OF_TABLE, MODULE_OF_TABLE, (), [] as [(of::DeviceId, ()
 impl platform::Driver for SndSocAopDriver {
     type IdInfo = ();
 
-    const ID_TABLE: platform::IdTable<()> = &OF_TABLE;
+    const OF_ID_TABLE: Option<of::IdTable<()>> = Some(&OF_TABLE);
 
     fn probe(
         pdev: &mut platform::Device,
