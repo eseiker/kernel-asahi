@@ -12,7 +12,7 @@ use kernel::{
     devres::Devres,
     dma::CoherentAllocation,
     error::from_err_ptr,
-    io_mem::IoMem,
+    io::mem::IoMem,
     module_platform_driver, new_condvar, new_mutex, of, platform,
     prelude::*,
     soc::apple::aop::{from_fourcc, EPICService, FakehidListener, AOP},
@@ -557,8 +557,8 @@ unsafe impl Send for ListenerEntry {}
 #[pin_data]
 struct AopData {
     dev: ARef<device::Device>,
-    aop_mmio: IoMem<AOP_MMIO_SIZE>,
-    asc_mmio: IoMem<ASC_MMIO_SIZE>,
+    aop_mmio: Devres<IoMem<AOP_MMIO_SIZE>>,
+    asc_mmio: Devres<IoMem<ASC_MMIO_SIZE>>,
     #[pin]
     rtkit: Mutex<Option<rtkit::RtKit<AopData>>>,
     #[pin]
@@ -637,13 +637,16 @@ impl WorkItem for AopServiceRegisterWork {
 }
 
 impl AopData {
-    fn new(pdev: &mut platform::Device) -> Result<Arc<AopData>> {
-        let aop_mmio = unsafe { pdev.ioremap_resource(0)? };
-        let asc_mmio = unsafe { pdev.ioremap_resource(1)? };
+    fn new(pdev: &platform::Device) -> Result<Arc<AopData>> {
+        let dev = ARef::<device::Device>::from(pdev.as_ref());
+        let aop_res = pdev.resource(0).ok_or(EINVAL)?;
+        let asc_res = pdev.resource(1).ok_or(EINVAL)?;
+        let aop_mmio = pdev.ioremap_resource_sized::<AOP_MMIO_SIZE>(aop_res)?;
+        let asc_mmio = pdev.ioremap_resource_sized::<ASC_MMIO_SIZE>(asc_res)?;
         Arc::pin_init(
             pin_init!(
                 AopData {
-                    dev: pdev.get_device(),
+                    dev,
                     aop_mmio,
                     asc_mmio,
                     rtkit <- new_mutex!(None),
@@ -733,7 +736,11 @@ impl AopData {
     }
 
     fn aop_read32(&self, off: usize) -> u32 {
-        self.aop_mmio.readl_relaxed(off)
+        if let Some(aop_mmio) = self.aop_mmio.try_access() {
+            aop_mmio.readl_relaxed(off)
+        } else {
+            0
+        }
     }
 
     fn patch_bootargs(&self, patches: &[(u32, u32)]) -> Result<()> {
@@ -743,7 +750,10 @@ impl AopData {
         for _ in 0..size {
             arg_bytes.push(0, GFP_KERNEL).unwrap();
         }
-        self.aop_mmio.try_memcpy_fromio(&mut arg_bytes, offset)?;
+        {
+            let aop_mmio = self.aop_mmio.try_access().ok_or(ENXIO)?;
+            aop_mmio.try_memcpy_fromio(&mut arg_bytes, offset)?;
+        }
         let mut idx = 0;
         while idx < size {
             let key = u32::from_le_bytes(arg_bytes[idx..idx + 4].try_into().unwrap());
@@ -758,12 +768,17 @@ impl AopData {
             }
             idx += size;
         }
-        self.aop_mmio.try_memcpy_toio(offset, &arg_bytes)
+        {
+            let aop_mmio = self.aop_mmio.try_access().ok_or(ENXIO)?;
+            aop_mmio.try_memcpy_toio(offset, &arg_bytes)
+        }
     }
 
-    fn start_cpu(&self) {
-        let val = self.asc_mmio.readl_relaxed(CPU_CONTROL);
-        self.asc_mmio.writel_relaxed(val | CPU_RUN, CPU_CONTROL);
+    fn start_cpu(&self) -> Result<()> {
+        let asc_mmio = self.asc_mmio.try_access().ok_or(ENXIO)?;
+        let val = asc_mmio.readl_relaxed(CPU_CONTROL);
+        asc_mmio.writel_relaxed(val | CPU_RUN, CPU_CONTROL);
+        Ok(())
     }
 }
 
@@ -868,7 +883,7 @@ impl platform::Driver for AopDriver {
         ])?;
         let rtkit = rtkit::RtKit::<AopData>::new(&dev, None, 0, data.clone())?;
         *data.rtkit.lock() = Some(rtkit);
-        data.start_cpu();
+        let _ = data.start_cpu();
         data.start()?;
         let data = data as Arc<dyn AOP>;
         Ok(KBox::pin(AopDriver(data), GFP_KERNEL)?)
