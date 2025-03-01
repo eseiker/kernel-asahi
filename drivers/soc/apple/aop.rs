@@ -8,7 +8,9 @@
 use core::{arch::asm, mem, ptr, slice};
 
 use kernel::{
-    bindings, c_str, device, dma,
+    bindings, c_str, device,
+    devres::Devres,
+    dma::CoherentAllocation,
     error::from_err_ptr,
     io_mem::IoMem,
     module_platform_driver, new_condvar, new_mutex, of, platform,
@@ -145,7 +147,7 @@ struct AFKRingBuffer {
 
 struct AFKEndpoint {
     index: u8,
-    iomem: Option<dma::CoherentAllocation<u8, dma::CoherentAllocator>>,
+    iomem: Option<CoherentAllocation<u8>>,
     txbuf: Option<AFKRingBuffer>,
     rxbuf: Option<AFKRingBuffer>,
     seq: u16,
@@ -199,7 +201,7 @@ impl AFKEndpoint {
                     );
                     return Err(EIO);
                 }
-                self.rxbuf = Some(self.parse_ring_buf(&client.dev, msg)?);
+                self.rxbuf = Some(self.parse_ring_buf(msg)?);
                 if self.txbuf.is_some() {
                     rtkit.send_message(self.index, AFK_MSG_START)?;
                 }
@@ -213,7 +215,7 @@ impl AFKEndpoint {
                     );
                     return Err(EIO);
                 }
-                self.txbuf = Some(self.parse_ring_buf(&client.dev, msg)?);
+                self.txbuf = Some(self.parse_ring_buf(msg)?);
                 if self.rxbuf.is_some() {
                     rtkit.send_message(self.index, AFK_MSG_START)?;
                 }
@@ -234,11 +236,11 @@ impl AFKEndpoint {
         Ok(())
     }
 
-    fn parse_ring_buf(&self, dev: &ARef<device::Device>, msg: u64) -> Result<AFKRingBuffer> {
+    fn parse_ring_buf(&self, msg: u64) -> Result<AFKRingBuffer> {
         let msg = msg as usize;
         let size = ((msg >> 16) & 0xFFFF) * AFK_RB_BLOCK_STEP;
         let offset = ((msg >> 32) & 0xFFFF) * AFK_RB_BLOCK_STEP;
-        let buf_size = self.iomem_read32(dev, offset)? as usize;
+        let buf_size = self.iomem_read32(offset)? as usize;
         let block_size = (size - buf_size) / 3;
         Ok(AFKRingBuffer {
             offset,
@@ -246,60 +248,37 @@ impl AFKEndpoint {
             buf_size,
         })
     }
-    fn iomem_write32(&mut self, dev: &ARef<device::Device>, off: usize, data: u32) -> Result<()> {
-        let iomem = self.iomem.as_mut().unwrap();
-        if off + mem::size_of::<u32>() > iomem.count() {
-            dev_err!(dev, "Out of bounds iomem write");
-            return Err(EIO);
-        }
-        unsafe {
-            let ptr = iomem.first_ptr_mut().offset(off as isize) as *mut u32;
-            *ptr = data;
-        }
+    fn iomem_write32(&mut self, off: usize, data: u32) -> Result<()> {
+        let size = core::mem::size_of::<u32>();
+        let data = data.to_le_bytes();
+        let iomem = self.iomem.as_ref().unwrap();
+        let buf = unsafe { iomem.as_slice_mut(off, size)? };
+        buf.copy_from_slice(&data);
         Ok(())
     }
-    fn iomem_read32(&self, dev: &ARef<device::Device>, off: usize) -> Result<u32> {
+    fn iomem_read32(&self, off: usize) -> Result<u32> {
+        let size = core::mem::size_of::<u32>();
         let iomem = self.iomem.as_ref().unwrap();
-        if off + mem::size_of::<u32>() > iomem.count() {
-            dev_err!(dev, "Out of bounds iomem read");
-            return Err(EIO);
-        }
-        // SAFETY: all bit patterns are valid u32s
-        unsafe {
-            let ptr = iomem.first_ptr().offset(off as isize) as *const u32;
-            Ok(*ptr)
-        }
+        let buf = unsafe { iomem.as_slice(off, size)? };
+        Ok(u32::from_le_bytes(buf.try_into().unwrap()))
     }
-    fn memcpy_from_iomem(
-        &self,
-        dev: &ARef<device::Device>,
-        off: usize,
-        target: &mut [u8],
-    ) -> Result<()> {
+    fn memcpy_from_iomem(&self, off: usize, target: &mut [u8]) -> Result<()> {
         let iomem = self.iomem.as_ref().unwrap();
-        if off + target.len() > iomem.count() {
-            dev_err!(dev, "Out of bounds iomem read");
-            return Err(EIO);
-        }
-        // SAFETY: We checked that it is in bounds above
+        // SAFETY:
+        // as_slice() checks that off and target.len() are whithin iomem's limits.
         unsafe {
-            let ptr = iomem.first_ptr().offset(off as isize);
-            let src = slice::from_raw_parts(ptr, target.len());
+            let src = iomem.as_slice(off, target.len())?;
             target.copy_from_slice(src);
         }
         Ok(())
     }
 
-    fn memcpy_to_iomem(&self, dev: &ARef<device::Device>, off: usize, src: &[u8]) -> Result<()> {
+    fn memcpy_to_iomem(&self, off: usize, src: &[u8]) -> Result<()> {
         let iomem = self.iomem.as_ref().unwrap();
-        if off + src.len() > iomem.count() {
-            dev_err!(dev, "Out of bounds iomem write");
-            return Err(EIO);
-        }
-        // SAFETY: We checked that it is in bounds above
+        // SAFETY:
+        // as_slice_mut() checks that off and src.len() are whithin iomem's limits.
         unsafe {
-            let ptr = iomem.first_ptr_mut().offset(off as isize);
-            let target = slice::from_raw_parts_mut(ptr, src.len());
+            let target = iomem.as_slice_mut(off, src.len())?;
             target.copy_from_slice(src);
         }
         Ok(())
@@ -320,8 +299,8 @@ impl AFKEndpoint {
             );
             return Err(EIO);
         }
-        let iomem = dma::try_alloc_coherent(dev, size, false)?;
-        rtkit.send_message(self.index, AFK_MSG_GET_BUF_ACK | iomem.dma_handle)?;
+        let iomem = CoherentAllocation::<u8>::alloc_coherent(dev, size, GFP_KERNEL)?;
+        rtkit.send_message(self.index, AFK_MSG_GET_BUF_ACK | iomem.dma_handle())?;
         self.iomem = Some(iomem);
         Ok(())
     }
@@ -338,15 +317,15 @@ impl AFKEndpoint {
                 return Err(EIO);
             }
         };
-        let mut rptr = self.iomem_read32(&client.dev, buf_offset + block_size)? as usize;
-        let mut wptr = self.iomem_read32(&client.dev, buf_offset + block_size * 2)?;
+        let mut rptr = self.iomem_read32(buf_offset + block_size)? as usize;
+        let mut wptr = self.iomem_read32(buf_offset + block_size * 2)?;
         mem_sync();
         let base = buf_offset + block_size * 3;
         let mut msg_buf = KVec::new();
         const QEH_SIZE: usize = mem::size_of::<QEHeader>();
         while wptr as usize != rptr {
             let mut qeh_bytes = [0; QEH_SIZE];
-            self.memcpy_from_iomem(&client.dev, base + rptr, &mut qeh_bytes)?;
+            self.memcpy_from_iomem(base + rptr, &mut qeh_bytes)?;
             let mut qeh = unsafe { &*(qeh_bytes.as_ptr() as *const QEHeader) };
             if qeh.magic != QE_MAGIC1 && qeh.magic != QE_MAGIC2 {
                 let magic = qeh.magic;
@@ -360,7 +339,7 @@ impl AFKEndpoint {
             }
             if qeh.size as usize > (buf_size - rptr - QEH_SIZE) {
                 rptr = 0;
-                self.memcpy_from_iomem(&client.dev, base + rptr, &mut qeh_bytes)?;
+                self.memcpy_from_iomem(base + rptr, &mut qeh_bytes)?;
                 qeh = unsafe { &*(qeh_bytes.as_ptr() as *const QEHeader) };
 
                 if qeh.magic != QE_MAGIC1 && qeh.magic != QE_MAGIC2 {
@@ -375,14 +354,14 @@ impl AFKEndpoint {
                 }
             }
             msg_buf.resize(qeh.size as usize, 0, GFP_KERNEL)?;
-            self.memcpy_from_iomem(&client.dev, base + rptr + QEH_SIZE, &mut msg_buf)?;
+            self.memcpy_from_iomem(base + rptr + QEH_SIZE, &mut msg_buf)?;
             let (hdr_bytes, msg) = msg_buf.split_at(mem::size_of::<EPICHeader>());
             let header = unsafe { &*(hdr_bytes.as_ptr() as *const EPICHeader) };
             self.handle_ipc(client, qeh, header, msg)?;
             rptr = align_up(rptr + QEH_SIZE + qeh.size as usize, block_size) % buf_size;
             mem_sync();
-            self.iomem_write32(&client.dev, buf_offset + block_size, rptr as u32)?;
-            wptr = self.iomem_read32(&client.dev, buf_offset + block_size * 2)?;
+            self.iomem_write32(buf_offset + block_size, rptr as u32)?;
+            wptr = self.iomem_read32(buf_offset + block_size * 2)?;
             mem_sync();
         }
         Ok(())
@@ -483,8 +462,8 @@ impl AFKEndpoint {
         };
         let base = buf_offset + block_size * 3;
         mem_sync();
-        let rptr = self.iomem_read32(&client.dev, buf_offset + block_size)? as usize;
-        let mut wptr = self.iomem_read32(&client.dev, buf_offset + block_size * 2)? as usize;
+        let rptr = self.iomem_read32(buf_offset + block_size)? as usize;
+        let mut wptr = self.iomem_read32(buf_offset + block_size * 2)? as usize;
         const QEH_SIZE: usize = mem::size_of::<QEHeader>();
         if wptr < rptr && wptr + QEH_SIZE >= rptr {
             dev_err!(client.dev, "Tx buffer full at endpoint {}", self.index);
@@ -503,15 +482,15 @@ impl AFKEndpoint {
                 mem::size_of::<QEHeader>(),
             )
         };
-        self.memcpy_to_iomem(&client.dev, base + wptr, qeh_bytes)?;
+        self.memcpy_to_iomem(base + wptr, qeh_bytes)?;
         if payload_len > buf_size - wptr - QEH_SIZE {
             wptr = 0;
-            self.memcpy_to_iomem(&client.dev, base + wptr, qeh_bytes)?;
+            self.memcpy_to_iomem(base + wptr, qeh_bytes)?;
         }
-        self.memcpy_to_iomem(&client.dev, base + wptr + QEH_SIZE, header)?;
-        self.memcpy_to_iomem(&client.dev, base + wptr + QEH_SIZE + header.len(), data)?;
+        self.memcpy_to_iomem(base + wptr + QEH_SIZE, header)?;
+        self.memcpy_to_iomem(base + wptr + QEH_SIZE + header.len(), data)?;
         wptr = align_up(wptr + QEH_SIZE + payload_len, block_size) % buf_size;
-        self.iomem_write32(&client.dev, buf_offset + block_size * 2, wptr as u32)?;
+        self.iomem_write32(buf_offset + block_size * 2, wptr as u32)?;
         let msg = wptr as u64 | (AFK_OPC_SEND << 48);
         rtkit.send_message(self.index, msg)
     }
