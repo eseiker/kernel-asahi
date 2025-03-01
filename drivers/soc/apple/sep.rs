@@ -304,7 +304,7 @@ kernel::of_device_table!(
 impl platform::Driver for SepDriver {
     type IdInfo = ();
 
-    const ID_TABLE: platform::IdTable<()> = &OF_TABLE;
+    const OF_ID_TABLE: Option<of::IdTable<()>> = Some(&OF_TABLE);
 
     fn probe(pdev: &mut platform::Device, _info: Option<&()>) -> Result<Pin<KBox<SepDriver>>> {
         let dev = pdev.get_device();
