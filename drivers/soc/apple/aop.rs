@@ -870,9 +870,8 @@ impl platform::Driver for AopDriver {
     const OF_ID_TABLE: Option<of::IdTable<()>> = Some(&OF_TABLE);
 
     fn probe(pdev: &mut platform::Device, _info: Option<&()>) -> Result<Pin<KBox<AopDriver>>> {
-        let dev = pdev.get_device();
         let data = AopData::new(pdev)?;
-        let of = dev.of_node().ok_or(EIO)?;
+        let of = pdev.as_ref().of_node().ok_or(EIO)?;
         let alig = of.get_property(c_str!("apple,aop-alignment"))?;
         let aopt = of.get_property(c_str!("apple,aop-target"))?;
         data.patch_bootargs(&[
@@ -881,7 +880,7 @@ impl platform::Driver for AopDriver {
             (from_fourcc(b"alig"), alig),
             (from_fourcc(b"AOPt"), aopt),
         ])?;
-        let rtkit = rtkit::RtKit::<AopData>::new(&dev, None, 0, data.clone())?;
+        let rtkit = rtkit::RtKit::<AopData>::new(pdev.as_ref(), None, 0, data.clone())?;
         *data.rtkit.lock() = Some(rtkit);
         let _ = data.start_cpu();
         data.start()?;
