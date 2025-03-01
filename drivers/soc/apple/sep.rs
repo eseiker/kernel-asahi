@@ -307,8 +307,7 @@ impl platform::Driver for SepDriver {
     const OF_ID_TABLE: Option<of::IdTable<()>> = Some(&OF_TABLE);
 
     fn probe(pdev: &mut platform::Device, _info: Option<&()>) -> Result<Pin<KBox<SepDriver>>> {
-        let dev = pdev.get_device();
-        let of = dev.of_node().ok_or(EIO)?;
+        let of = pdev.as_ref().of_node().ok_or(EIO)?;
         let fw_node = of.parse_phandle(c_str!("memory-region"), 0).ok_or(EIO)?;
         let mut reg = [0u64, 0u64];
         fw_node
@@ -316,13 +315,17 @@ impl platform::Driver for SepDriver {
             .ok_or(EIO)?
             .copy_to_slice(&mut reg)?;
         let data = SepData::new(
-            dev.clone(),
+            ARef::<device::Device>::from(pdev.as_ref()),
             FwRegionParams {
                 addr: reg[0],
                 size: reg[1] as usize,
             },
         )?;
-        *data.mbox.lock() = Some(Mailbox::new_byname(&dev, c_str!("mbox"), data.clone())?);
+        *data.mbox.lock() = Some(Mailbox::new_byname(
+            pdev.as_ref(),
+            c_str!("mbox"),
+            data.clone(),
+        )?);
         data.start()?;
         Ok(KBox::pin(SepDriver(data), GFP_KERNEL)?)
     }
