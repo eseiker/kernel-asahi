@@ -652,8 +652,8 @@ impl platform::Driver for SndSocAopDriver {
         pdev: &mut platform::Device,
         _info: Option<&()>,
     ) -> Result<Pin<KBox<SndSocAopDriver>>> {
-        let dev = pdev.get_device();
-        let parent = dev.parent().unwrap();
+        let dev = ARef::<device::Device>::from(pdev.as_ref());
+        let parent = pdev.as_ref().parent().unwrap();
         // SAFETY: our parent is AOP, and AopDriver is repr(transparent) for Arc<dyn Aop>
         let adata_ptr = unsafe { Pin::<KBox<Arc<dyn AOP>>>::borrow(parent.get_drvdata()) };
         let adata = (&*adata_ptr).clone();
