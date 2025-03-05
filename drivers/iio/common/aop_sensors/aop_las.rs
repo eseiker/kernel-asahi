@@ -36,7 +36,7 @@ impl platform::Driver for IIOAopLasDriver {
         pdev: &mut platform::Device,
         _info: Option<&()>,
     ) -> Result<Pin<KBox<IIOAopLasDriver>>> {
-        let dev = pdev.get_device();
+        let dev = pdev.as_ref();
         let parent = dev.parent().unwrap();
         // SAFETY: our parent is AOP, and AopDriver is repr(transparent) for Arc<dyn Aop>
         let adata_ptr = unsafe { Pin::<KBox<Arc<dyn AOP>>>::borrow(parent.get_drvdata()) };
@@ -45,7 +45,7 @@ impl platform::Driver for IIOAopLasDriver {
         let service = unsafe { *((*dev.as_raw()).platform_data as *const EPICService) };
 
         let ty = bindings::BINDINGS_IIO_ANGL;
-        let data = AopSensorData::new(dev, ty, MsgProc)?;
+        let data = AopSensorData::new(pdev.clone(), ty, MsgProc)?;
         adata.add_fakehid_listener(service, data.clone())?;
         let info_mask = 1 << bindings::BINDINGS_IIO_CHAN_INFO_RAW;
         Ok(KBox::pin(

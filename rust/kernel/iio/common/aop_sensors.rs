@@ -9,12 +9,8 @@ use core::ptr;
 use core::sync::atomic::{AtomicU32, Ordering};
 
 use kernel::{
-    bindings, device,
-    prelude::*,
-    soc::apple::aop::FakehidListener,
-    sync::Arc,
-    types::{ARef, ForeignOwnable},
-    ThisModule,
+    bindings, platform, prelude::*, soc::apple::aop::FakehidListener, sync::Arc,
+    types::ForeignOwnable, ThisModule,
 };
 
 pub trait MessageProcessor {
@@ -22,17 +18,17 @@ pub trait MessageProcessor {
 }
 
 pub struct AopSensorData<T: MessageProcessor> {
-    dev: ARef<device::Device>,
+    dev: platform::Device,
     ty: u32,
     value: AtomicU32,
     msg_proc: T,
 }
 
 impl<T: MessageProcessor> AopSensorData<T> {
-    pub fn new(dev: ARef<device::Device>, ty: u32, msg_proc: T) -> Result<Arc<AopSensorData<T>>> {
+    pub fn new(dev: platform::Device, ty: u32, msg_proc: T) -> Result<Arc<AopSensorData<T>>> {
         Ok(Arc::new(
             AopSensorData {
-                dev: dev.clone(),
+                dev,
                 ty,
                 value: AtomicU32::new(0),
                 msg_proc,
@@ -124,7 +120,7 @@ impl<T: MessageProcessor + 'static> IIORegistration<T> {
             registered: false,
             _p: PhantomData,
         };
-        this.dev = unsafe { bindings::iio_device_alloc(data.dev.as_raw(), 0) };
+        this.dev = unsafe { bindings::iio_device_alloc(data.dev.as_ref().as_raw(), 0) };
         unsafe {
             (*this.dev).priv_ = data.clone().into_foreign() as _;
             (*this.dev).name = name.as_ptr() as _;
@@ -135,7 +131,7 @@ impl<T: MessageProcessor + 'static> IIORegistration<T> {
         }
         let ret = unsafe { bindings::__iio_device_register(this.dev, module.as_ptr()) };
         if ret < 0 {
-            dev_err!(data.dev, "Unable to register iio sensor");
+            dev_err!(data.dev.as_ref(), "Unable to register iio sensor");
             return Err(Error::from_errno(ret));
         }
         this.registered = true;

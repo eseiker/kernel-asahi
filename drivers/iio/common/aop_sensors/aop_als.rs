@@ -5,7 +5,7 @@
 //! Copyright (C) The Asahi Linux Contributors
 
 use kernel::{
-    bindings, c_str, device,
+    bindings, c_str,
     iio::common::aop_sensors::{AopSensorData, IIORegistration, MessageProcessor},
     module_platform_driver,
     of::{self, Node},
@@ -13,22 +13,20 @@ use kernel::{
     prelude::*,
     soc::apple::aop::{EPICService, AOP},
     sync::Arc,
-    types::{ARef, ForeignOwnable},
+    types::ForeignOwnable,
 };
 
 const EPIC_SUBTYPE_SET_ALS_PROPERTY: u16 = 0x4;
 
-fn enable_als(
-    aop: &dyn AOP,
-    dev: &ARef<device::Device>,
-    of: &Node,
-    svc: &EPICService,
-) -> Result<()> {
+fn enable_als(aop: &dyn AOP, dev: &platform::Device, of: &Node, svc: &EPICService) -> Result<()> {
     if let Some(prop) = of.find_property(c_str!("apple,als-calibration")) {
         set_als_property(aop, svc, 0xb, prop.value())?;
         set_als_property(aop, svc, 0, &200000u32.to_le_bytes())?;
     } else {
-        dev_warn!(dev, "ALS Calibration not found, will not enable it");
+        dev_warn!(
+            dev.as_ref(),
+            "ALS Calibration not found, will not enable it"
+        );
     }
     Ok(())
 }
@@ -85,7 +83,7 @@ impl platform::Driver for IIOAopAlsDriver {
         pdev: &mut platform::Device,
         _info: Option<&()>,
     ) -> Result<Pin<KBox<IIOAopAlsDriver>>> {
-        let dev = pdev.get_device();
+        let dev = pdev.as_ref();
         let parent = dev.parent().unwrap();
         // SAFETY: our parent is AOP, and AopDriver is repr(transparent) for Arc<dyn Aop>
         let adata_ptr = unsafe { Pin::<KBox<Arc<dyn AOP>>>::borrow(parent.get_drvdata()) };
@@ -98,9 +96,9 @@ impl platform::Driver for IIOAopAlsDriver {
             .get_child_by_name(c_str!("als"))
             .ok_or(EIO)?;
         let ty = bindings::BINDINGS_IIO_LIGHT;
-        let data = AopSensorData::new(dev.clone(), ty, MsgProc(40))?;
+        let data = AopSensorData::new(pdev.clone(), ty, MsgProc(40))?;
         adata.add_fakehid_listener(service, data.clone())?;
-        enable_als(adata.as_ref(), &dev, &of, &service)?;
+        enable_als(adata.as_ref(), pdev, &of, &service)?;
         let info_mask = 1 << bindings::BINDINGS_IIO_CHAN_INFO_PROCESSED;
         Ok(KBox::pin(
             IIOAopAlsDriver(IIORegistration::<MsgProc>::new(
