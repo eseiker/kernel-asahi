@@ -665,11 +665,7 @@ impl platform::Driver for SndSocAopDriver {
             .get_child_by_name(c_str!("audio"))
             .ok_or(EIO)?;
         let audio = *module_parameters::mic_check_123.get() != 0;
-        if !audio
-            && pdev
-                .as_ref()
-                .property_present(c_str!("apple,no-beamforming"))
-        {
+        if !audio && of.property_present(c_str!("apple,no-beamforming")) {
             return Err(ENODEV);
         }
         let data = SndSocAopData::new(dev, adata, svc, of)?;
