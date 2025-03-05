@@ -51,12 +51,12 @@ unsafe extern "C" fn aop_read_raw<T: MessageProcessor + 'static>(
     chan: *const bindings::iio_chan_spec,
     val: *mut i32,
     _: *mut i32,
-    mask: i64,
+    mask: isize,
 ) -> i32 {
     let data = unsafe { Arc::<AopSensorData<T>>::borrow((*dev).priv_) };
     let ty = unsafe { (*chan).type_ };
-    if mask != bindings::BINDINGS_IIO_CHAN_INFO_PROCESSED as i64
-        && mask != bindings::BINDINGS_IIO_CHAN_INFO_RAW as i64
+    if mask != bindings::BINDINGS_IIO_CHAN_INFO_PROCESSED as isize
+        && mask != bindings::BINDINGS_IIO_CHAN_INFO_RAW as isize
     {
         return EINVAL.to_errno();
     }
@@ -88,7 +88,7 @@ impl<T: MessageProcessor + 'static> IIORegistration<T> {
         data: Arc<AopSensorData<T>>,
         name: &'static CStr,
         ty: u32,
-        info_mask: i64,
+        info_mask: isize,
         module: &ThisModule,
     ) -> Result<Self> {
         let spec = KBox::pin(
