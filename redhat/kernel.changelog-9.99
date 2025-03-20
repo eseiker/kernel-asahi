@@ -1,3 +1,7 @@
+* Wed Mar 19 2025 Neal Gompa <neal@gompa.dev> [6.13.7-401.asahi]
+- Revert "arm64: dts: apple: Mark aop_audio with "apple,no-beamforming"" (Neal Gompa)
+Resolves: 
+
 * Wed Mar 19 2025 Neal Gompa <neal@gompa.dev> [6.13.7-400.asahi]
 - apply -Wno-error=unterminated-string-initialization temporarily (Thorsten Leemhuis)
 - include/linux: Adjust headers for C23 (Jakub Jelinek)
