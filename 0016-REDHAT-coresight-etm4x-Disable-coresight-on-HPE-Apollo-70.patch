@@ -1,4 +1,4 @@
-From 39ec3d1f71e00c5cd540cd5da3a6407be1692d5f Mon Sep 17 00:00:00 2001
+From a7d83d10e168e12250bcef3b930a2bedbafab604 Mon Sep 17 00:00:00 2001
 From: Jeremy Linton <jeremy.linton@arm.com>
 Date: Thu, 11 Mar 2021 22:15:13 -0600
 Subject: [PATCH] REDHAT: coresight: etm4x: Disable coresight on HPE Apollo 70
@@ -18,10 +18,10 @@ cc: Al Stone <ahs3@redhat.com>
  1 file changed, 19 insertions(+)
 
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index dd8c74f893db..f2d1fb1b7645 100644
+index 2c1a60577728..06b06d0e7b4a 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
 +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -10,6 +10,7 @@
+@@ -11,6 +11,7 @@
  #include <linux/init.h>
  #include <linux/types.h>
  #include <linux/device.h>
@@ -29,7 +29,7 @@ index dd8c74f893db..f2d1fb1b7645 100644
  #include <linux/io.h>
  #include <linux/err.h>
  #include <linux/fs.h>
-@@ -2345,6 +2346,16 @@ static const struct amba_id etm4_ids[] = {
+@@ -2380,6 +2381,16 @@ static const struct amba_id etm4_ids[] = {
  	{},
  };
  
@@ -46,7 +46,7 @@ index dd8c74f893db..f2d1fb1b7645 100644
  MODULE_DEVICE_TABLE(amba, etm4_ids);
  
  static struct amba_driver etm4x_amba_driver = {
-@@ -2413,6 +2424,11 @@ static int __init etm4x_init(void)
+@@ -2448,6 +2459,11 @@ static int __init etm4x_init(void)
  {
  	int ret;
  
@@ -58,7 +58,7 @@ index dd8c74f893db..f2d1fb1b7645 100644
  	ret = etm4_pm_setup();
  
  	/* etm4_pm_setup() does its own cleanup - exit on error */
-@@ -2439,6 +2455,9 @@ static int __init etm4x_init(void)
+@@ -2474,6 +2490,9 @@ static int __init etm4x_init(void)
  
  static void __exit etm4x_exit(void)
  {

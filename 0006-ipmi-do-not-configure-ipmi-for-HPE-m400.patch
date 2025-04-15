@@ -1,4 +1,4 @@
-From 264eebae16128cb8d4815ca112c16f8320f09c7a Mon Sep 17 00:00:00 2001
+From 07eb4629143678ee0cf272870513ad273e278247 Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Sun, 10 Feb 2019 01:27:54 +0000
 Subject: [PATCH] ipmi: do not configure ipmi for HPE m400
@@ -84,7 +84,7 @@ index bbf7029e224b..cf7faa970dd6 100644
  		dmi_decode_ipmi((const struct dmi_header *) dev->device_data);
  
 diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index e12b531f5c2f..082707f8dff8 100644
+index 1e5313748f8b..f2a56c624f54 100644
 --- a/drivers/char/ipmi/ipmi_msghandler.c
 +++ b/drivers/char/ipmi/ipmi_msghandler.c
 @@ -35,6 +35,7 @@
@@ -95,7 +95,7 @@ index e12b531f5c2f..082707f8dff8 100644
  #include <linux/delay.h>
  
  #define IPMI_DRIVER_VERSION "39.2"
-@@ -5510,8 +5511,21 @@ static int __init ipmi_init_msghandler_mod(void)
+@@ -5508,8 +5509,21 @@ static int __init ipmi_init_msghandler_mod(void)
  {
  	int rv;
  
