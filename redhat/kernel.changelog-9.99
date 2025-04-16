@@ -1,3 +1,8 @@
+* Wed Apr 16 2025 Janne Grunau <j@jannau.net> [6.14.2-401.asahi]
+- HACK: arm64: dts: apple: j293/j493: Mark ps_dispdfr_be as always-on (Janne Grunau)
+- arm64: dts: apple: t6022-j180d: Enable second HDMI port (Janne Grunau)
+Resolves: 
+
 * Fri Apr 11 2025 Neal Gompa <neal@gompa.dev> [6.14.2-400.asahi]
 - redhat: Conditionally disable libbpf_dynamic on <F41 and <EL9 (Neal Gompa)
 - redhat/configs: Disable the Apple touchbar panel driver at the common level (Neal Gompa)
