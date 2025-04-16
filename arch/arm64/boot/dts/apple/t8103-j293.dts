@@ -200,6 +200,11 @@
 	};
 };
 
+/* temporary to prevent issues after touch bar suspend */
+&ps_dispdfr_be {
+	apple,always-on; /* temporary to fix touchbar suspend */
+};
+
 &display_dfr {
 	status = "okay";
 };
