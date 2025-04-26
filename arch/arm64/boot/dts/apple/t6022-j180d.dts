@@ -823,14 +823,6 @@
 	};
 };
 
-&pcie0 {
-	status = "disabled";
-};
-
-&pcie0_dart_0 {
-	status = "disabled";
-};
-
 &pcie_ge {
 	status = "ok";
 };
@@ -846,5 +838,9 @@
 &pcie_ge_dart_die1 {
 	status = "ok";
 };
+
+// delete unused PCIe nodes
+/delete-node/ &pcie0;
+/delete-node/ &pcie0_dart_0;
 
 #include "spi1-nvram.dtsi"
