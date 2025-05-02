@@ -135,6 +135,9 @@ Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing
 Patch: 0019-lsm-update-security_lock_kernel_down.patch
 
 
+Patch: 1001-Revert-bpf-Add-namespace-to-BPF-internal-symbols.patch
+
+
 %description
 The kernel meta package.
 
