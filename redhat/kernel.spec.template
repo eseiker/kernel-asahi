@@ -513,6 +513,11 @@ Summary: The Linux kernel
 %define rhelkeys 0
 %endif
 
+%if 0%{?centos_hs}
+# CentOS Hyperscale builds perf separately
+%define with_perf 0
+%define with_libperf 0
+%endif
 
 %if %{zipmodules}
 %global zipsed -e 's/\.ko$/\.ko.%compext/'
