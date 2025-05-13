@@ -521,6 +521,8 @@ Summary: The Linux kernel
 # We don't need ynl on EL9
 %define with_ynl 0
 %endif
+# Enable 16k flavor for Hyperscale Asahi
+%define with_arm64_16k 1
 %endif
 
 %if %{zipmodules}
@@ -1031,9 +1033,12 @@ Source33: %{name}-x86_64-debug-rhel.config
 # ARM64 64K page-size kernel config
 Source42: %{name}-aarch64-64k-rhel.config
 Source43: %{name}-aarch64-64k-debug-rhel.config
+# ARM64 16K page-size kernel config
+Source44: %{name}-aarch64-16k-rhel.config
+Source45: %{name}-aarch64-16k-debug-rhel.config
 
-Source44: %{name}-riscv64-rhel.config
-Source45: %{name}-riscv64-debug-rhel.config
+Source46: %{name}-riscv64-rhel.config
+Source47: %{name}-riscv64-debug-rhel.config
 %endif
 
 %if %{include_rhel} || %{include_automotive}
