@@ -14,6 +14,7 @@
 #![no_std]
 #![feature(arbitrary_self_types)]
 #![feature(associated_type_defaults)]
+#![feature(cfg_version)]
 #![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_pointee))]
 #![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(pin_coerce_unsized_trait))]
 #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized))]
