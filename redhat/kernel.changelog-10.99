@@ -1,3 +1,8 @@
+* Thu May 22 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc7.d608703fcdd9.60]
+- Revert "loop: Add sanity check for read/write_iter" (Justin M. Forbes)
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Thu May 22 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-0.rc7.d608703fcdd9.59]
 - Linux v6.15.0-0.rc7.d608703fcdd9
 Resolves: 
