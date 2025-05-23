@@ -867,7 +867,7 @@ struct AopDriver(Arc<dyn AOP>);
 struct AopHwConfig {
     ec0p: u64,
     alig: u64,
-    aopt: u64
+    aopt: u64,
 }
 
 const HW_CFG_T8103: AopHwConfig = AopHwConfig {
