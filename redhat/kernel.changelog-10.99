@@ -1,3 +1,7 @@
+* Tue May 27 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-2]
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Tue May 27 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.15.0-1]
 - Reset RHEL_RELEASE for the 6.16 cycle (Justin M. Forbes)
 - fedora: add 'fedora' SBAT suffix for UKI addons (Li Tian)
