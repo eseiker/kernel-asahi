@@ -114,6 +114,10 @@ Source091: kernel-el9-x86_64.config
 Source092: kernel-el9-aarch64.config
 Source093: kernel-el9-ppc64le.config
 
+Source101: kernel-el10-x86_64.config
+Source102: kernel-el10-aarch64.config
+Source103: kernel-el10-ppc64le.config
+
 
 Patch: 0001-ACPI-APEI-arm64-Ignore-broken-HPE-moonshot-APEI-support.patch
 Patch: 0002-ACPI-irq-Workaround-firmware-issue-on-X-Gene-based-m400.patch

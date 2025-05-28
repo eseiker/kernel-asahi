@@ -27,7 +27,7 @@ mock:
     - when: always
   parallel:
     matrix:
-      - EL: [9]
+      - EL: [9, 10]
         ARCH: [x86_64]
   stage: build
   script:
@@ -114,7 +114,7 @@ cbs:
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
   parallel:
     matrix:
-      - EL: [9]
+      - EL: [9, 10]
   stage: build
   script:
     - cbs version
@@ -130,7 +130,7 @@ test:
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
   parallel:
     matrix:
-      - EL: [9]
+      - EL: [9, 10]
         ARCH: [x86_64, aarch64]
   stage: test
   script:
@@ -220,7 +220,7 @@ release:
     - if: $CI_COMMIT_REF_PROTECTED == "true" && $CI_PROJECT_NAMESPACE =~ /CentOS\/kmods\/.*/
   parallel:
     matrix:
-      - EL: [9]
+      - EL: [9, 10]
   stage: release
   script:
     - cbs version
