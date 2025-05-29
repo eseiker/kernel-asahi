@@ -1,3 +1,9 @@
+* Thu May 29 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.90b83efa6701.6]
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- package the newly added cpupower.service (Thorsten Leemhuis)
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Thu May 29 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.90b83efa6701.5]
 - Fix up mismatches for RHEL s390 zfpcdump (Justin M. Forbes)
 - More mismatch fixes for 6.16 (Justin M. Forbes)
