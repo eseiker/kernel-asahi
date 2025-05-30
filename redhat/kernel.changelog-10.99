@@ -1,3 +1,9 @@
+* Fri May 30 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.f66bc387efbe.7]
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- package the newly added cpupower.service (Thorsten Leemhuis)
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Fri May 30 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.f66bc387efbe.6]
 - Linux v6.16.0-0.rc0.f66bc387efbe
 Resolves: 
