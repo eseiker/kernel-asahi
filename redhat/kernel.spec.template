@@ -517,6 +517,10 @@ Summary: The Linux kernel
 # CentOS Hyperscale builds perf separately
 %define with_perf 0
 %define with_libperf 0
+%if 0%{?rhel} && 0%{?rhel} < 10
+# We don't need ynl on EL9
+%define with_ynl 0
+%endif
 %endif
 
 %if %{zipmodules}
