@@ -1,3 +1,10 @@
+* Thu Jun 05 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.ec7714e49479.13]
+- drivers/crypto: make PAES_S390 select CRYPTO_ENGINE (Jan Stancek)
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- package the newly added cpupower.service (Thorsten Leemhuis)
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Thu Jun 05 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.ec7714e49479.12]
 - redhat/configs: Enable CONFIG_PCIE_TPH (Ivan Vecera)
 - spec: fix spec warning for /usr/include/ynl (Jan Stancek)
