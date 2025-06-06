@@ -1,3 +1,10 @@
+* Fri Jun 06 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.e271ed52b344.14]
+- drivers/crypto: make PAES_S390 select CRYPTO_ENGINE (Jan Stancek)
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- package the newly added cpupower.service (Thorsten Leemhuis)
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Fri Jun 06 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc0.e271ed52b344.13]
 - Linux v6.16.0-0.rc0.e271ed52b344
 Resolves: 
