@@ -1,3 +1,8 @@
+* Mon Jun 09 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc1.17]
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Mon Jun 09 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc1.16]
 - redhat: enable test_kmod, test_module and install kmod selftests (Herton R. Krzesinski)
 - package the newly added cpupower.service (Thorsten Leemhuis)
