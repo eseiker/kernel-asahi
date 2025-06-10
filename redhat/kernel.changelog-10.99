@@ -1,3 +1,8 @@
+* Tue Jun 10 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc1.f09079bd04a9.18]
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Tue Jun 10 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc1.f09079bd04a9.17]
 - redhat/configs: add LED kernel configs (Rupinderjit Singh)
 - Linux v6.16.0-0.rc1.f09079bd04a9
