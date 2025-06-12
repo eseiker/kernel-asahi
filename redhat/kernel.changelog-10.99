@@ -1,3 +1,9 @@
+* Thu Jun 12 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc1.2c4a1f3fe03e.20]
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+- cpupower: split unitdir from libdir in Makefile (Francesco Poli (wintermute))
+- powerpc: Fix struct termio related ioctl macros (Madhavan Srinivasan)
+Resolves: 
+
 * Thu Jun 12 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc1.2c4a1f3fe03e.19]
 - redhat/kernel.spec: drop modules-extra-matched for noarch (Jan Stancek)
 - redhat/configs: fedora: set some qcom clk, icc, and pinctrl drivers to built in (Brian Masney)
