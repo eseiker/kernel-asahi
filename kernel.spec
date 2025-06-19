@@ -93,6 +93,13 @@ BuildRequires: xmlto
 BuildRequires: xz-devel
 BuildRequires: zlib-devel
 
+%if 0%{?rhel} >= 10
+BuildRequires: python3-jsonschema
+BuildRequires: python3-pip
+BuildRequires: python3-setuptools >= 61
+BuildRequires: (python3-wheel if python3-setuptools < 70)
+%endif
+
 %ifarch aarch64
 BuildRequires: opencsd-devel >= 1.2.1
 %endif
@@ -422,6 +429,18 @@ echo "New config options..."
 %{make_perf} DESTDIR=%{buildroot} all
 %{make_libperf} DESTDIR=%{buildroot}
 
+%if 0%{?rhel} >= 10
+pushd tools/net/ynl
+export PIP_CONFIG_FILE=/tmp/pip.config
+cat <<EOF > $PIP_CONFIG_FILE
+[install]
+no-index = true
+no-build-isolation = false
+EOF
+%{make_tools}
+popd
+%endif
+
 %{__chmod} +x tools/power/cpupower/utils/version-gen.sh
 %{make_tools} -C tools/power/cpupower CPUFREQ_BENCH=false DEBUG=false
 
@@ -694,6 +713,12 @@ rm -rf %{buildroot}%{_libdir}/traceevent
 %{make_libperf} -j 1 DESTDIR=%{buildroot} prefix=%{_prefix} libdir=%{_libdir} install install_headers
 
 # tools
+%if 0%{?rhel} >= 10
+pushd tools/net/ynl
+%{make_tools} DESTDIR=$RPM_BUILD_ROOT install
+popd
+%endif
+
 %{make_tools} -C tools/power/cpupower DESTDIR=%{buildroot} libdir=%{_libdir} mandir=%{_mandir} CPUFREQ_BENCH=false install
 %find_lang cpupower
 %ifarch x86_64
@@ -922,6 +947,12 @@ fi
 %{_mandir}/man*/cpupower*
 %{_mandir}/man*/kvm_stat*
 %{_unitdir}/kvm_stat.service
+%if 0%{?rhel} >= 10
+%{_bindir}/ynl*
+%{_datadir}/ynl
+%{_docdir}/ynl
+%{python3_sitelib}/pyynl*
+%endif
 
 %ifarch x86_64
 %{_bindir}/centrino-decode
@@ -945,6 +976,10 @@ fi
 %{_includedir}/cpuidle.h
 %{_includedir}/powercap.h
 %{_libdir}/libcpupower.so
+%if 0%{?rhel} >= 10
+%{_includedir}/ynl
+%{_libdir}/libynl*
+%endif
 
 
 %files -n rtla
