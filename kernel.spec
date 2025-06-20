@@ -711,12 +711,13 @@ rm -rf %{buildroot}%{_libdir}/traceevent
 
 # libperf
 %{make_libperf} -j 1 DESTDIR=%{buildroot} prefix=%{_prefix} libdir=%{_libdir} install install_headers
+rm -f %{buildroot}%{_libdir}/libperf.a
 
 # tools
 %if 0%{?rhel} >= 10
 pushd tools/net/ynl
 export PIP_CONFIG_FILE=/tmp/pip.config
-%{make_tools} DESTDIR=$RPM_BUILD_ROOT install
+%{make_tools} DESTDIR=%{buildroot} install
 popd
 %endif
 
@@ -795,9 +796,6 @@ ln -sf rtla %{buildroot}/%{_bindir}/hwnoise
 ln -sf rtla %{buildroot}/%{_bindir}/osnoise
 ln -sf rtla %{buildroot}/%{_bindir}/timerlat
 popd
-
-# Remove static libraries
-rm -rf %{buildroot}%{_libdir}/*.{a,la}
 
 
 %post core
