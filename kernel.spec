@@ -715,6 +715,7 @@ rm -rf %{buildroot}%{_libdir}/traceevent
 # tools
 %if 0%{?rhel} >= 10
 pushd tools/net/ynl
+export PIP_CONFIG_FILE=/tmp/pip.config
 %{make_tools} DESTDIR=$RPM_BUILD_ROOT install
 popd
 %endif
