@@ -1005,7 +1005,7 @@ fi
 
 %changelog
 * Fri Jun 20 2025 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.15.3-1
-- Update to 6.13.3
+- Update to 6.15.3
 
 * Wed Jun 11 2025 Kmods SIG <sig-kmods@centosproject.org> - 6.14.11-1
 - Update to 6.14.11
