@@ -1,4 +1,4 @@
-From 53d71fdd7f4858cb3ff0842ad29bf1a4d01d425e Mon Sep 17 00:00:00 2001
+From 0e3d45b69707be2a2abf7be5dfd8804a789d54c5 Mon Sep 17 00:00:00 2001
 From: Ondrej Mosnacek <omosnace@redhat.com>
 Date: Wed, 12 Feb 2025 10:15:54 +0100
 Subject: [PATCH] efi,lockdown: fix kernel lockdown on Secure Boot
@@ -28,7 +28,7 @@ Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
  4 files changed, 20 insertions(+), 19 deletions(-)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 2b0c2fadd8e2..3fe30fcc506c 100644
+index e90ccfb068d3..b9840b1a43fe 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
 @@ -443,7 +443,6 @@ LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
@@ -40,7 +40,7 @@ index 2b0c2fadd8e2..3fe30fcc506c 100644
  
  #ifdef CONFIG_PERF_EVENTS
 diff --git a/include/linux/security.h b/include/linux/security.h
-index f5fd068977e3..a0f0b41d7dcc 100644
+index b43d2b51a002..fce0e3457cf7 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
 @@ -574,7 +574,6 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
@@ -62,7 +62,7 @@ index f5fd068977e3..a0f0b41d7dcc 100644
  static inline int lsm_fill_user_ctx(struct lsm_ctx __user *uctx,
  				    u32 *uctx_len, void *val, size_t val_len,
  				    u64 id, u64 flags)
-@@ -2391,4 +2386,13 @@ static inline void security_initramfs_populated(void)
+@@ -2395,4 +2390,13 @@ static inline void security_initramfs_populated(void)
  }
  #endif /* CONFIG_SECURITY */
  
@@ -102,10 +102,10 @@ index b5ebef58b0cb..aba751e7abff 100644
  
  static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index 2118f1d908ce..143561ebc3e8 100644
+index e46afc5ca171..fb57e8fddd91 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5801,18 +5801,6 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5804,18 +5804,6 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  

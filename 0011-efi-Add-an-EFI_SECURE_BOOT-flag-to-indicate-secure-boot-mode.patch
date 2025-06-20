@@ -1,4 +1,4 @@
-From 454c7cb119a8b0fd1f399bea10ce9d06d9c97f5d Mon Sep 17 00:00:00 2001
+From 074767caa504f2751c4cc8c056445a5003cebcd1 Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Tue, 27 Feb 2018 10:04:55 +0000
 Subject: [PATCH] efi: Add an EFI_SECURE_BOOT flag to indicate secure boot mode
@@ -26,10 +26,10 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  create mode 100644 drivers/firmware/efi/secureboot.c
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index cebee310e200..39597029e45d 100644
+index 9d2a13b37833..75ecb5f0b18d 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
-@@ -1073,19 +1073,7 @@ void __init setup_arch(char **cmdline_p)
+@@ -1127,19 +1127,7 @@ void __init setup_arch(char **cmdline_p)
  	/* Allocate bigger log buffer */
  	setup_log_buf(1);
  

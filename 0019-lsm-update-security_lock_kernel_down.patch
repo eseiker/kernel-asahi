@@ -1,4 +1,4 @@
-From f237d446bfa956c77d6e59ec8e858621b8a24235 Mon Sep 17 00:00:00 2001
+From f4f0b39a45ba9852bea920f82d5b5876fb6451ea Mon Sep 17 00:00:00 2001
 From: Scott Weaver <scweaver@redhat.com>
 Date: Wed, 13 Mar 2024 13:19:02 -0400
 Subject: [PATCH] lsm: update security_lock_kernel_down
@@ -12,10 +12,10 @@ Signed-off-by: Scott Weaver <scweaver@redhat.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/security/security.c b/security/security.c
-index 9532bf9b2d92..2118f1d908ce 100644
+index 57798d994a01..e46afc5ca171 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5809,7 +5809,7 @@ EXPORT_SYMBOL(security_locked_down);
+@@ -5812,7 +5812,7 @@ EXPORT_SYMBOL(security_locked_down);
   */
  int security_lock_kernel_down(const char *where, enum lockdown_reason level)
  {

@@ -1,4 +1,4 @@
-From b5c87412b191c5c8c890ae09bcc21952e8a73ead Mon Sep 17 00:00:00 2001
+From d59a05304ac3d284ca30a0603f0fd464beee0346 Mon Sep 17 00:00:00 2001
 From: "Ewan D. Milne" <emilne@redhat.com>
 Date: Thu, 8 Jun 2023 16:14:34 -0400
 Subject: [PATCH] scsi: sd: Add "probe_type" module parameter to allow

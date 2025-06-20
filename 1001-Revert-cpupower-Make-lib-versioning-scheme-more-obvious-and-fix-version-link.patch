@@ -1,0 +1,69 @@
+From 4943ef58cdb05078e33838a29da5fb3eefa282e0 Mon Sep 17 00:00:00 2001
+From: Peter Georg <peter.georg@physik.uni-regensburg.de>
+Date: Fri, 20 Jun 2025 11:03:25 +0200
+Subject: [PATCH] Revert "cpupower: Make lib versioning scheme more obvious and
+ fix version link"
+
+This reverts commit fffadbdd6b5acdb6390d6d0bc3ad6d3da5d2bd53.
+---
+ tools/power/cpupower/Makefile | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/tools/power/cpupower/Makefile b/tools/power/cpupower/Makefile
+index c43db1c41205..8ab3a5a8d0bc 100644
+--- a/tools/power/cpupower/Makefile
++++ b/tools/power/cpupower/Makefile
+@@ -53,11 +53,8 @@ DESTDIR ?=
+ # and _should_ modify the PACKAGE_BUGREPORT definition
+ 
+ VERSION:=			$(shell ./utils/version-gen.sh)
+-LIB_FIX=			1
+-LIB_MIN=			0
+-LIB_MAJ=			1
+-LIB_VER=			$(LIB_MAJ).$(LIB_MIN).$(LIB_FIX)
+-
++LIB_MAJ=			0.0.1
++LIB_MIN=			1
+ 
+ PACKAGE =			cpupower
+ PACKAGE_BUGREPORT =		linux-pm@vger.kernel.org
+@@ -207,14 +204,14 @@ $(OUTPUT)lib/%.o: $(LIB_SRC) $(LIB_HEADERS)
+ 	$(ECHO) "  CC      " $@
+ 	$(QUIET) $(CC) $(CFLAGS) -fPIC -o $@ -c lib/$*.c
+ 
+-$(OUTPUT)libcpupower.so.$(LIB_VER): $(LIB_OBJS)
++$(OUTPUT)libcpupower.so.$(LIB_MAJ): $(LIB_OBJS)
+ 	$(ECHO) "  LD      " $@
+ 	$(QUIET) $(CC) -shared $(CFLAGS) $(LDFLAGS) -o $@ \
+-		-Wl,-soname,libcpupower.so.$(LIB_MAJ) $(LIB_OBJS)
++		-Wl,-soname,libcpupower.so.$(LIB_MIN) $(LIB_OBJS)
+ 	@ln -sf $(@F) $(OUTPUT)libcpupower.so
+-	@ln -sf $(@F) $(OUTPUT)libcpupower.so.$(LIB_MAJ)
++	@ln -sf $(@F) $(OUTPUT)libcpupower.so.$(LIB_MIN)
+ 
+-libcpupower: $(OUTPUT)libcpupower.so.$(LIB_VER)
++libcpupower: $(OUTPUT)libcpupower.so.$(LIB_MAJ)
+ 
+ # Let all .o files depend on its .c file and all headers
+ # Might be worth to put this into utils/Makefile at some point of time
+@@ -224,7 +221,7 @@ $(OUTPUT)%.o: %.c
+ 	$(ECHO) "  CC      " $@
+ 	$(QUIET) $(CC) $(CFLAGS) -I./lib -I ./utils -o $@ -c $*.c
+ 
+-$(OUTPUT)cpupower: $(UTIL_OBJS) $(OUTPUT)libcpupower.so.$(LIB_VER)
++$(OUTPUT)cpupower: $(UTIL_OBJS) $(OUTPUT)libcpupower.so.$(LIB_MAJ)
+ 	$(ECHO) "  CC      " $@
+ ifeq ($(strip $(STATIC)),true)
+ 	$(QUIET) $(CC) $(CFLAGS) $(LDFLAGS) $(UTIL_OBJS) -lrt -lpci -L$(OUTPUT) -o $@
+@@ -269,7 +266,7 @@ update-po: $(OUTPUT)po/$(PACKAGE).pot
+ 	done;
+ endif
+ 
+-compile-bench: $(OUTPUT)libcpupower.so.$(LIB_VER)
++compile-bench: $(OUTPUT)libcpupower.so.$(LIB_MAJ)
+ 	@V=$(V) confdir=$(confdir) $(MAKE) -C bench O=$(OUTPUT)
+ 
+ # we compile into subdirectories. if the target directory is not the
+-- 
+2.47.1
+
