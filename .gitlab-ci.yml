@@ -185,6 +185,11 @@ test:
     - echo "UserKnownHostsFile /dev/null" >> ~/.ssh/config
     - ssh $HOST 'dnf -y install epel-release'
     - ssh $HOST 'dnf -y install centos-packager'
+    - |
+      if [[ $EL == 10 ]]
+      then
+        ssh $HOST 'sed -i "s@/etc/pki/tls/certs/ca-bundle.trust.crt@/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem@g" /etc/koji.conf.d/cbs-koji.conf'
+      fi
     - TMPDIR=$(ssh $HOST 'mktemp -d')
     - ssh $HOST "cd $TMPDIR && cbs download-build -a $ARCH $NVR"
     - ssh $HOST "cd $TMPDIR && createrepo ."
