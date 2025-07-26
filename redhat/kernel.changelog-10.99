@@ -1,3 +1,7 @@
+* Sat Jul 26 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc7.5f33ebd2018c.63]
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Sat Jul 26 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.16.0-0.rc7.5f33ebd2018c.62]
 - redhat/spec: package full bpftool in selftests (Gregory Bell)
 - selftests/bpf: Remove ksyms_weak_lskel test (Artem Savkov)
