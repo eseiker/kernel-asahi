@@ -1,3 +1,7 @@
+* Tue Jul 29 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.17.0-0.rc0.86aa72182095.2]
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Tue Jul 29 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.17.0-0.rc0.86aa72182095.1]
 - Flip TEGRA124_CPUFREQ to m for config mismatch (Justin M. Forbes)
 - Reset RHEL_RELEASE for the 6.17 cycle (Justin M. Forbes)
