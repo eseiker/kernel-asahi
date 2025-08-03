@@ -18,7 +18,7 @@ stages:
   - test
   - release
 
-mock:
+srpm:
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: never
@@ -71,9 +71,8 @@ mock:
           fi
         done < sources
       fi
-    - mock -r $MOCK-$ARCH --define "dist .el$EL" --resultdir . *.src.rpm
   artifacts:
-    name: "$CI_PROJECT_NAME-mock-$ARCH"
+    name: "$CI_PROJECT_NAME.el$EL.src.rpm"
     untracked: true
     when: always
 
