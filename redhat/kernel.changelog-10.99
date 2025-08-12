@@ -1,3 +1,10 @@
+* Tue Aug 12 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.17.0-0.rc1.53e760d89498.18]
+- arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: add Bluetooth support (Jens Glathe)
+- Turn off libbpf dynamic for perf (Justin M. Forbes)
+- ALSA HDA driver configuration split for 6.17 upstream (Jaroslav Kysela)
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Tue Aug 12 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.17.0-0.rc1.53e760d89498.17]
 - specfile: change conditionals for realtime for fedora (Clark Williams)
 - redhat/configs: Disable TPM2 HMAC sessions (Štěpán Horáček) [RHEL-82779]
