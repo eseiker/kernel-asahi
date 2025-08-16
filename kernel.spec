@@ -21,8 +21,8 @@
 
 
 Name: kernel
-Version: 6.12.41
-Release: 2%{?dist}
+Version: 6.12.42
+Release: 1%{?dist}
 
 Summary: The Linux kernel
 URL: https://www.kernel.org
@@ -950,6 +950,9 @@ fi
 
 
 %changelog
+* Sat Aug 16 2025 Kmods SIG <sig-kmods@centosproject.org> - 6.12.42-1
+- Update to 6.12.42
+
 * Sat Aug 02 2025 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.12.41-2
 - Turn off support for Rust
 
