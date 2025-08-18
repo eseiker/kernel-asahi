@@ -1,3 +1,7 @@
+* Mon Aug 18 2025 Neal Gompa <neal@gompa.dev> [6.15.10-401.asahi]
+- rust: kernel: of: Fix !CONFIG_OF build (Janne Grunau)
+Resolves: 
+
 * Sun Aug 17 2025 Neal Gompa <neal@gompa.dev> [6.15.10-400.asahi]
 - redhat/configs: Disable Nova GPU driver (Neal Gompa)
 - redhat: Conditionally disable libbpf_dynamic on <F41 and <EL9 (Neal Gompa)
