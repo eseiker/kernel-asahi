@@ -1,4 +1,4 @@
-From e8a71fa04f6f8a23f8ffe28b27790ffe75974238 Mon Sep 17 00:00:00 2001
+From fc40204ced2fbb38453d36d5f3a300b95b89323b Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -29,10 +29,10 @@ index bf3bbac4e02a..e90ccfb068d3 100644
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index cc9b54d95d22..b43d2b51a002 100644
+index dba349629229..ca65b00666f1 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -574,6 +574,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -573,6 +573,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
  int security_locked_down(enum lockdown_reason what);
@@ -40,7 +40,7 @@ index cc9b54d95d22..b43d2b51a002 100644
  int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
  int security_bdev_alloc(struct block_device *bdev);
-@@ -1580,6 +1581,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+@@ -1574,6 +1575,10 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -64,7 +64,7 @@ index cf83afa1d879..b5ebef58b0cb 100644
  
  static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index fb57e8fddd91..57798d994a01 100644
+index 596d41818577..adfdcb7d6733 100644
 --- a/security/security.c
 +++ b/security/security.c
 @@ -5804,6 +5804,18 @@ int security_locked_down(enum lockdown_reason what)
@@ -87,5 +87,5 @@ index fb57e8fddd91..57798d994a01 100644
   * security_bdev_alloc() - Allocate a block device LSM blob
   * @bdev: block device
 -- 
-2.47.1
+2.47.3
 

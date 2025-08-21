@@ -1,4 +1,4 @@
-From efa42371ac33d4362dbf4e5c82093d14f191dd0b Mon Sep 17 00:00:00 2001
+From 445b34a9a0c32969112d0fa05a2ecef0342d138c Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Mon, 30 Sep 2019 21:28:16 +0000
 Subject: [PATCH] efi: Lock down the kernel if booted in secure boot mode
@@ -18,18 +18,18 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  2 files changed, 21 insertions(+)
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 75ecb5f0b18d..770aee4ae9ae 100644
+index 6b1b4d69128e..b983647349c4 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
 @@ -21,6 +21,7 @@
+ #include <linux/pci.h>
+ #include <linux/random.h>
  #include <linux/root_dev.h>
- #include <linux/hugetlb.h>
- #include <linux/tboot.h>
 +#include <linux/security.h>
- #include <linux/usb/xhci-dbgp.h>
  #include <linux/static_call.h>
  #include <linux/swiotlb.h>
-@@ -964,6 +965,13 @@ void __init setup_arch(char **cmdline_p)
+ #include <linux/tboot.h>
+@@ -986,6 +987,13 @@ void __init setup_arch(char **cmdline_p)
  	if (efi_enabled(EFI_BOOT))
  		efi_init();
  
@@ -68,5 +68,5 @@ index e84ddf484010..d0501353a4b9 100644
  	prompt "Kernel default lockdown mode"
  	default LOCK_DOWN_KERNEL_FORCE_NONE
 -- 
-2.47.1
+2.47.3
 

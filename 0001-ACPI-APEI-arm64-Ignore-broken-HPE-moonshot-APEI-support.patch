@@ -1,4 +1,4 @@
-From a690b306fe7f02e7bcc100c5e9e8046334f8e9e7 Mon Sep 17 00:00:00 2001
+From 154df8e3d6d7c313f713801b0276b4f74979d0dc Mon Sep 17 00:00:00 2001
 From: Al Stone <ahs3@redhat.com>
 Date: Tue, 27 Feb 2018 00:21:23 -0500
 Subject: [PATCH] ACPI: APEI: arm64: Ignore broken HPE moonshot APEI support
@@ -67,5 +67,5 @@ index 20d757687e3d..90a13f20f052 100644
  	for (i = 0; i < hest_tab->error_source_count; i++) {
  		len = hest_esrc_len(hest_hdr);
 -- 
-2.47.1
+2.47.3
 

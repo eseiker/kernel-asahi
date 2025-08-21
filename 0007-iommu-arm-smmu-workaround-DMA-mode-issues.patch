@@ -1,4 +1,4 @@
-From ccff744b94bf86b395269eed7cac004d211eeb6f Mon Sep 17 00:00:00 2001
+From 59cd027e50819c34860b5b37d2839e25c0f7b26a Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Mon, 20 May 2019 22:21:02 -0400
 Subject: [PATCH] iommu/arm-smmu: workaround DMA mode issues
@@ -57,7 +57,7 @@ Signed-off-by: Laura Abbott <labbott@redhat.com>
  1 file changed, 22 insertions(+)
 
 diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 9d728800a862..cc4aebbcb30f 100644
+index a4b606c591da..772946ea4bb2 100644
 --- a/drivers/iommu/iommu.c
 +++ b/drivers/iommu/iommu.c
 @@ -8,6 +8,7 @@
@@ -68,9 +68,9 @@ index 9d728800a862..cc4aebbcb30f 100644
  #include <linux/kernel.h>
  #include <linux/bits.h>
  #include <linux/bug.h>
-@@ -2940,6 +2941,27 @@ int iommu_dev_disable_feature(struct device *dev, enum iommu_dev_features feat)
+@@ -2948,6 +2949,27 @@ int iommu_fwspec_add_ids(struct device *dev, const u32 *ids, int num_ids)
  }
- EXPORT_SYMBOL_GPL(iommu_dev_disable_feature);
+ EXPORT_SYMBOL_GPL(iommu_fwspec_add_ids);
  
 +#ifdef CONFIG_ARM64
 +static int __init iommu_quirks(void)
@@ -97,5 +97,5 @@ index 9d728800a862..cc4aebbcb30f 100644
   * iommu_setup_default_domain - Set the default_domain for the group
   * @group: Group to change
 -- 
-2.47.1
+2.47.3
 

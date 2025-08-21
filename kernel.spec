@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.15.11
+Version: 6.16.2
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -382,7 +382,7 @@ analysing the logical and timing behavior of Linux.
 %ifarch aarch64
 %global make_perf_extra_opts CORESIGHT=1
 %endif
-%global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBBPF_DYNAMIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
+%global make_perf %{make} EXTRA_CFLAGS="%{?build_cflags}" EXTRA_CXXFLAGS="%{?build_cxxflags}" LDFLAGS="%{?build_ldflags} -Wl,-E" -C tools/perf NO_PERF_READ_VDSO32=1 NO_PERF_READ_VDSOX32=1 WERROR=0 NO_LIBUNWIND=1 HAVE_CPLUS_DEMANGLE=1 NO_GTK2=1 NO_STRLCPY=1 NO_BIONIC=1 LIBTRACEEVENT_DYNAMIC=1 %{?make_perf_extra_opts} prefix=%{_prefix} PYTHON=%{__python3}
 
 %global make_libperf %{make} EXTRA_CFLAGS="%{?build_cflags}" LDFLAGS="%{?build_ldflags}" -C tools/lib/perf
 
@@ -730,7 +730,7 @@ export PIP_CONFIG_FILE=/tmp/pip.config
 popd
 %endif
 
-%{make_tools} -C tools/power/cpupower DESTDIR=%{buildroot} libdir=%{_libdir} mandir=%{_mandir} CPUFREQ_BENCH=false install
+%{make_tools} -C tools/power/cpupower DESTDIR=%{buildroot} libdir=%{_libdir} libexecdir=%{_libexecdir} mandir=%{_mandir} unitdir=%{_unitdir} CPUFREQ_BENCH=false install
 %find_lang cpupower
 %ifarch x86_64
 pushd tools/power/cpupower/debug/x86_64
@@ -938,6 +938,7 @@ fi
 
 
 %files tools -f cpupower.lang
+%config(noreplace) %{_sysconfdir}/cpupower-service.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/kvm_stat
 %{_bindir}/bootconfig
 %{_bindir}/cpupower
@@ -953,8 +954,10 @@ fi
 %{_bindir}/slabinfo
 %{_bindir}/tmon
 %{_datadir}/bash-completion/completions/cpupower
+%{_libexecdir}/cpupower
 %{_mandir}/man*/cpupower*
 %{_mandir}/man*/kvm_stat*
+%{_unitdir}/cpupower.service
 %{_unitdir}/kvm_stat.service
 %if 0%{?rhel} >= 10
 %{_bindir}/ynl*
@@ -1004,6 +1007,9 @@ fi
 
 
 %changelog
+* Thu Aug 21 2025 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.16.2-1
+- Update to 6.16.2
+
 * Thu Aug 21 2025 Kmods SIG <sig-kmods@centosproject.org> - 6.15.11-1
 - Update to 6.15.11
 

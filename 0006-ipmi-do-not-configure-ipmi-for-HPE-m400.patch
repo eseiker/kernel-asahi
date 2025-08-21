@@ -1,4 +1,4 @@
-From c93d2b9f59a6f0cc2fd23cea85e863604215314a Mon Sep 17 00:00:00 2001
+From 2d55585e62746e1783771eb2851696e811ad5d21 Mon Sep 17 00:00:00 2001
 From: Laura Abbott <labbott@redhat.com>
 Date: Sun, 10 Feb 2019 01:27:54 +0000
 Subject: [PATCH] ipmi: do not configure ipmi for HPE m400
@@ -84,10 +84,10 @@ index bbf7029e224b..cf7faa970dd6 100644
  		dmi_decode_ipmi((const struct dmi_header *) dev->device_data);
  
 diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 3ba9d7e9a6c7..82300dc5fd49 100644
+index 064944ae9fdc..cab1ef505cd2 100644
 --- a/drivers/char/ipmi/ipmi_msghandler.c
 +++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -35,6 +35,7 @@
+@@ -34,6 +34,7 @@
  #include <linux/uuid.h>
  #include <linux/nospec.h>
  #include <linux/vmalloc.h>
@@ -95,7 +95,7 @@ index 3ba9d7e9a6c7..82300dc5fd49 100644
  #include <linux/delay.h>
  
  #define IPMI_DRIVER_VERSION "39.2"
-@@ -5508,8 +5509,21 @@ static int __init ipmi_init_msghandler_mod(void)
+@@ -5548,8 +5549,21 @@ static int __init ipmi_init_msghandler_mod(void)
  {
  	int rv;
  
@@ -119,5 +119,5 @@ index 3ba9d7e9a6c7..82300dc5fd49 100644
  	rv = ipmi_register_driver();
  	mutex_unlock(&ipmi_interfaces_mutex);
 -- 
-2.47.1
+2.47.3
 

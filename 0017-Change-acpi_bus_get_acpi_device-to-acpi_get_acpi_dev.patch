@@ -1,4 +1,4 @@
-From 25875e1af9aa60ab70b790238e21fffcec5205ab Mon Sep 17 00:00:00 2001
+From a28443cdd99429df36e8da76d9651553d75d3b65 Mon Sep 17 00:00:00 2001
 From: "Justin M. Forbes" <jforbes@fedoraproject.org>
 Date: Thu, 6 Oct 2022 15:34:27 -0500
 Subject: [PATCH] Change acpi_bus_get_acpi_device to acpi_get_acpi_dev
@@ -16,7 +16,7 @@ Signed-off-by: Justin M. Forbes <jforbes@fedoraproject.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index c30fb99ffea9..390b67f19181 100644
+index a78b1b6857c3..f2d25d95811c 100644
 --- a/drivers/acpi/irq.c
 +++ b/drivers/acpi/irq.c
 @@ -262,7 +262,7 @@ static int acpi_irq_parse_one(acpi_handle handle, unsigned int index,
@@ -29,5 +29,5 @@ index c30fb99ffea9..390b67f19181 100644
  		if (adev && !strcmp(acpi_device_hid(adev), "APMC0D08"))
  			ctx.skip_producer_check = true;
 -- 
-2.47.1
+2.47.3
 

@@ -1,4 +1,4 @@
-From 5249e8256654e995920d7f6b18ec8bb240a26e2a Mon Sep 17 00:00:00 2001
+From ae4d9b070500cbb417d85ac105c6a59fe214f0cb Mon Sep 17 00:00:00 2001
 From: Peter Jones <pjones@redhat.com>
 Date: Mon, 2 Oct 2017 18:22:13 -0400
 Subject: [PATCH] Add efi_status_to_str() and rework efi_status_to_err().
@@ -15,7 +15,7 @@ Signed-off-by: Peter Jones <pjones@redhat.com>
  2 files changed, 96 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 7309394b8fc9..d9f7cbba5769 100644
+index e57bff702b5f..1252e9d11235 100644
 --- a/drivers/firmware/efi/efi.c
 +++ b/drivers/firmware/efi/efi.c
 @@ -33,6 +33,7 @@
@@ -26,7 +26,7 @@ index 7309394b8fc9..d9f7cbba5769 100644
  
  #include <asm/early_ioremap.h>
  
-@@ -1007,40 +1008,101 @@ int efi_mem_type(unsigned long phys_addr)
+@@ -1008,40 +1009,101 @@ int efi_mem_type(unsigned long phys_addr)
  	return -EINVAL;
  }
  
@@ -181,5 +181,5 @@ index 7d63d1d75f22..6f50d31ad553 100644
  /*
   * Variable Attributes
 -- 
-2.47.1
+2.47.3
 
