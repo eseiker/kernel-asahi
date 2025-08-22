@@ -745,11 +745,6 @@ popd
 rm -rf %{buildroot}%{_libdir}/*.{a,la}
 
 
-%post core
-mkdir -p %{_localstatedir}/lib/rpm-state/%{name}
-touch %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch}
-rm -f %{_localstatedir}/lib/rpm-state/%{name}/modules-%{version}-%{release}.%{_arch}
-
 %preun core
 kernel-install remove %{version}-%{release}.%{_arch} || exit $?
 if [ -x %{_sbindir}/weak-modules ]
@@ -757,15 +752,12 @@ then
     %{_sbindir}/weak-modules --remove-kernel %{version}-%{release}.%{_arch} || exit $?
 fi
 
+
 %posttrans core
-if [ -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch} ]
+kernel-install add %{version}-%{release}.%{_arch} /lib/modules/%{version}-%{release}.%{_arch}/vmlinuz || exit $?
+if [ -x %{_sbindir}/weak-modules ]
 then
-    rm -f %{_localstatedir}/lib/rpm-state/%{name}/core-%{version}-%{release}.%{_arch}
-    kernel-install add %{version}-%{release}.%{_arch} /lib/modules/%{version}-%{release}.%{_arch}/vmlinuz || exit $?
-    if [ -x %{_sbindir}/weak-modules ]
-    then
-        %{_sbindir}/weak-modules --add-kernel %{version}-%{release}.%{_arch} || exit $?
-    fi
+    %{_sbindir}/weak-modules --add-kernel %{version}-%{release}.%{_arch} || exit $?
 fi
 
 
