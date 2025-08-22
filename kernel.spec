@@ -150,8 +150,10 @@ Provides: %{name}-uname-r = %{version}-%{release}.%{_arch}
 Requires: %{name}-modules-core-uname-r = %{version}-%{release}.%{_arch}
 
 Requires(preun): %{_bindir}/kernel-install
-Requires(post): coreutils
+Requires(preun): dracut
+
 Requires(posttrans): %{_bindir}/kernel-install
+Requires(posttrans): dracut
 
 Recommends: linux-firmware
 
@@ -176,7 +178,6 @@ Provides: %{name}-modules-extra-uname-r = %{version}-%{release}.%{_arch}
 
 Requires: %{name}-uname-r = %{version}-%{release}.%{_arch}
 
-Requires(post): coreutils
 
 %description modules
 This package provides kernel modules for the %{name} package.
