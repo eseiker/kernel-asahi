@@ -1,3 +1,7 @@
+* Sun Aug 24 2025 Neal Gompa <neal@gompa.dev> [6.15.10-402.asahi]
+- DO NOT SUBMIT: usb: dwc3: Add "apple,t8103-dwc3" compatible (Janne Grunau)
+Resolves: 
+
 * Mon Aug 18 2025 Neal Gompa <neal@gompa.dev> [6.15.10-401.asahi]
 - rust: kernel: of: Fix !CONFIG_OF build (Janne Grunau)
 Resolves: 
