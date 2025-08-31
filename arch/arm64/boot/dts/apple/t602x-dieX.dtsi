@@ -123,7 +123,7 @@
 	};
 
 	DIE_NODE(pinctrl_nub): pinctrl@29e1f0000 {
-		compatible = "apple,t6000-pinctrl", "apple,pinctrl";
+		compatible = "apple,t6020-pinctrl", "apple,pinctrl";
 		reg = <0x2 0x9e1f0000 0x0 0x4000>;
 		power-domains = <&DIE_NODE(ps_nub_gpio)>;
 
@@ -145,7 +145,7 @@
 	};
 
 	DIE_NODE(pmgr_mini): power-management@29e280000 {
-		compatible = "apple,t6000-pmgr", "apple,pmgr", "syscon", "simple-mfd";
+		compatible = "apple,t6020-pmgr", "apple,pmgr", "syscon", "simple-mfd";
 		#address-cells = <1>;
 		#size-cells = <1>;
 		reg = <0x2 0x9e280000 0 0x4000>;

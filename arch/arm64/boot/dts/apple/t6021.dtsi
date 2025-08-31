@@ -26,7 +26,7 @@
 #include "t602x-common.dtsi"
 
 / {
-	compatible = "apple,t6001", "apple,arm-platform";
+	compatible = "apple,t6021", "apple,arm-platform";
 
 	soc {
 		compatible = "simple-bus";
