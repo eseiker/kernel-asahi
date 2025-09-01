@@ -1,3 +1,10 @@
+* Mon Sep 01 2025 Neal Gompa <neal@gompa.dev> [6.16.4-401.asahi]
+- HID: lenovo: Use KEY_PERFORMANCE instead of ACPI's platform_profile (Janne Grunau)
+- Input: add keycode for performance mode key (Marcos Alano)
+- Revert "ACPI: platform_profile: Add support for non-ACPI platforms" (Janne Grunau)
+- Revert "HID: lenovo: Remove CONFIG_ACPI dependency" (Janne Grunau)
+Resolves: 
+
 * Sun Aug 31 2025 Neal Gompa <neal@gompa.dev> [6.16.4-400.asahi]
 - redhat/configs: Disable Nova GPU driver (Neal Gompa)
 - redhat/configs: Disable the Apple touchbar panel driver at the common level (Neal Gompa)
