@@ -1,3 +1,7 @@
+* Tue Sep 02 2025 Neal Gompa <neal@gompa.dev> [6.16.4-402.asahi]
+- net: ipv4: fix regression in local-broadcast routes (Oscar Maes)
+Resolves: 
+
 * Mon Sep 01 2025 Neal Gompa <neal@gompa.dev> [6.16.4-401.asahi]
 - HID: lenovo: Use KEY_PERFORMANCE instead of ACPI's platform_profile (Janne Grunau)
 - Input: add keycode for performance mode key (Marcos Alano)
