@@ -1,3 +1,8 @@
+* Tue Sep 23 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.17.0-0.rc7.cec1e6e5d1ab.57]
+- arm64: dts: qcom: x1e80100-lenovo-yoga-slim7x: add Bluetooth support (Jens Glathe)
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Tue Sep 23 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.17.0-0.rc7.cec1e6e5d1ab.56]
 - Add 1010-config-newlines-test.bats self test. (Alexandra Hájková)
 - Linux v6.17.0-0.rc7.cec1e6e5d1ab
