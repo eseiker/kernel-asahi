@@ -1,3 +1,10 @@
+* Sat Oct 11 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc0.0739473694c4.14]
+- Only strip unneeded symbols (Patrick Talbert)
+- add xxd to as BuildRequire for bpf selftests (Thorsten Leemhuis)
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Sat Oct 11 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc0.0739473694c4.13]
 - Linux v6.18.0-0.rc0.0739473694c4
 Resolves: 
