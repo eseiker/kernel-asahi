@@ -1,0 +1,80 @@
+From bf258421f5e712014c5a6214719be6e417313495 Mon Sep 17 00:00:00 2001
+From: Mark Salter <msalter@redhat.com>
+Date: Wed, 19 Mar 2025 14:00:30 -0400
+Subject: [PATCH] efi: pass secure boot mode to kernel proper
+
+JIRA: https://issues.redhat.com/browse/RHEL-1927
+
+Upstream Status: RHEL only
+
+Author: Mark Salter <msalter@redhat.com>
+Date: Wed, 19 Mar 2025 13:34:44 -0400
+
+For early lockdown, we need to know the secure boot state
+before the kernel is able to access runtime services. X86
+gets around this by having stub pass the secure boot mode
+in bootparams. Not all architecture have that option so
+pass the secure boot mode in the FDT chosen node.
+
+Signed-off-by: Mark Salter <msalter@redhat.com>
+Signed-off-by: Jeremy Cline <jeremycline@linux.microsoft.com>
+---
+ drivers/firmware/efi/libstub/fdt.c        |  5 +++++
+ drivers/firmware/efi/libstub/secureboot.c | 14 ++++++++++----
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/firmware/efi/libstub/fdt.c b/drivers/firmware/efi/libstub/fdt.c
+index 6a337f1f8787..89244e0d9fa8 100644
+--- a/drivers/firmware/efi/libstub/fdt.c
++++ b/drivers/firmware/efi/libstub/fdt.c
+@@ -132,6 +132,11 @@ static efi_status_t update_fdt(void *orig_fdt, unsigned long orig_fdt_size,
+ 		}
+ 	}
+ 
++	fdt_val32 = cpu_to_fdt32((u32)efi_get_secureboot());
++	status = fdt_setprop_var(fdt, node, "secure-boot-mode", fdt_val32);
++	if (status)
++		goto fdt_set_fail;
++
+ 	/* Shrink the FDT back to its minimum size: */
+ 	fdt_pack(fdt);
+ 
+diff --git a/drivers/firmware/efi/libstub/secureboot.c b/drivers/firmware/efi/libstub/secureboot.c
+index 516f4f0069bd..380354755108 100644
+--- a/drivers/firmware/efi/libstub/secureboot.c
++++ b/drivers/firmware/efi/libstub/secureboot.c
+@@ -29,10 +29,13 @@ enum efi_secureboot_mode efi_get_secureboot(void)
+ {
+ 	u32 attr;
+ 	unsigned long size;
+-	enum efi_secureboot_mode mode;
++	static enum efi_secureboot_mode mode;
+ 	efi_status_t status;
+ 	u8 moksbstate;
+ 
++	if (mode != efi_secureboot_mode_unset)
++		return mode;
++
+ 	mode = efi_get_secureboot_mode(get_var);
+ 	if (mode == efi_secureboot_mode_unknown) {
+ 		efi_err("Could not determine UEFI Secure Boot status.\n");
+@@ -53,10 +56,13 @@ enum efi_secureboot_mode efi_get_secureboot(void)
+ 	/* If it fails, we don't care why. Default to secure */
+ 	if (status != EFI_SUCCESS)
+ 		goto secure_boot_enabled;
+-	if (!(attr & EFI_VARIABLE_NON_VOLATILE) && moksbstate == 1)
+-		return efi_secureboot_mode_disabled;
++	if (!(attr & EFI_VARIABLE_NON_VOLATILE) && moksbstate == 1) {
++		mode = efi_secureboot_mode_disabled;
++		return mode;
++	}
+ 
+ secure_boot_enabled:
+ 	efi_info("UEFI Secure Boot is enabled.\n");
+-	return efi_secureboot_mode_enabled;
++	mode = efi_secureboot_mode_enabled;
++	return mode;
+ }
+-- 
+2.47.3
+

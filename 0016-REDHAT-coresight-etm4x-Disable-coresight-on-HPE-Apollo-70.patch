@@ -1,4 +1,4 @@
-From b6f749397f2ae1060e84b18fece8742854464009 Mon Sep 17 00:00:00 2001
+From b15d4421293a8f25e64e59c3d2a6e345df70064e Mon Sep 17 00:00:00 2001
 From: Jeremy Linton <jeremy.linton@arm.com>
 Date: Thu, 11 Mar 2021 22:15:13 -0600
 Subject: [PATCH] REDHAT: coresight: etm4x: Disable coresight on HPE Apollo 70

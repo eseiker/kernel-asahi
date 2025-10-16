@@ -1,4 +1,4 @@
-From eca884f356749a1f3d9fd9b048d2e6c1b2e28ae7 Mon Sep 17 00:00:00 2001
+From 4e59dc86dc6daf161ae0d928346a2fd12f31e031 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Thu, 10 May 2018 17:38:44 -0400
 Subject: [PATCH] aarch64: acpi scan: Fix regression related to X-Gene UARTs

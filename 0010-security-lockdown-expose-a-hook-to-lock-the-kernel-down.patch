@@ -1,4 +1,4 @@
-From fc40204ced2fbb38453d36d5f3a300b95b89323b Mon Sep 17 00:00:00 2001
+From 17e28f2b15a69893488590ac6d2b8b253c1896f5 Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -16,10 +16,10 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  4 files changed, 20 insertions(+)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index bf3bbac4e02a..e90ccfb068d3 100644
+index fd11fffdd3c3..1d6f1a96d5fd 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
-@@ -443,6 +443,8 @@ LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
+@@ -445,6 +445,8 @@ LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
  #endif /* CONFIG_BPF_SYSCALL */
  
  LSM_HOOK(int, 0, locked_down, enum lockdown_reason what)
@@ -29,10 +29,10 @@ index bf3bbac4e02a..e90ccfb068d3 100644
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index dba349629229..ca65b00666f1 100644
+index 521bcb5b9717..012a82a8473f 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -573,6 +573,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -575,6 +575,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
  int security_locked_down(enum lockdown_reason what);
@@ -40,7 +40,7 @@ index dba349629229..ca65b00666f1 100644
  int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
  int security_bdev_alloc(struct block_device *bdev);
-@@ -1574,6 +1575,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+@@ -1588,6 +1589,10 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -64,10 +64,10 @@ index cf83afa1d879..b5ebef58b0cb 100644
  
  static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index 596d41818577..adfdcb7d6733 100644
+index ad163f06bf7a..dcd27a71473c 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5804,6 +5804,18 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5834,6 +5834,18 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  

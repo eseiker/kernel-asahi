@@ -1,4 +1,4 @@
-From 445b34a9a0c32969112d0fa05a2ecef0342d138c Mon Sep 17 00:00:00 2001
+From 9f9c71931408d3fe56980fbccc42b7d7c5592535 Mon Sep 17 00:00:00 2001
 From: David Howells <dhowells@redhat.com>
 Date: Mon, 30 Sep 2019 21:28:16 +0000
 Subject: [PATCH] efi: Lock down the kernel if booted in secure boot mode
@@ -18,7 +18,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  2 files changed, 21 insertions(+)
 
 diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 6b1b4d69128e..b983647349c4 100644
+index 41b41f677b1e..1c434c6900eb 100644
 --- a/arch/x86/kernel/setup.c
 +++ b/arch/x86/kernel/setup.c
 @@ -21,6 +21,7 @@
@@ -29,7 +29,7 @@ index 6b1b4d69128e..b983647349c4 100644
  #include <linux/static_call.h>
  #include <linux/swiotlb.h>
  #include <linux/tboot.h>
-@@ -986,6 +987,13 @@ void __init setup_arch(char **cmdline_p)
+@@ -991,6 +992,13 @@ void __init setup_arch(char **cmdline_p)
  	if (efi_enabled(EFI_BOOT))
  		efi_init();
  

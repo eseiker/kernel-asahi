@@ -1,0 +1,74 @@
+From ac733ae45f49b68213b54beee5aeb78d7d990571 Mon Sep 17 00:00:00 2001
+From: Mark Salter <msalter@redhat.com>
+Date: Mon, 31 Mar 2025 13:58:39 -0400
+Subject: [PATCH] arm64: add early lockdown for secure boot
+
+JIRA: https://issues.redhat.com/browse/RHEL-1927
+
+Upstream Status: RHEL only
+
+Add early init code to set EFI_SECURE_BOOT flag based
+on secure boot mode passed in the FDT chosen node. If
+secure boot is enabled, lock down the kernel.
+
+Signed-off-by: Mark Salter <msalter@redhat.com>
+Signed-off-by: Jeremy Cline <jeremycline@linux.microsoft.com>
+---
+ arch/arm64/kernel/setup.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
+index 77c7926a4df6..1727fc3f6a77 100644
+--- a/arch/arm64/kernel/setup.c
++++ b/arch/arm64/kernel/setup.c
+@@ -32,6 +32,8 @@
+ #include <linux/sched/task.h>
+ #include <linux/scs.h>
+ #include <linux/mm.h>
++#include <linux/security.h>
++#include <linux/libfdt.h>
+ 
+ #include <asm/acpi.h>
+ #include <asm/fixmap.h>
+@@ -207,6 +209,24 @@ static void __init setup_machine_fdt(phys_addr_t dt_phys)
+ 	dump_stack_set_arch_desc("%s (DT)", name);
+ }
+ 
++static void __init init_secureboot_mode(void)
++{
++	void *fdt = initial_boot_params;
++	u64 chosen;
++	const __be32 *prop;
++	int len;
++
++	chosen = fdt_path_offset(fdt, "/chosen");
++	if (chosen < 0)
++		return;
++
++	prop = fdt_getprop(fdt, chosen, "secure-boot-mode", &len);
++	if (!prop || len != sizeof(u32))
++		return;
++
++	efi_set_secure_boot((enum efi_secureboot_mode)fdt32_to_cpu(*prop));
++}
++
+ static void __init request_standard_resources(void)
+ {
+ 	struct memblock_region *region;
+@@ -327,6 +347,13 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
+ 			pr_warn(FW_BUG "Kernel image misaligned at boot, please fix your bootloader!");
+ 		WARN_TAINT(mmu_enabled_at_boot, TAINT_FIRMWARE_WORKAROUND,
+ 			   FW_BUG "Booted with MMU enabled!");
++	} else {
++		init_secureboot_mode();
++
++#ifdef CONFIG_LOCK_DOWN_IN_EFI_SECURE_BOOT
++		if (efi_enabled(EFI_SECURE_BOOT))
++			security_lock_kernel_down("EFI Secure Boot mode", LOCKDOWN_INTEGRITY_MAX);
++#endif
+ 	}
+ 
+ 	arm64_memblock_init();
+-- 
+2.47.3
+

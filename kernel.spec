@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.16.12
+Version: 6.17.3
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -91,6 +91,7 @@ BuildRequires: rsync
 BuildRequires: rust
 BuildRequires: rust-src
 BuildRequires: rustfmt
+BuildRequires: swig
 BuildRequires: which
 BuildRequires: xmlto
 BuildRequires: xz-devel
@@ -454,6 +455,10 @@ popd
 %{__chmod} +x tools/power/cpupower/utils/version-gen.sh
 %{make_tools} -C tools/power/cpupower CPUFREQ_BENCH=false DEBUG=false
 
+pushd tools/power/cpupower/bindings/python
+%{make_tools} LDFLAGS="-L../.. -lcpupower"
+popd
+
 %ifarch x86_64
 pushd tools/power/cpupower/debug/x86_64
 %{make_tools} centrino-decode powernow-k8-decode
@@ -733,6 +738,9 @@ popd
 
 %{make_tools} -C tools/power/cpupower DESTDIR=%{buildroot} libdir=%{_libdir} libexecdir=%{_libexecdir} mandir=%{_mandir} unitdir=%{_unitdir} CPUFREQ_BENCH=false install
 %find_lang cpupower
+pushd tools/power/cpupower/bindings/python
+%{make_tools} INSTALL_DIR=%{buildroot}%{python3_sitearch} install
+popd
 %ifarch x86_64
 pushd tools/power/cpupower/debug/x86_64
 %{__install} -m 755 centrino-decode %{buildroot}%{_bindir}/centrino-decode
@@ -981,6 +989,8 @@ fi
 %{_includedir}/cpuidle.h
 %{_includedir}/powercap.h
 %{_libdir}/libcpupower.so
+%{python3_sitearch}/_raw_pylibcpupower.so
+%{python3_sitearch}/raw_pylibcpupower.py
 %if 0%{?rhel} >= 10
 %{_includedir}/ynl
 %{_libdir}/libynl*
@@ -1000,6 +1010,9 @@ fi
 
 
 %changelog
+* Thu Oct 16 2025 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.17.3-1
+- Update to 6.17.3
+
 * Mon Oct 13 2025 Kmods SIG <sig-kmods@centosproject.org> - 6.16.12-1
 - Update to 6.16.12
 
