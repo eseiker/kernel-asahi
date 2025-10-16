@@ -1,3 +1,8 @@
+* Thu Oct 16 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc1.7ea30958b305.19]
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Thu Oct 16 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc1.7ea30958b305.18]
 - redhat/configs: Re-enable Raspberry Pi support in automotive (Radu Rendec)
 - Linux v6.18.0-0.rc1.7ea30958b305
