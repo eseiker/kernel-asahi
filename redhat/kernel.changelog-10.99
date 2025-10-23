@@ -1,3 +1,8 @@
+* Thu Oct 23 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc2.43e9ad0c55a3.26]
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Thu Oct 23 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc2.43e9ad0c55a3.25]
 - Linux v6.18.0-0.rc2.43e9ad0c55a3
 Resolves: 
