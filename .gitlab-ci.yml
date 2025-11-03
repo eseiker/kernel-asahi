@@ -57,6 +57,9 @@ workflow:
   only-os-build-schedule: &only-os-build-schedule
     if: $CI_COMMIT_BRANCH != "os-build" || $CI_PIPELINE_SOURCE != "schedule"
     when: never
+  only-os-build-schedule: &only-test-os-build-schedule
+    if: $CI_COMMIT_BRANCH != "test-os-build" || $CI_PIPELINE_SOURCE != "schedule"
+    when: never
   only-ark-latest-head: &only-ark-latest-head
     if: $CI_COMMIT_BRANCH != "ark-latest" || $CI_PIPELINE_SOURCE !~ /push|web/
     when: never
@@ -724,7 +727,7 @@ c10s_automotive_debug_cki_gating:
     gpg2 --import "$TORVALDS_GPG_KEY"
     export PROJECT_ID="$CI_PROJECT_ID"
     # make sure we are on correct code base before running scripts
-    git checkout os-build && git describe
+    git checkout test-os-build && git describe
 
 .git_setup:
   variables:
@@ -772,10 +775,11 @@ merge-rt-automotive:
 merge-linux-next:
   image: quay.io/cki/builder-stream10:production
   extends: .maintenance
-  before_script:
-    - !reference [.scripts, git_setup]
   script:
     - redhat/scripts/ci/ark-linux-next.sh
+  rules:
+    - *only-test-os-build-schedule
+    - if: $ONLY_JOB_NAME == $CI_JOB_NAME
 
 docs:
   image: quay.io/cki/cki-tools:production
