@@ -780,6 +780,8 @@ merge-linux-next:
   rules:
     - *only-test-os-build-schedule
     - if: $ONLY_JOB_NAME == $CI_JOB_NAME
+      variables:
+        DIST_PUSH: '1'
 
 docs:
   image: quay.io/cki/cki-tools:production
