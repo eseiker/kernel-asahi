@@ -1,3 +1,10 @@
+* Tue Nov 04 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc4.c9cfc122f037.38]
+- rust: kbuild: workaround `rustdoc` doctests modifier bug (Miguel Ojeda)
+- rust: kbuild: treat `build_error` and `rustdoc` as kernel objects (Miguel Ojeda)
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+- redhat/configs: clang_lto: disable CONFIG_FORTIFY_KUNIT_TEST (Scott Weaver)
+Resolves: 
+
 * Tue Nov 04 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-0.rc4.c9cfc122f037.37]
 - redhat: configs: rhel: Enable OV08X40 sensor to support Intel MIPI camera (Kate Hsuan)
 - redhat: configs: rhel: Enable usbio-drivers to supower Intel MIPI camera (Kate Hsuan)
