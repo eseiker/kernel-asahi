@@ -1,3 +1,7 @@
+* Thu Nov 06 2025 Neal Gompa <neal@gompa.dev> [6.17.7-401.asahi]
+- drm/test: drm_exec: use kzalloc() to allocate GEM objects (Danilo Krummrich)
+Resolves: 
+
 * Thu Nov 06 2025 Neal Gompa <neal@gompa.dev> [6.17.7-400.asahi]
 - redhat/configs: aarch64: Enable macsmc drivers on Fedora (Neal Gompa)
 - redhat/configs: Disable Nova GPU driver (Neal Gompa)
