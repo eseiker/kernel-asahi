@@ -88,3 +88,6 @@ endif
 # building the kernel-automotive packages.
 AUTOMOTIVE_MAJOR = 2
 AUTOMOTIVE_MINOR = 99
+
+# kernel variant extra version suffix
+VARIANTSTREAM = .asahi
