@@ -4283,9 +4283,10 @@ fi\
 %{_bindir}/page_owner_sort
 %{_bindir}/slabinfo
 %if %{with_ynl}
-%{_bindir}/ynl*
+%{_bindir}/*ynl*
 %{_docdir}/ynl
 %{_datadir}/ynl
+%{_datadir}/kselftest
 %{python3_sitelib}/pyynl*
 %endif
 
