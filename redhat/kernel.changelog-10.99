@@ -1,3 +1,8 @@
+* Tue Dec 02 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-2]
+- disable a compiler warning for libbpf (Thorsten Leemhuis)
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+Resolves: 
+
 * Tue Dec 02 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.18.0-1]
 - Reset RHEL_RELEASE for the 6.19 cycle (Justin M. Forbes)
 - add libasan-static and libubsan as BR for selftests (Thorsten Leemhuis)
