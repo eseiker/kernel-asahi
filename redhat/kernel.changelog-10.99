@@ -1,3 +1,9 @@
+* Mon Dec 15 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc1.15]
+- package YNL test framework files (Thorsten Leemhuis)
+- disable a compiler warning for libbpf (Thorsten Leemhuis)
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+Resolves: 
+
 * Mon Dec 15 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc1.14]
 - redhat/self-test: refresh with new variables (Scott Weaver)
 - gitlab-ci: enable c10s automotive package build (Scott Weaver)
