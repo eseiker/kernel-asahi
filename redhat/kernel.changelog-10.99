@@ -1,3 +1,9 @@
+* Tue Dec 16 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc1.40fbbd64bba6.16]
+- package YNL test framework files (Thorsten Leemhuis)
+- disable a compiler warning for libbpf (Thorsten Leemhuis)
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+Resolves: 
+
 * Tue Dec 16 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc1.40fbbd64bba6.15]
 - Linux v6.19.0-0.rc1.40fbbd64bba6
 Resolves: 
