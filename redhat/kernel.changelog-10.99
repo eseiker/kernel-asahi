@@ -1,3 +1,8 @@
+* Sun Dec 28 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc2.d26143bb38e2.24]
+- package YNL test framework files (Thorsten Leemhuis)
+- powerpc/tools: drop `-o pipefail` in gcc check scripts (Jan Stancek)
+Resolves: 
+
 * Sun Dec 28 2025 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc2.d26143bb38e2.23]
 - Linux v6.19.0-0.rc2.d26143bb38e2
 Resolves: 
