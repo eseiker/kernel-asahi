@@ -1,4 +1,4 @@
-From ac733ae45f49b68213b54beee5aeb78d7d990571 Mon Sep 17 00:00:00 2001
+From 46d7330fe31a82d1d698ef1b5b7f90d849631d11 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Mon, 31 Mar 2025 13:58:39 -0400
 Subject: [PATCH] arm64: add early lockdown for secure boot
@@ -18,7 +18,7 @@ Signed-off-by: Jeremy Cline <jeremycline@linux.microsoft.com>
  1 file changed, 27 insertions(+)
 
 diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index 77c7926a4df6..1727fc3f6a77 100644
+index 23c05dc7a8f2..d7b7b2f39e16 100644
 --- a/arch/arm64/kernel/setup.c
 +++ b/arch/arm64/kernel/setup.c
 @@ -32,6 +32,8 @@

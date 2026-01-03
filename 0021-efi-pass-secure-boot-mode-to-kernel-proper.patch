@@ -1,4 +1,4 @@
-From bf258421f5e712014c5a6214719be6e417313495 Mon Sep 17 00:00:00 2001
+From 3f30e7dce65c4c9f4bd46748cbefd09eca5f0cd2 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Wed, 19 Mar 2025 14:00:30 -0400
 Subject: [PATCH] efi: pass secure boot mode to kernel proper

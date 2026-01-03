@@ -1,4 +1,4 @@
-From 17e28f2b15a69893488590ac6d2b8b253c1896f5 Mon Sep 17 00:00:00 2001
+From e04d5889059614adefb75fb2536eb2037a5e3929 Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -16,7 +16,7 @@ Signed-off-by: Jeremy Cline <jcline@redhat.com>
  4 files changed, 20 insertions(+)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index fd11fffdd3c3..1d6f1a96d5fd 100644
+index 8c42b4bde09c..8cd6f5723ed2 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
 @@ -445,6 +445,8 @@ LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
@@ -29,10 +29,10 @@ index fd11fffdd3c3..1d6f1a96d5fd 100644
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 521bcb5b9717..012a82a8473f 100644
+index 92ac3f27b973..a3f7589ba6b2 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -575,6 +575,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -576,6 +576,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
  int security_locked_down(enum lockdown_reason what);
@@ -40,7 +40,7 @@ index 521bcb5b9717..012a82a8473f 100644
  int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
  int security_bdev_alloc(struct block_device *bdev);
-@@ -1588,6 +1589,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+@@ -1590,6 +1591,10 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -64,10 +64,10 @@ index cf83afa1d879..b5ebef58b0cb 100644
  
  static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index ad163f06bf7a..dcd27a71473c 100644
+index 4d3c03a4524c..4cf71ac2f78c 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5834,6 +5834,18 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5920,6 +5920,18 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  

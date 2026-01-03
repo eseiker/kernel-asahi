@@ -1,4 +1,4 @@
-From 6080cd676715c94c25104b4e5f86a0cf767429a9 Mon Sep 17 00:00:00 2001
+From 5eaf985c783153fade9522d8bd4510326aaabee7 Mon Sep 17 00:00:00 2001
 From: "Ewan D. Milne" <emilne@redhat.com>
 Date: Thu, 8 Jun 2023 16:14:34 -0400
 Subject: [PATCH] scsi: sd: Add "probe_type" module parameter to allow
@@ -17,7 +17,7 @@ Signed-off-by: Ewan D. Milne <emilne@redhat.com>
  1 file changed, 10 insertions(+)
 
 diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 5b8668accf8e..2e1a2d9532f5 100644
+index 0252d3f6bed1..4dc09593f0eb 100644
 --- a/drivers/scsi/sd.c
 +++ b/drivers/scsi/sd.c
 @@ -121,6 +121,14 @@ static const char *sd_cache_types[] = {
@@ -35,7 +35,7 @@ index 5b8668accf8e..2e1a2d9532f5 100644
  static void sd_set_flush_flag(struct scsi_disk *sdkp,
  		struct queue_limits *lim)
  {
-@@ -4373,6 +4381,8 @@ static int __init init_sd(void)
+@@ -4375,6 +4383,8 @@ static int __init init_sd(void)
  		goto err_out_class;
  	}
  

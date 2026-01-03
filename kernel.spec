@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.17.13
+Version: 6.18.3
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -34,18 +34,20 @@ ExclusiveArch: x86_64 aarch64 ppc64le
 BuildRequires: asciidoc
 BuildRequires: audit-libs-devel
 BuildRequires: bash
-BuildRequires: bpftool
 BuildRequires: bc
 BuildRequires: bindgen
 BuildRequires: binutils
 BuildRequires: binutils-devel
 BuildRequires: bison
+BuildRequires: bpftool
 BuildRequires: bzip2
+BuildRequires: capstone-devel
 BuildRequires: clang
 BuildRequires: clippy
 BuildRequires: coreutils
 BuildRequires: diffutils
 BuildRequires: dwarves
+BuildRequires: elfutils-debuginfod-client-devel
 BuildRequires: elfutils-devel
 BuildRequires: findutils
 BuildRequires: flex
@@ -66,6 +68,7 @@ BuildRequires: libbpf-devel
 BuildRequires: libcap-devel
 BuildRequires: libcap-ng-devel
 BuildRequires: libnl3-devel
+BuildRequires: libpfm-devel
 BuildRequires: libtraceevent-devel
 BuildRequires: libtracefs-devel >= 1.6
 BuildRequires: m4
@@ -154,6 +157,9 @@ Patch: 0017-Change-acpi_bus_get_acpi_device-to-acpi_get_acpi_dev.patch
 Patch: 0018-scsi-sd-Add-probe_type-module-parameter-to-allow-synchronous-probing.patch
 Patch: 0019-lsm-update-security_lock_kernel_down.patch
 Patch: 0020-efi-lockdown-fix-kernel-lockdown-on-Secure-Boot.patch
+Patch: 0021-efi-pass-secure-boot-mode-to-kernel-proper.patch
+Patch: 0022-arm64-add-early-lockdown-for-secure-boot.patch
+Patch: 0023-wifi-iwlwifi-Fix-firmware-version-handling.patch
 
 Patch: 1001-Revert-cpupower-Make-lib-versioning-scheme-more-obvious-and-fix-version-link.patch
 
@@ -914,7 +920,7 @@ fi
 
 
 %files -n python3-perf
-%{python3_sitearch}/*
+%{python3_sitearch}/perf*
 
 
 %files -n libperf
@@ -991,6 +997,8 @@ fi
 %{_libdir}/libcpupower.so
 %{python3_sitearch}/_raw_pylibcpupower.so
 %{python3_sitearch}/raw_pylibcpupower.py
+%{python3_sitearch}/__pycache__/raw_pylibcpupower*
+
 %if 0%{?rhel} >= 10
 %{_includedir}/ynl
 %{_libdir}/libynl*
@@ -1010,6 +1018,9 @@ fi
 
 
 %changelog
+* Sat Jan 03 2026 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.18.3-1
+- Update to 6.18.3
+
 * Fri Dec 19 2025 Kmods SIG <sig-kmods@centosproject.org> - 6.17.13-1
 - Update to 6.17.13
 

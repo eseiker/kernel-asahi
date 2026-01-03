@@ -1,4 +1,4 @@
-From 337131145494de0c66bcb9e0789eceabd2d4c021 Mon Sep 17 00:00:00 2001
+From cc70bf14cf58f7bfd3fe2f1f52bae78ea55fe4fd Mon Sep 17 00:00:00 2001
 From: Ondrej Mosnacek <omosnace@redhat.com>
 Date: Wed, 12 Feb 2025 10:15:54 +0100
 Subject: [PATCH] efi,lockdown: fix kernel lockdown on Secure Boot
@@ -28,7 +28,7 @@ Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
  4 files changed, 20 insertions(+), 19 deletions(-)
 
 diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 1d6f1a96d5fd..af87dc6e56dd 100644
+index 8cd6f5723ed2..694ce5c5bcd4 100644
 --- a/include/linux/lsm_hook_defs.h
 +++ b/include/linux/lsm_hook_defs.h
 @@ -445,7 +445,6 @@ LSM_HOOK(int, 0, bpf_token_capable, const struct bpf_token *token, int cap)
@@ -40,10 +40,10 @@ index 1d6f1a96d5fd..af87dc6e56dd 100644
  
  #ifdef CONFIG_PERF_EVENTS
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 012a82a8473f..537e928730e9 100644
+index a3f7589ba6b2..d9efb9b50aed 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -575,7 +575,6 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -576,7 +576,6 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
  int security_locked_down(enum lockdown_reason what);
@@ -51,7 +51,7 @@ index 012a82a8473f..537e928730e9 100644
  int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
  int security_bdev_alloc(struct block_device *bdev);
-@@ -1589,10 +1588,6 @@ static inline int security_locked_down(enum lockdown_reason what)
+@@ -1591,10 +1590,6 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -62,7 +62,7 @@ index 012a82a8473f..537e928730e9 100644
  static inline int lsm_fill_user_ctx(struct lsm_ctx __user *uctx,
  				    u32 *uctx_len, void *val, size_t val_len,
  				    u64 id, u64 flags)
-@@ -2410,4 +2405,13 @@ static inline void security_initramfs_populated(void)
+@@ -2412,4 +2407,13 @@ static inline void security_initramfs_populated(void)
  }
  #endif /* CONFIG_SECURITY */
  
@@ -102,10 +102,10 @@ index b5ebef58b0cb..aba751e7abff 100644
  
  static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index d83089a3022e..ad163f06bf7a 100644
+index 8b221c2b69f9..4d3c03a4524c 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5834,18 +5834,6 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5920,18 +5920,6 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  
