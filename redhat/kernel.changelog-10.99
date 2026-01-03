@@ -1,3 +1,7 @@
+* Sat Jan 03 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc3.805f9a061372.29]
+- package YNL test framework files (Thorsten Leemhuis)
+Resolves: 
+
 * Sat Jan 03 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc3.805f9a061372.28]
 - fedora: aarch64: Enable BST platform support (Weizhao Ouyang)
 - fedora: aarch64: Enable TI_SCI_INTR_IRQCHIP as built-in (Ayush Singh)
