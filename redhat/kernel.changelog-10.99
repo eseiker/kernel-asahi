@@ -1,3 +1,8 @@
+* Thu Jan 08 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc4.f0b9d8eb98df.34]
+- rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags (Siddhesh Poyarekar)
+- package YNL test framework files (Thorsten Leemhuis)
+Resolves: 
+
 * Thu Jan 08 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc4.f0b9d8eb98df.33]
 - kernel.spec.template: Cleanup package_name use (Prarit Bhargava)
 Resolves: 
