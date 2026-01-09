@@ -1,3 +1,7 @@
+* Fri Jan 09 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc4.623fb9912f6a.35]
+- rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags (Siddhesh Poyarekar)
+Resolves: 
+
 * Fri Jan 09 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc4.623fb9912f6a.34]
 - Linux v6.19.0-0.rc4.623fb9912f6a
 Resolves: 
