@@ -159,7 +159,6 @@ Patch: 0019-lsm-update-security_lock_kernel_down.patch
 Patch: 0020-efi-lockdown-fix-kernel-lockdown-on-Secure-Boot.patch
 Patch: 0021-efi-pass-secure-boot-mode-to-kernel-proper.patch
 Patch: 0022-arm64-add-early-lockdown-for-secure-boot.patch
-Patch: 0023-wifi-iwlwifi-Fix-firmware-version-handling.patch
 
 Patch: 1001-Revert-cpupower-Make-lib-versioning-scheme-more-obvious-and-fix-version-link.patch
 
