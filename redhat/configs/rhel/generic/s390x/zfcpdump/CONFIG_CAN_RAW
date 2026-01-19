@@ -1,1 +1,1 @@
-CONFIG_CAN_RAW=y
+# CONFIG_CAN_RAW is not set

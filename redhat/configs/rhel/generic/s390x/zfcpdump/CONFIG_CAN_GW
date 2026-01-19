@@ -1,1 +1,1 @@
-CONFIG_CAN_GW=y
+# CONFIG_CAN_GW is not set
