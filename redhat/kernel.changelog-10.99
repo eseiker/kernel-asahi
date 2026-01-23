@@ -1,3 +1,8 @@
+* Fri Jan 23 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc6.c072629f05d7.46]
+- x86/vmware: Fix hypercall clobbers (Josh Poimboeuf)
+- rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags (Siddhesh Poyarekar)
+Resolves: 
+
 * Fri Jan 23 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc6.c072629f05d7.45]
 - Linux v6.19.0-0.rc6.c072629f05d7
 Resolves: 
