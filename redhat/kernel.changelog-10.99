@@ -1,3 +1,8 @@
+* Thu Jan 29 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc7.8dfce8991b95.50]
+- x86/vmware: Fix hypercall clobbers (Josh Poimboeuf)
+- rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags (Siddhesh Poyarekar)
+Resolves: 
+
 * Thu Jan 29 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc7.8dfce8991b95.49]
 - redhat/configs: Ship nft_osf.ko in Fedora, too (Phil Sutter)
 - Linux v6.19.0-0.rc7.8dfce8991b95
