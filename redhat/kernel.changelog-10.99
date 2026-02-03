@@ -1,3 +1,7 @@
+* Tue Feb 03 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc8.6bd9ed02871f.55]
+- x86/vmware: Fix hypercall clobbers (Josh Poimboeuf)
+Resolves: 
+
 * Tue Feb 03 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc8.6bd9ed02871f.54]
 - Linux v6.19.0-0.rc8.6bd9ed02871f
 Resolves: 
