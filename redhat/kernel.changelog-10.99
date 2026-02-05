@@ -1,3 +1,7 @@
+* Thu Feb 05 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc8.f14faaf3a1fb.57]
+- x86/vmware: Fix hypercall clobbers (Josh Poimboeuf)
+Resolves: 
+
 * Thu Feb 05 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.19.0-0.rc8.f14faaf3a1fb.56]
 - Consolidate configs to common for 6.19 (Justin M. Forbes)
 - redhat/configs: Set CONFIG_PTP_S390=y (Mete Durlu) [RHEL-141647]
