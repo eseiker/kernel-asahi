@@ -5,4 +5,4 @@ include:
       el-releases:
         - 9
         - 10
-      cbs-project-version: kernel-latest
+      cbs-project-version: kernel-6.18
