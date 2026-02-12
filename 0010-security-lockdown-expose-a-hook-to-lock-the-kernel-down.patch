@@ -1,4 +1,4 @@
-From e04d5889059614adefb75fb2536eb2037a5e3929 Mon Sep 17 00:00:00 2001
+From da26048afc4475d607b0e6112dbe0e619196f5c1 Mon Sep 17 00:00:00 2001
 From: Jeremy Cline <jcline@redhat.com>
 Date: Mon, 30 Sep 2019 21:22:47 +0000
 Subject: [PATCH] security: lockdown: expose a hook to lock the kernel down
@@ -29,10 +29,10 @@ index 8c42b4bde09c..8cd6f5723ed2 100644
  #ifdef CONFIG_PERF_EVENTS
  LSM_HOOK(int, 0, perf_event_open, int type)
 diff --git a/include/linux/security.h b/include/linux/security.h
-index 92ac3f27b973..a3f7589ba6b2 100644
+index 83a646d72f6f..2f6df199c706 100644
 --- a/include/linux/security.h
 +++ b/include/linux/security.h
-@@ -576,6 +576,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
+@@ -575,6 +575,7 @@ int security_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen);
  int security_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen);
  int security_inode_getsecctx(struct inode *inode, struct lsm_context *cp);
  int security_locked_down(enum lockdown_reason what);
@@ -40,7 +40,7 @@ index 92ac3f27b973..a3f7589ba6b2 100644
  int lsm_fill_user_ctx(struct lsm_ctx __user *uctx, u32 *uctx_len,
  		      void *val, size_t val_len, u64 id, u64 flags);
  int security_bdev_alloc(struct block_device *bdev);
-@@ -1590,6 +1591,10 @@ static inline int security_locked_down(enum lockdown_reason what)
+@@ -1589,6 +1590,10 @@ static inline int security_locked_down(enum lockdown_reason what)
  {
  	return 0;
  }
@@ -52,7 +52,7 @@ index 92ac3f27b973..a3f7589ba6b2 100644
  				    u32 *uctx_len, void *val, size_t val_len,
  				    u64 id, u64 flags)
 diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-index cf83afa1d879..b5ebef58b0cb 100644
+index 8d46886d2cca..58bd6f30e599 100644
 --- a/security/lockdown/lockdown.c
 +++ b/security/lockdown/lockdown.c
 @@ -74,6 +74,7 @@ static int lockdown_is_locked_down(enum lockdown_reason what)
@@ -64,10 +64,10 @@ index cf83afa1d879..b5ebef58b0cb 100644
  
  static const struct lsm_id lockdown_lsmid = {
 diff --git a/security/security.c b/security/security.c
-index 4d3c03a4524c..4cf71ac2f78c 100644
+index 31a688650601..366e1b4df685 100644
 --- a/security/security.c
 +++ b/security/security.c
-@@ -5920,6 +5920,18 @@ int security_locked_down(enum lockdown_reason what)
+@@ -5373,6 +5373,18 @@ int security_locked_down(enum lockdown_reason what)
  }
  EXPORT_SYMBOL(security_locked_down);
  
@@ -87,5 +87,5 @@ index 4d3c03a4524c..4cf71ac2f78c 100644
   * security_bdev_alloc() - Allocate a block device LSM blob
   * @bdev: block device
 -- 
-2.47.3
+2.52.0
 

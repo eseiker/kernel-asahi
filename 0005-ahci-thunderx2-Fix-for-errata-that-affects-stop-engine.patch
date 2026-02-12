@@ -1,4 +1,4 @@
-From d400a680269a87da5c78808ed94704deac9f8488 Mon Sep 17 00:00:00 2001
+From 70eb5149137f763f65462b234053fb48da161a93 Mon Sep 17 00:00:00 2001
 From: Robert Richter <rrichter@redhat.com>
 Date: Thu, 7 Jun 2018 22:59:33 -0400
 Subject: [PATCH] ahci: thunderx2: Fix for errata that affects stop engine
@@ -85,5 +85,5 @@ index c79abdfcd7a9..e23bfb7f94c7 100644
  	tmp = ata_wait_register(ap, port_mmio + PORT_CMD,
  				PORT_CMD_LIST_ON, PORT_CMD_LIST_ON, 1, 500);
 -- 
-2.47.3
+2.52.0
 

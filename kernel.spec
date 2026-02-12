@@ -21,7 +21,7 @@
 
 
 Name: kernel
-Version: 6.18.10
+Version: 6.19.0
 Release: 1%{?dist}
 
 Summary: The Linux kernel
@@ -159,6 +159,7 @@ Patch: 0019-lsm-update-security_lock_kernel_down.patch
 Patch: 0020-efi-lockdown-fix-kernel-lockdown-on-Secure-Boot.patch
 Patch: 0021-efi-pass-secure-boot-mode-to-kernel-proper.patch
 Patch: 0022-arm64-add-early-lockdown-for-secure-boot.patch
+Patch: 0023-efi-Fix-swapped-arguments-to-bsearch-in-efi_status_to_.patch
 
 Patch: 1001-Revert-cpupower-Make-lib-versioning-scheme-more-obvious-and-fix-version-link.patch
 
@@ -340,6 +341,15 @@ Requires: %{name}-tools-libs = %{version}-%{release}
 %description tools-libs-devel
 This package contains the development files for the tools/ directory from
 the kernel source.
+
+
+%if 0%{?rhel} >= 10
+%package -n python3-%{name}-tools
+Summary: Various Python tools for the kernel
+%description -n python3-%{name}-tools
+The python3-kernel-tools package contains various python tools
+shipped as part of the kernel tools including ynl.
+%endif
 
 
 %package -n rtla
@@ -965,12 +975,6 @@ fi
 %{_mandir}/man*/kvm_stat*
 %{_unitdir}/cpupower.service
 %{_unitdir}/kvm_stat.service
-%if 0%{?rhel} >= 10
-%{_bindir}/ynl*
-%{_datadir}/ynl
-%{_docdir}/ynl
-%{python3_sitelib}/pyynl*
-%endif
 
 %ifarch x86_64
 %{_bindir}/centrino-decode
@@ -981,6 +985,15 @@ fi
 %{_mandir}/man*/turbostat*
 %{_mandir}/man*/x86_energy_perf_policy*
 %{_sbindir}/intel_sdsi
+%endif
+
+
+%if 0%{?rhel} >= 10
+%files -n python3-%{name}-tools
+%{_bindir}/ynl*
+%{_datadir}/ynl
+%{_docdir}/ynl
+%{python3_sitelib}/pyynl*
 %endif
 
 
@@ -1011,12 +1024,16 @@ fi
 %{_bindir}/timerlat
 %{_mandir}/man*/rtla*
 
+
 %files -n rv
 %{_bindir}/rv
 %{_mandir}/man*/rv*
 
 
 %changelog
+* Thu Feb 12 2026 Peter Georg <peter.georg@physik.uni-regensburg.de> - 6.19.0-1
+- Update to 6.19.0
+
 * Thu Feb 12 2026 Kmods SIG <sig-kmods@centosproject.org> - 6.18.10-1
 - Update to 6.18.10
 

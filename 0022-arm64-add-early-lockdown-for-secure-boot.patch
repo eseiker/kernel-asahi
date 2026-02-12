@@ -1,4 +1,4 @@
-From 46d7330fe31a82d1d698ef1b5b7f90d849631d11 Mon Sep 17 00:00:00 2001
+From a01dfc2eecc355280f3e891c22a442043a144d09 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Mon, 31 Mar 2025 13:58:39 -0400
 Subject: [PATCH] arm64: add early lockdown for secure boot
@@ -70,5 +70,5 @@ index 23c05dc7a8f2..d7b7b2f39e16 100644
  
  	arm64_memblock_init();
 -- 
-2.47.3
+2.52.0
 

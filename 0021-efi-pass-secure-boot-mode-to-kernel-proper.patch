@@ -1,4 +1,4 @@
-From 3f30e7dce65c4c9f4bd46748cbefd09eca5f0cd2 Mon Sep 17 00:00:00 2001
+From 835aad4b48e7c3c796f38827cdc7c89c1d7c3671 Mon Sep 17 00:00:00 2001
 From: Mark Salter <msalter@redhat.com>
 Date: Wed, 19 Mar 2025 14:00:30 -0400
 Subject: [PATCH] efi: pass secure boot mode to kernel proper
@@ -76,5 +76,5 @@ index 516f4f0069bd..380354755108 100644
 +	return mode;
  }
 -- 
-2.47.3
+2.52.0
 
