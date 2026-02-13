@@ -1,3 +1,10 @@
+* Fri Feb 13 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.20.0-0.rc0.cee73b1e840c.6]
+- redhat/kernel.spec.template: Make -uki-dtbloader provide kernel-core-uname-r (Hans de Goede)
+- redhat/kernel.spec.template: Add kernel-uki-dtbloader sub-package (Hans de Goede)
+- redhat/kernel.spec.template: Simplify uki-virt signing (Hans de Goede)
+- redhat/kernel.spec.template: Fix indentation of uki-virt generation code (Hans de Goede)
+Resolves: 
+
 * Fri Feb 13 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.20.0-0.rc0.cee73b1e840c.5]
 - Linux v6.20.0-0.rc0.cee73b1e840c
 Resolves: 
