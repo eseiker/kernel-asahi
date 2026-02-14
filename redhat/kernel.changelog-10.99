@@ -897,6 +897,12 @@ Resolves:
 - Linux v6.18.12
 Resolves: 
 
+* Sat Feb 14 2026 Neal Gompa <neal@gompa.dev> [6.18.10-402.asahi]
+- fixup! drm/asahi: Add the Asahi driver for Apple AGX GPUs (Janne Grunau)
+- drm/asahi: workqueue: Drop completed work items (Janne Grunau)
+- drm/tegra: hdmi: sor: Fix error: variable ‘j’ set but not used (Brahmajit Das)
+Resolves: 
+
 * Sat Feb 14 2026 Neal Gompa <neal@gompa.dev> [6.18.10-401.asahi]
 - drm/amd: Fix set but not used warnings (Tiezhu Yang)
 Resolves: 
