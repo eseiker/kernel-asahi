@@ -897,6 +897,10 @@ Resolves:
 - Linux v6.18.12
 Resolves: 
 
+* Sat Feb 14 2026 Neal Gompa <neal@gompa.dev> [6.18.10-401.asahi]
+- drm/amd: Fix set but not used warnings (Tiezhu Yang)
+Resolves: 
+
 * Sat Feb 14 2026 Neal Gompa <neal@gompa.dev> [6.18.10-400.asahi]
 - redhat/configs: aarch64: Enable dwc3 Apple variant driver (Neal Gompa)
 - redhat/configs: aarch64: Enable macsmc drivers on Fedora (Neal Gompa)
