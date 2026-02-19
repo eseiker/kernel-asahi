@@ -1,3 +1,7 @@
+* Thu Feb 19 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.20.0-0.rc0.2b7a25df823d.12]
+- rv: Fix multiple definition of __pcpu_unique_da_mon_this (Gabriele Monaco)
+Resolves: 
+
 * Thu Feb 19 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [6.20.0-0.rc0.2b7a25df823d.11]
 - Linux v6.20.0-0.rc0.2b7a25df823d
 Resolves: 
