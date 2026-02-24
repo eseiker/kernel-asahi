@@ -1,3 +1,7 @@
+* Tue Feb 24 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [7.0.0-0.rc1.7dff99b35460.17]
+- add missing perf header files (Scott Weaver)
+Resolves: 
+
 * Tue Feb 24 2026 Fedora Kernel Team <kernel-team@fedoraproject.org> [7.0.0-0.rc1.7dff99b35460.16]
 - Reset the changelog for 7.0-rc1 (Justin M. Forbes)
 - A couple more quick important 7.0 config updates for Fedora (Justin M. Forbes)
