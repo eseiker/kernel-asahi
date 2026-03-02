@@ -1,0 +1,18 @@
+# ~~~
+# Symbol: CRYPTO_LIB_AES_CBC_MACS_KUNIT_TEST [=m]
+# Type  : tristate
+# Defined at lib/crypto/tests/Kconfig:3
+#   Prompt: KUnit tests for AES-CMAC, AES-XCBC-MAC, and AES-CBC-MAC
+#   Depends on: KUNIT [=m]
+#   Visible if: KUNIT [=m] && !KUNIT_ALL_TESTS [=m]
+#   Location:
+#     -> Library routines
+#       -> Crypto library routines
+#         -> KUnit tests for AES-CMAC, AES-XCBC-MAC, and AES-CBC-MAC (CRYPTO_LIB_AES_CBC_MACS_KUNIT_TEST [=m])
+# Selects: CRYPTO_LIB_BENCHMARK_VISIBLE [=y] && CRYPTO_LIB_AES_CBC_MACS [=y]
+# 
+# 
+# 
+# ~~~
+# Commit: e0d9e4c0b728 (lib/crypto: tests: Add KUnit tests for CBC-based MACs)
+CONFIG_CRYPTO_LIB_AES_CBC_MACS_KUNIT_TEST=m

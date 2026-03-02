@@ -1,0 +1,16 @@
+# ~~~
+# Symbol: PERCPU_COUNTER_TREE_TEST [=m]
+# Type  : tristate
+# Defined at lib/Kconfig:55
+#   Prompt: Hierarchical Per-CPU counter test
+#   Depends on: KUNIT [=m]
+#   Visible if: KUNIT [=m] && !KUNIT_ALL_TESTS [=m]
+#   Location:
+#     -> Library routines
+#       -> Hierarchical Per-CPU counter test (PERCPU_COUNTER_TREE_TEST [=m])
+# 
+# 
+# 
+# ~~~
+# Commit: 4e1a3723f552 (lib: test hierarchical per-cpu counters)
+CONFIG_PERCPU_COUNTER_TREE_TEST=m
