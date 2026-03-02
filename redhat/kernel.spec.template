@@ -321,6 +321,12 @@ Summary: The Linux kernel
 %define with_efiuki 0
 %endif
 
+%if 0%{?rhel}
+# enable for Asahi
+%define with_headers 1
+%define with_arm64_16k 1
+%endif
+
 %if 0%{?fedora}
 # Kernel headers are being split out into a separate package
 %define with_headers 1
@@ -1019,6 +1025,9 @@ Source30: %{name}-s390x-debug-rhel.config
 Source31: %{name}-s390x-zfcpdump-rhel.config
 Source32: %{name}-x86_64-rhel.config
 Source33: %{name}-x86_64-debug-rhel.config
+# ARM64 16K page-size kernel config
+Source38: %{name}-aarch64-16k-rhel.config
+Source39: %{name}-aarch64-16k-debug-rhel.config
 # ARM64 64K page-size kernel config
 Source42: %{name}-aarch64-64k-rhel.config
 Source43: %{name}-aarch64-64k-debug-rhel.config

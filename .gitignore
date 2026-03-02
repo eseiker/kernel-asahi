@@ -198,3 +198,6 @@ sphinx_*/
 
 # Rust analyzer configuration
 /rust-project.json
+
+# Packit configuration
+!.packit.yaml
