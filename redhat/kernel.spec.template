@@ -328,6 +328,9 @@ Summary: The Linux kernel
 # disable debug and realtime kernels for buildroot headroom
 %define with_debug 0
 %define with_realtime 0
+%define with_realtime_arm64_64k 0
+# remove libasan-static dependency
+%define with_selftests 0
 %endif
 
 %if 0%{?fedora}
