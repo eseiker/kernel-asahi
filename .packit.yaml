@@ -1,0 +1,17 @@
+specfile_path: redhat/rpm/SOURCES/kernel.spec
+upstream_package_name: linux
+downstream_package_name: kernel
+upstream_tag_template: "kernel-{version}-{release}.asahi"
+
+actions:
+  post-upstream-clone: make dist-spec DISTLOCALVERSION=""
+  post-modifications: make dist-srpm DISTLOCALVERSION=""
+
+jobs:
+  - job: copr_build
+    owner: eseiker
+    project: asahi-el-kernel
+    trigger: pull_request
+    manual_trigger: true
+    targets:
+      - epel-10-aarch64
